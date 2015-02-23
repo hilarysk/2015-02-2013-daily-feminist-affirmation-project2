@@ -1,0 +1,27 @@
+<div class="keywordlist"><h1 align="center">Items tagged "<%= "#{@keyword}" %>"</h1><br><br>
+
+  <%  @results.each do |hash| %>
+   <% if hash.keys[1] == "quote" %>
+     <%= erb :_quote_formatting, :locals => {:quote => "#{hash["quote"]}", :quoter => "#{hash["person_id"]}"} %>
+   
+   <% elsif hash.keys[1] == "term"%>
+     <%= erb :_term_formatting, :locals => {:term => "#{hash["term"]}", :definition => "#{hash["definition"]}", :phonetic => "#{hash["phonetic"]}"} %>
+     
+  <% elsif hash.keys[1] == "excerpt"%>
+    <%= erb :_excerpt_formatting, :locals => {:excerpt => "#{hash["excerpt"]}", :author => "#{hash["person_id"]}", :book => "#{hash["source"]}"} %>
+     
+   <% elsif hash.keys[1] == "person"%>
+     <% if hash["state"] == ""%>
+       <% @state = "" %>
+     <% else  %>
+        <% @state = "#{hash["state"]}, " %>
+     <% end  %>
+     <%= erb :_person_formatting, :locals => {:bio => "#{hash["bio"]}", :name => "#{hash["person"]}", :image => "#{hash["image"]}", :source => "#{hash["source"]}", :state => "#{@state}", :country => "#{hash["country"]}", :caption => "#{hash["caption"]}"} %>
+
+     
+     
+   <% end %>
+ <% end %></div><p></p>
+
+
+

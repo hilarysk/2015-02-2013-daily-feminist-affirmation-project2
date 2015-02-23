@@ -1,0 +1,17 @@
+<div class="search"><h1>Search by keyword</h1><br>
+  
+
+
+<form action="/keyword">
+<br><select name="keyword">
+<% @keywords.each do |hash| %>
+<option value="<%= hash["keyword"] %>"><%= hash["keyword"] %></option>
+<% end %>
+</select>
+<br><br>
+
+<input type="submit" value="View">
+<br><br>
+</form> 
+<br><br></div>
+  

@@ -1,0 +1,22 @@
+<div class="search"><h1>Update an excerpt</h1>
+  
+
+<p>To find the excerpt you want to update, click the source first, then select the specific excerpt based on the first line:</p>
+<form>
+<p>Sources:</p>
+<select name="source">
+<p><% @excerpt_sources.each do |source| %>
+  <option value="<%= "#{source}" %>"><%= "#{source}" %></option>
+  <% end %></p>
+</select>
+<br><br>
+<input type="submit" value="Submit">
+<br><br>
+</form> 
+  
+  
+<!--THEN HERE, DEPENDING ON WHICH ANSWER, HAVE FIRST XX CHARACTERS FROM THAT EXCERPT TEXT BE OPTIONS FOR SAME KIND OF FORM, EXCEPT SEND THE ID TO ROUTE HANDLER. SO ID IS THE OPTION VALUE, AND THE TEXT IS THE FIRST XX CHARACTERS OF EXCERPT. -->
+  
+  
+  </div>
+<div class="bottomspacer"></div>

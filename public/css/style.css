@@ -99,7 +99,8 @@ div.reaffirm span.box {
 
 
 body.excerptbackground {
-  background-image: url('excerptimage3.jpg');
+  background-image: url('/excerptimage3.jpg');
+  
   background-repeat: no-repeat;
   background-position: 0px 60px;
   font-family: Georgia;

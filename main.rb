@@ -25,11 +25,27 @@ require_relative "models/keyword_class.rb"
 #                     SESSION ROUTES                       #
 ############################################################
 
+# Can put multiple filepaths into an array and then iterate through if they have the same get/before/after etc. - use for authentication as before filter
+#sintatra NOT to exclude the about, search, yay and homepage and login 
+
+
+
 enable :sessions
+
+before /^(?!\/(login|logout|search|about|yay|homepage))/ do    #how to get auth params here? doesn't seem to be working.
+  auth = User.user_name_pass_search(params)
+
+  if auth == nil
+    @fail_message = "We couldn't find you in the system; please try again." 
+    erb :login
+  end
+end
+
 
 get '/login' do
   erb :login 
 end
+
 
 get "/user_verification" do
   auth = User.user_name_pass_search(params)
@@ -47,13 +63,38 @@ get "/user/update_database" do
   erb :"user/update_database", :layout => :layout_logged_in
 end
 
-get "/user/excerpt/new_excerpt" do 
-  erb :"user/excerpt/new_excerpt", :layout => :layout_logged_in
+get "/user/excerpt" do 
+  if params["action"] = "new"
+    @excerpt_sources = Excerpt.find_specific_field({"field"=>"source", "table"=>"excerpts"})
+    erb :"user/excerpt/new_excerpt", :layout => :layout_logged_in
+  else #if params["action"] = "update"
+    @excerpt_sources = Excerpt.find_specific_field({"field"=>"source", "table"=>"excerpts"})
+    erb :"user/excerpt/update_excerpt", :layout => :layout_logged_in
+  end
 end
 
-get "/user/excerpt/update_excerpt" do 
-  erb :"user/excerpt/new_excerpt", :layout => :layout_logged_in
+before "/user/excerpt/success" do 
+  # check if excerpt already exists
 end
+
+get "/user/excerpt/success" do 
+  # show new excerpt, formatted (use _excerpt_formatting partial) 
+  if #---> if way to determine they updated
+    @success_message = "The excerpt was successfully updated:"
+    erb :_excerpt_formatting, :layout => :layout_logged_in, :locals => {:excerpt => "#{params["excerpt"]}", :author => "#{params["person"]}"}
+  
+  else
+    @success_message = "Your excerpt was successfully added:"
+    erb :_excerpt_formatting, :layout => :layout_logged_in, :locals => {:excerpt => "#{params["excerpt"]}", :author => "#{params["person"]}"}
+  end
+end
+
+
+
+
+
+
+
 
 get "/user/person/new_person" do 
   erb :"user/person/new_person", :layout => :layout_logged_in
@@ -90,7 +131,7 @@ end
 
 
 get "/logout" do
-  session[:user] == nil
+  session == nil
   @logout_message = "You have successfully logged out. Thanks for contributing!"
   erb :login 
 end

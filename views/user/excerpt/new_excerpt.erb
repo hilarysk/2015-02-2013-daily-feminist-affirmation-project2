@@ -1,0 +1,19 @@
+<div class="search"><h1>Add a new excerpt</h1>
+  
+
+<p>To see excerpts currently in the collection, click the source below.</p>
+<p><ul><% @excerpt_sources.each do |source| %>
+  <li><em><a href="/keyword?keyword=<%= "#{source}" %>"><%= "#{source}" %></a></em></li><br>
+  <% end %></ul></p>
+<p>If the excerpt you want to add isn't included in the list above, please fill out each form below.</p>  
+  
+<form action="/user/excerpt/success">
+<!-- excerpt text, source, dropdown where value is person_id and text is person_name (iterate through persons table array of id and person/name) go here -->
+</form>
+  
+  
+  
+  
+  
+  </div>
+<div class="bottomspacer"></div>

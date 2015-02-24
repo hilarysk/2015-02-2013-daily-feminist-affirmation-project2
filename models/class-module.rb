@@ -100,6 +100,37 @@ module FeministClassMethods
     return results
   end
   
+  # Public: #find_specific_field
+  # Returns a specific column from a given table
+  #
+  # Parameters:
+  # options - Hash
+  #           - field - the field you want to search
+  #           - table - the table you want to search     
+  #       
+  #
+  # Returns:
+  # A array of values for the field
+  #
+  # State changes:
+  # None
+  
+  def find_specific_field(options)       
+    table = options["table"]
+    field = options["field"]
+    
+    array = DATABASE.execute("SELECT #{field} FROM #{table}")
+      
+    delete_secondary_kvpairs(array, :placeholder)
+    
+    results = []
+    
+    array.each do |hash|
+      results.push hash["source"]
+    end
+    
+    return results
+  end
   
   # Public: #find_specific_value
   # Returns a specific value for a given field and table

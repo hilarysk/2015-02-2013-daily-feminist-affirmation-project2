@@ -12,12 +12,6 @@ get "/item/:number" do  ##--> localhost:4546/item/T34
 
 end
   
-  
-  
- - password for form for login
-    
-- more on sessions
-
 - create error messages if username is the same as an exisiting username
   
 

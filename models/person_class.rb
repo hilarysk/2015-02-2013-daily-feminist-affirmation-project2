@@ -104,6 +104,27 @@ class Person
     return persons_array 
  
   end
+  
+  # Public: #self.get_all_specific_person_data
+  # Creates an array with a hash containing all person info
+  #
+  # Parameters:
+  # id - id of the record sought                    
+  #
+  # Returns:
+  # An array of a hash representing the record asked for
+  # 
+  # State changes:
+  # None    
+    
+  def self.get_all_specific_person_data(id)
+    Person.array_of_person_records.each do |hash|
+      if hash["id"] == id.to_i
+        return hash
+      end
+    end
+        
+  end
 
     
 end

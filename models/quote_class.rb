@@ -90,4 +90,27 @@ class Quote
     return quotes_array #==> quotes_array = [{"id"=>"1", "quote"=>"sldkjflaskdjfaksldjfaklsdfjasdf", "person"=>"Ella Baker"}]
   
   end
+  
+  
+  # Public: #self.get_all_specific_quote_data
+  # Creates an array with a hash containing quote text, person name and quote id
+  #
+  # Parameters:
+  # id - id of the record sought                    
+  #
+  # Returns:
+  # An array of a hash representing the records asked for
+  # 
+  # State changes:
+  # None    
+    
+  def self.get_all_specific_quote_data(id)
+    Quote.array_of_quote_records.each do |hash|
+      if hash["id"] == id.to_i
+        return hash
+      end
+    end
+        
+  end
+  
 end

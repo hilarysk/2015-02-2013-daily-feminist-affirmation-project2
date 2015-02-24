@@ -94,5 +94,27 @@ class Excerpt
     return excerpts_array #==> excerpts_array = [{"id"=>"1", "excerpt"=>"sldkjflaskdjfaksldjfaklsdfjasdf", "person"=>"Ella Baker"}]
  
   end
+  
+  # Public: #self.get_all_specific_excerpt_data
+  # Creates an array with a hash containing all excerpt info
+  #
+  # Parameters:
+  # id - id of the record sought                    
+  #
+  # Returns:
+  # An array of a hash representing the record asked for
+  # 
+  # State changes:
+  # None    
+    
+  def self.get_all_specific_excerpt_data(id)
+    Excerpt.array_of_excerpt_records.each do |hash|
+      if hash["id"] == id.to_i
+        return hash
+      end
+    end
+        
+  end
+  
     
 end

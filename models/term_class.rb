@@ -94,6 +94,29 @@ class Term
     return terms_array #==> terms_array = [{"id"=>"1", "term"=>"femme", "definition"=>"yoyo", "phonetic"=>"hexadecimal unicode baby"}]
  
   end
+  
+  
+  # Public: #self.get_all_specific_term_data
+  # Creates an array with a hash containing all term info
+  #
+  # Parameters:
+  # id - id of the record sought                    
+  #
+  # Returns:
+  # An array of a hash representing the record asked for
+  # 
+  # State changes:
+  # None    
+    
+  def self.get_all_specific_term_data(id)
+    Term.array_of_term_records.each do |hash|
+      if hash["id"] == id.to_i
+        return hash
+      end
+    end
+        
+  end
+  
 
     
 end

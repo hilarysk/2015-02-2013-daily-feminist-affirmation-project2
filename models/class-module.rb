@@ -12,6 +12,9 @@
 
 module FeministClassMethods
   
+  
+  
+  
 
   # Public: #get_array_items_for_keyword
   # Creates an array of all items tagged a specific keyword
@@ -100,6 +103,35 @@ module FeministClassMethods
     return results
   end
   
+  # Public: #find_specific_fields_hashes
+  # Returns specific columns from a given table
+  #
+  # Parameters:
+  # options - Hash
+  #           - field1 - the field you want to search
+  #           - field2 - the field you want to search
+  #           - table - the table you want to search     
+  #       
+  #
+  # Returns:
+  # A array of hashes with the key-value pairs for the fields
+  #
+  # State changes:
+  # None
+  
+  def find_specific_fields_hashes(options)       
+    table = options["table"]
+    field1 = options["field1"]
+    field2 = options["field2"]
+    
+    
+    array = DATABASE.execute("SELECT #{field1}, #{field2} FROM #{table}")
+      
+    delete_secondary_kvpairs(array, :placeholder)
+    
+    return array #==> [{"id"=>"1", "person"=>"Toni Morrison"}, {"id"=>"2", "person"=>"Kate Chopin"}]
+  end
+  
   # Public: #find_specific_field
   # Returns a specific column from a given table
   #
@@ -115,7 +147,7 @@ module FeministClassMethods
   # State changes:
   # None
   
-  def find_specific_field(options)       
+  def find_specific_field_array(options)       
     table = options["table"]
     field = options["field"]
     
@@ -126,7 +158,7 @@ module FeministClassMethods
     results = []
     
     array.each do |hash|
-      results.push hash["source"]
+      results.push hash["#{field}"]             # IF MESSING UP, I CCHANGED THIS FROM "SOURCE" TO INTERPOLATION 
     end
     
     return results

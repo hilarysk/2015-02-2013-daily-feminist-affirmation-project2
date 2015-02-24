@@ -1,0 +1,28 @@
+
+<table class="quotetable">
+  <tbody>
+    <tr>
+      <td class="quoteleftquotationmark"><img src="/quotemarklw.jpg" width="50"></td>
+      <td class="quotetext"><p align="justify"><%= "#{@item["quote"]}" %></p><p class="quoteperson">- <%= "#{@item["person"]}" %></p></td>
+      <td class="quoterightquotationmark"><img src="/quotemarkrw.jpg" width="50"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="keywordtext"> <p>____________________________________</p>
+        <p>TAGS: <% @keywords.each do |keyword1| %>
+  <a href="/keyword?keyword=<%= "#{keyword1}" %>"><%= "#{keyword1}" %></a><%= " | " %>  
+<% end %>
+</p> 
+     <p>
+       <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2FBLANK.COM%2Fitem%3Ftable%3Dquotes%26id%3D<%= "#{@item["id"].to_s}" %>&amp;width&amp;layout=standard&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=20&amp;appId=275052925858908" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:20px;" allowTransparency="true"></iframe>
+       <p><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://BLANK.COM/item?table=quotes&id=<%= "#{@item["id"].to_s}" %>" data-hashtags="DailyFemAff">Tweet</a>
+       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></p>
+      </p></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table> 
+
+<div class="bottomspacer"></div>
+<div class="bottomspacer"></div>
+<div class="bottomspacer"></div>

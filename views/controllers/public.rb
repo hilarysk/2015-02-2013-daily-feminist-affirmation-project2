@@ -62,7 +62,7 @@ get "/item" do  ##--> localhost:4546/item?table=quotes&id=4
 end
 
 get "/home" do 
-  erb :"public/home", :layout => :"/alt_layouts/layout_home"
+  erb :"public/home", :layout => :"alt_layouts/layout_home"
 end
 
 get "/yay" do

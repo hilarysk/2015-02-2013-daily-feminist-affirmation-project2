@@ -20,5 +20,5 @@ require_relative "models/keyword_class.rb"
 require_relative "views/controllers/admin"
 require_relative "views/controllers/public"
 
-
-binding.pry
+#
+# binding.pry

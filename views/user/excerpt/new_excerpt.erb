@@ -1,5 +1,5 @@
 <div class="search"><h1>Add a new excerpt</h1>
-  
+<p><%= "#{params["fail"]}" %></p>  
 
 <p><strong>To see excerpts currently in the collection, click the corresponding below:</strong></p>
 <p><form action="/keyword">
@@ -14,14 +14,22 @@
 
 <p>If the excerpt you want to add isn't included in the list above, please fill out each form below.</p>  
   
-<form action="/user/excerpt/success?action=new">
+<form action="/user/excerpt/success">
 <strong>Excerpt text:</strong><br>
 (Maximum of 825 characters.)<br><br>
 <textarea cols="60" rows="8" maxlength="825" name="excerpt">
 </textarea>
 <br><br>
 <strong>Excerpt source:</strong><br>
-<input type="text" name="source"><br><br>
+  Choose from existing sources:<br><br>                                   
+   <select name="source1">
+     <% @excerpt_sources.each do |source| %>
+       <option value="<%= "#{source}" %>"><%= "#{source}" %></option>
+    <% end  %>
+  </select><br><br>
+  
+  Or enter a new source:<br><br>
+  <input type="text" name="source"><br><br>
 <strong>Author:</strong><br>
 (Note: If author is not listed below, you need to <a href="/user/person?action=new">create a person entry</a> for the author, first.)<br><br>
 <select name="person_id">
@@ -29,11 +37,13 @@
 <option value="<%= "#{hash["id"]}" %>"><%= "#{hash["person"]}" %></option>
 <% end  %>
 </select><br><br>
+<input type="hidden" name="action" value="new">
 <input type="submit" value="Submit">
 <br><br>
 </form>
   
-  
+
+
   
   
   

@@ -94,8 +94,12 @@ class User
     delete_secondary_kvpairs(user, :placeholder)
     
     user = user[0]
-    
-    user_info = self.new(user) if user != nil
+      
+    if user != nil
+      user_info = self.new(user) 
+    else
+      user_info = []
+    end
     
     return user_info
   end

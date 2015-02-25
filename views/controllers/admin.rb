@@ -1,3 +1,4 @@
+require "pry"
 require "sqlite3"
 require "sinatra"
 require "sinatra/session"
@@ -36,15 +37,15 @@ enable :sessions # https://github.com/mjackson/sinatra-session, https://github.c
 # end
 
 get '/login' do
-  erb :login, :layout => :"/alt_layouts/public_layout" 
+  erb :"user/login", :layout => :"/alt_layouts/public_layout" 
 end
 
 
 get "/user_verification" do
   auth = User.user_name_pass_search(params)
-  if auth == nil
+  if auth == []
     @fail_message = "We couldn't find you in the system; please try again." 
-    erb :login, :layout => :"/alt_layouts/public_layout"
+    erb :"user/login", :layout => :"/alt_layouts/public_layout"
   else
     session[:user] = auth
     redirect to ("/user/update_database")
@@ -54,7 +55,7 @@ end
 get "/user/update_database" do   # seems to work, but cookies keep remembering? doesn't actaully work unless i clear my cookies/cache
   if session[:user] == nil
     @fail_message = "Oops! Looks like you need to login first." 
-    erb :login, :layout => :"/alt_layouts/public_layout"
+    erb :"user/login", :layout => :"/alt_layouts/public_layout"
   else
     @username = "#{session[:user].username}"
     erb :"user/update_database"
@@ -70,29 +71,49 @@ end
 
 get "/user/excerpt" do 
   if params["action"] == "new"
-    erb :"user/excerpt/new_excerpt"
+    erb :"user/excerpt/new_excerpt" :locals => {"fail" => ""}
   elsif params["action"] == "update"
     erb :"user/excerpt/update_excerpt"
   end
-end  # here
-
-before "/user/excerpt/success" do 
-  @excerpt_check = Excerpt.method_to_check_if_there_is_excerpt_already(params["excerpt"])
-
-  if @excerpt_check == true
-    @fail_message = "Hmm, looks like an excerpt nearly indentical to that already exists. Feel free to add a different one, though."
-    erb :"user/excerpt/new_excerpt"
-  end # else redirect to("/user/excerpt/success")?
 end
 
-get "/user/excerpt/success" do  # NOT DONE YET
-  # show new excerpt, formatted (use _excerpt_formatting partial) 
-  if params["action"] == "update"
-    @success_message = "The excerpt was successfully updated:"
-    erb :_excerpt_formatting, :locals => {:excerpt => "#{params["excerpt"]}", :author => "#{params["person"]}"}
-  else
-    @success_message = "Your excerpt was successfully added:"
-    erb :_excerpt_formatting, :locals => {:excerpt => "#{params["excerpt"]}", :author => "#{params["person"]}"}
+
+
+before "/user/excerpt/success" do  
+  if params["action"] = "new"     
+    (Excerpt.find_specific_field_array({"table"=>"excerpts", "field"=>"excerpt"})).each do |excerpt| 
+      if excerpt.byteslice(0..30) == params["excerpt"].byteslice(0...30) || excerpt.byteslice(-30..-1) == params["excerpt"].byteslice(-30..-1)
+        fail_message = "Hmm, looks like an excerpt containing that text already exists. Feel free to add a different excerpt, though." 
+        redirect to ("user/excerpt?action=new&fail=#{fail_message}")
+      end
+    end
+  end 
+end
+    
+
+get "/user/excerpt/success" do
+  if params["action"] == "new"
+    if params["source"] == ""
+      params["source"] = params["source1"]
+    end
+    new_excerpt = Excerpt.new(params)
+    new_excerpt.insert
+
+    person1 = Person.find_specific_value({"table"=>"persons", "field_known"=>"id", "value"=>"#{params["person_id"].to_s}".to_i, "field_unknown"=>"person"})
+    
+    success_message1 = "Your excerpt was successfully added:"
+    
+    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}"}
+  
+  elsif params["action"] == "update"
+    new_excerpt = Excerpt.new(params)
+    new_excerpt.save({"table"=>"excerpts", "item_id"=>"#{(params["id"]).to_s}"})
+   
+    person1 = Person.find_specific_value({"table"=>"persons", "field_known"=>"id", "value"=>"{(new_excerpt.person_id).to_s}".to_i, "field_unknown"=>"person"})
+    
+    success_message1 = "The excerpt was successfully updated:"
+    
+    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}"}
   end
 end
 
@@ -142,5 +163,5 @@ end
 
 get "/logout" do
   @logout_message = "You have successfully logged out. Thanks for contributing!"
-  erb :login, :layout => :"/alt_layouts/public_layout"
+  erb :"user/login", :layout => :"/alt_layouts/public_layout"
 end

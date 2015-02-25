@@ -2,13 +2,13 @@
 
   <%  @results.each do |hash| %>
    <% if hash.keys[1] == "quote" %>
-     <%= erb :"public/keyword/_quote_formatting", :locals => {:quote => "#{hash["quote"]}", :quoter => "#{hash["person_id"]}"} %>
+     <%= erb :"public/keyword/_quote_formatting", :locals => {:quote => "#{hash["quote"]}", :quoter => "#{hash["person_id"]}", :success_message=>""} %>
    
    <% elsif hash.keys[1] == "term"%>
-     <%= erb :"public/keyword/_term_formatting", :locals => {:term => "#{hash["term"]}", :definition => "#{hash["definition"]}", :phonetic => "#{hash["phonetic"]}"} %>
+     <%= erb :"public/keyword/_term_formatting", :locals => {:term => "#{hash["term"]}", :definition => "#{hash["definition"]}", :phonetic => "#{hash["phonetic"]}", :success_message=>""} %>
      
   <% elsif hash.keys[1] == "excerpt"%>
-    <%= erb :"public/keyword/_excerpt_formatting", :locals => {:excerpt => "#{hash["excerpt"]}", :author => "#{hash["person_id"]}", :book => "#{hash["source"]}"} %>
+    <%= erb :"public/keyword/_excerpt_formatting", :locals => {:excerpt => "#{hash["excerpt"]}", :person => "#{hash["person_id"]}", :source => "#{hash["source"]}", :success_message=>""} %>
      
    <% elsif hash.keys[1] == "person"%>
      <% if hash["state"] == ""%>
@@ -16,7 +16,7 @@
      <% else  %>
         <% @state = "#{hash["state"]}, " %>
      <% end  %>
-     <%= erb :"public/keyword/_person_formatting", :locals => {:bio => "#{hash["bio"]}", :name => "#{hash["person"]}", :image => "#{hash["image"]}", :source => "#{hash["source"]}", :state => "#{@state}", :country => "#{hash["country"]}", :caption => "#{hash["caption"]}"} %>
+     <%= erb :"public/keyword/_person_formatting", :locals => {:bio => "#{hash["bio"]}", :name => "#{hash["person"]}", :image => "#{hash["image"]}", :source => "#{hash["source"]}", :state => "#{@state}", :country => "#{hash["country"]}", :caption => "#{hash["caption"]}", :success_message=>""} %>
 
      
      

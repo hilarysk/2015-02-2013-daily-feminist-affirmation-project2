@@ -161,7 +161,7 @@ module FeministClassMethods
       results.push hash["#{field}"]             # IF MESSING UP, I CCHANGED THIS FROM "SOURCE" TO INTERPOLATION 
     end
     
-    return results
+    return results # ex: ["The Awakening", "Beloved", "I Am Malala"]
   end
   
   # Public: #find_specific_value

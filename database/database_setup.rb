@@ -1,4 +1,4 @@
-DATABASE = SQLite3::Database.new("/Users/hilarysk/Code/2015-02-13-daily-feminist-affirmation-project/database/feminist_affirmation.db")
+DATABASE = SQLite3::Database.new("/Users/hilarysk/Code/2015-02-13-daily-feminist-affirmation-project/feminist_affirmation.db")
 
 DATABASE.results_as_hash = true
 

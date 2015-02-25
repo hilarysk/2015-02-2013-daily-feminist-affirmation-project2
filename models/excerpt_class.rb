@@ -68,9 +68,11 @@ class Excerpt
   # State Changes:
   # Sets @id instance variable  
   
-  def insert
-    DATABASE.execute("INSERT INTO excerpts (excerpt, source, person_id) VALUES 
-                    ('#{@excerpt}', '#{@source}', #{@person_id})")
+  def insert  # --> DO THIS FOR ANY INSERT WITH VALUES THAT MIGHT NEED ESCAPING
+                    
+    DATABASE.execute("INSERT INTO excerpts (excerpt, source, person_id) VALUES   
+                     (?, ?, ?)", @excerpt, @source, @person_id)
+                    
     @id = DATABASE.last_insert_row_id
   end
 
@@ -115,6 +117,5 @@ class Excerpt
     end
         
   end
-  
     
 end

@@ -99,7 +99,7 @@ div.reaffirm span.box {
 
 
 body.excerptbackground {
-  background-image: url('/excerptimage3.jpg');
+  background-image: url('/excerptimage6.jpg');
   
   background-repeat: no-repeat;
   background-position: 0px 60px;
@@ -208,6 +208,18 @@ td.quotetext {
   padding-bottom: 40px;
 }
 
+.formattingpartials {
+  width: 500px;
+  margin-left: 20%;
+  padding-bottom: 20px;
+}
+
+.newandupdate {
+  width: 500px;
+  margin-left: 20%;
+  padding-bottom: 40px;
+}
+
 .search {
   width: 300px;
   margin-left: 20%;
@@ -239,6 +251,7 @@ td.quotetext {
   
 }
 
+/*need to examine this*/
 
 .submitbutton {
 	-moz-box-shadow:inset 0px 0px 0px -5px #ffffff;

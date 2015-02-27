@@ -49,7 +49,7 @@ class Excerpt
   # Sets instance variables @excerpt, @id, @source, @person_id   
                                
   def initialize(options)
-    @id = options["id"]
+    @id = options["id"].to_i
     @excerpt = options["excerpt"]
     @source = options["source"]
     @person_id = options["person_id"]

@@ -1,0 +1,15 @@
+<form action="<%= "#{@path}" %>">
+
+<p>Click the text that matches the beginning of the excerpt you want to update:</p>
+<form>
+<p>Sources:</p>
+<select name="ex_text">
+<p><% @text_array.each do |s| %>
+  <option value="<%= "#{s}" %>"><%= "#{s.byteslice(0...30)}" %></option>
+  <% end %></p>
+</select>
+<br><br>
+<input type="hidden" name="action" value="update">
+<input type="submit" value="Submit">
+<br><br>
+</form> 

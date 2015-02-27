@@ -122,3 +122,15 @@ get "/search" do
   @keywords = Keyword.get_array_keywords
   erb :"public/search", :layout => :"/alt_layouts/public_layout"
 end
+
+get "/excerpt_example" do
+  @excerpt = "And if she thought anything, it was No. No. Nono. Nonono. Simple. She just flew. Collected every bit of life she had made, all the parts of her that were precious and fine and beautiful, and carried, pushed, dragged them through the veil, out, away, over there where no one could hurt them. Over there. Outside this place, where they would be safe."
+  @source = "Beloved"
+  @person = "Toni Morrison"
+  
+  keywords = ["black", "author", "United States"]
+  @keyword1 = keywords[0]
+  @keyword2 = keywords[1]
+  @keyword3 = keywords[2]
+  erb :excerpt_example, :layout => :"/alt_layouts/layout_excerpt2"
+end

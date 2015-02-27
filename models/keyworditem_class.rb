@@ -15,6 +15,7 @@ require_relative "instance-module.rb"
 # Public Methods:
 # #insert
 # #self.get_array_keywords_for_item
+# #self.get_array_items_for_keyword
 # 
 # Private Methods:
 # #initialize
@@ -78,7 +79,7 @@ class KeywordItem
   # State changes:
   # None
   
-  def self.get_array_keywords_for_item(options)
+  def self.get_array_keywords_for_item(options)   
     id_of_item = options["id_of_item"].to_i
     table_name = options["table"].to_s
     
@@ -98,6 +99,58 @@ class KeywordItem
     
     return keywords  #==> ["Beloved", "United States"]
     
+  end
+  
+  # Public: #self.get_array_items_for_keyword
+  # Creates an array of all items tagged a specific keyword
+  #
+  # Parameters:
+  # options - Hash
+  #           - keyword - the keyword for which you want to see items                     
+  #
+  # Returns:
+  # An array of hashes representing the records asked for
+  # 
+  # State changes:
+  # None    
+    
+  def self.get_array_items_for_keyword(options)
+    keyword_text = options["keyword"].to_s
+    
+    keywords_array = DATABASE.execute("select keywords.keyword, item_id, items_tables.table_name FROM keywords_items JOIN keywords ON keywords_items.keyword_id = keywords.id JOIN items_tables ON keywords_items.item_table_id = items_tables.id")
+    
+    delete_secondary_kvpairs(keywords_array, :placeholder) 
+    
+    keywords = []
+    
+    keywords_array.each do |hash|
+      if hash["keyword"] == "#{keyword_text}"
+        keywords.push({"id"=>"#{hash["item_id"].to_s}", "table_name"=>"#{hash["table_name"].to_s}"})
+      end
+    end   
+  
+    tagged_items = []
+    
+    keywords.each do |hash|
+      table_name = "#{hash["table_name"].to_s}"
+      item_id = "#{hash["id"]}"
+      tagged_items.push(DATABASE.execute("SELECT * FROM #{table_name} WHERE id = #{item_id}"))
+    end   
+    
+    tagged_items.flatten! 
+    
+    delete_secondary_kvpairs(tagged_items, :placeholder)
+        
+    tagged_items.each do |hash|
+     
+     if hash.keys[1] == "quote" || hash.keys[1] == "excerpt"
+        name = DATABASE.execute("SELECT person FROM persons WHERE id = #{hash["person_id"].to_s}") 
+        hash["person_id"] = name[0]["person"]      
+      end
+    end
+    
+    return tagged_items
+        
   end
     
 end

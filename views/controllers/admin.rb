@@ -29,15 +29,19 @@ require_relative "public.rb"
 
 enable :sessions # https://github.com/mjackson/sinatra-session, https://github.com/mjackson/sinatra-session/blob/master/lib/sinatra/session.rb
 
-# before "/user/*" do                # maybe this will work better?
+# before "/admin/*" do                # maybe this will work better?
 #   if session[:user] == nil
 #     @fail_message = "Oops! Looks like you need to login first."
 #     erb :login
 #   end
 # end
 
+
+
+# change user/ to admin/ - save "user" for when actually updating users.
+
 get '/login' do
-  erb :"user/login", :layout => :"/alt_layouts/public_layout" 
+  erb :"admin/login", :layout => :"/alt_layouts/public_layout" 
 end
 
 
@@ -45,59 +49,75 @@ get "/user_verification" do
   auth = User.user_name_pass_search(params)
   if auth == []
     @fail_message = "We couldn't find you in the system; please try again." 
-    erb :"user/login", :layout => :"/alt_layouts/public_layout"
+    erb :"admin/login", :layout => :"/alt_layouts/public_layout"
   else
     session[:user] = auth
-    redirect to ("/user/update_database")
+    redirect to ("/admin/update_database")
   end
 end
 
-get "/user/update_database" do   # seems to work, but cookies keep remembering? doesn't actaully work unless i clear my cookies/cache
-  if session[:user] == nil
-    @fail_message = "Oops! Looks like you need to login first." 
-    erb :"user/login", :layout => :"/alt_layouts/public_layout"
+get "/admin/update_database" do   
+  if session[:user] == nil                                         
+    @fail_message = "Oops! Looks like you need to login first."  # seems to work, but cookies keep remembering? 
+    erb :"admin/login", :layout => :"/alt_layouts/public_layout" # doesn't actaully work unless i clear my cookies/cache
   else
     @username = "#{session[:user].username}"
-    erb :"user/update_database"
+    erb :"admin/update_database"
   end
 end
 
-["/user/excerpt", "/user_excerpt_success"].each do |path|
+["/admin/excerpt", "/admin_excerpt_success"].each do |path|
   before path do
     @person_names_ids = Person.find_specific_fields_hashes("field1"=>"id", "field2"=>"person", "table"=>"persons")
     @excerpt_sources = Excerpt.find_specific_field_array({"field"=>"source", "table"=>"excerpts"})
   end
 end
 
-get "/user/excerpt" do 
+get "/admin/excerpt" do 
   if params["action"] == "new"
-    erb :"user/excerpt/new_excerpt" :locals => {"fail" => ""}
+    erb :"admin/excerpt/new_excerpt", :locals => {"fail" => ""}
+    
   elsif params["action"] == "update"
-    erb :"user/excerpt/update_excerpt"
+    @path = request.path_info
+    
+    if params["source"].nil? == false
+      @text_array = Excerpt.find_specific_value_array({"table"=>"excerpts", "field_known"=>"source", "value"=>"#{params["source"]}", "field_unknown"=>"excerpt"})
+      @excerpt_choice = "/admin/excerpt/_sources_for_update_excerpt"
+      
+    elsif params["ex_text"].nil? == false 
+      info = Excerpt.find_specific_record_unformatted({"table"=>"excerpts", "field"=>"excerpt", "value"=>"#{params["ex_text"]}"})
+      @new_ex = Excerpt.new(info[0])
+      @update_erb = "/admin/excerpt/_changes_for_update_excerpt"
+        
+      
+    end
+    
+    erb :"admin/excerpt/update_excerpt"
   end
 end
 
 
-
-before "/user/excerpt/success" do  
+before "/admin/excerpt/success" do  
   if params["action"] = "new"     
     (Excerpt.find_specific_field_array({"table"=>"excerpts", "field"=>"excerpt"})).each do |excerpt| 
       if excerpt.byteslice(0..30) == params["excerpt"].byteslice(0...30) || excerpt.byteslice(-30..-1) == params["excerpt"].byteslice(-30..-1)
         fail_message = "Hmm, looks like an excerpt containing that text already exists. Feel free to add a different excerpt, though." 
-        redirect to ("user/excerpt?action=new&fail=#{fail_message}")
+        redirect to ("admin/excerpt?action=new&fail=#{fail_message}")
       end
     end
   end 
 end
     
 
-get "/user/excerpt/success" do
+post "/admin/excerpt/success" do #changed from get
   if params["action"] == "new"
     if params["source"] == ""
       params["source"] = params["source1"]
     end
     new_excerpt = Excerpt.new(params)
     new_excerpt.insert
+    
+    # AUTOMATICALLY TAG KEYWORD, SOURCE, PERSON? 
 
     person1 = Person.find_specific_value({"table"=>"persons", "field_known"=>"id", "value"=>"#{params["person_id"].to_s}".to_i, "field_unknown"=>"person"})
     
@@ -124,36 +144,36 @@ end
 
 
 
-get "/user/person/new_person" do 
-  erb :"user/person/new_person"
+get "/admin/person/new_person" do 
+  erb :"admin/person/new_person"
 end
 
-get "/user/person/update_person" do 
-  erb :"user/person/update_person"
+get "/admin/person/update_person" do 
+  erb :"admin/person/update_person"
 end
 
-get "/user/quote/new_quote" do 
-  erb :"user/quote/new_quote"
+get "/admin/quote/new_quote" do 
+  erb :"admin/quote/new_quote"
 end
 
-get "/user/quote/update_quote" do 
-  erb :"user/quote/update_quote"
+get "/admin/quote/update_quote" do 
+  erb :"admin/quote/update_quote"
 end
 
-get "/user/term/new_term" do 
-  erb :"user/term/new_term"
+get "/admin/term/new_term" do 
+  erb :"admin/term/new_term"
 end
 
-get "/user/term/update_term" do 
-  erb :"user/term/update_term"
+get "/admin/term/update_term" do 
+  erb :"admin/term/update_term"
 end
 
-get "/user/tag/new_tag" do 
-  erb :"user/tag/new_tag"
+get "/admin/tag/new_tag" do 
+  erb :"admin/tag/new_tag"
 end
 
-get "/user/tag/assign_tag" do 
-  erb :"user/tag/assign_tag"
+get "/admin/tag/assign_tag" do 
+  erb :"admin/tag/assign_tag"
 end
 
 
@@ -163,5 +183,5 @@ end
 
 get "/logout" do
   @logout_message = "You have successfully logged out. Thanks for contributing!"
-  erb :"user/login", :layout => :"/alt_layouts/public_layout"
+  erb :"admin/login", :layout => :"/alt_layouts/public_layout"
 end

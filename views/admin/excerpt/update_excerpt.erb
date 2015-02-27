@@ -1,0 +1,36 @@
+  <div class="newandupdate"><h1>Update an existing excerpt</h1>  
+
+  
+<form action="<%= "#{@path}" %>">
+
+<p>To find the excerpt you want to update, click the source first, then select the specific excerpt based on the first line:</p>
+<form>
+<p>Sources:</p>
+<select name="source">
+<p><% @excerpt_sources.each do |s| %>
+  <option value="<%= "#{s}" %>"><%= "#{s}" %></option>
+  <% end %></p>
+</select>
+<br><br>
+<input type="hidden" name="action" value="update">
+<input type="submit" value="Submit">
+<br><br>
+</form> 
+<br><br>
+
+<% if @excerpt_choice %> 
+  <%= erb :"#{@excerpt_choice}" %>
+<% end %>
+<br><br>
+
+
+<% if @update_erb %> 
+  <%= erb :"#{@update_erb}" %> <!-- need = for this one? -->
+<% end %>
+<br><br>
+ 
+</div>
+  <div class="bottomspacer"></div>
+  <div class="bottomspacer"></div>
+
+

@@ -4,7 +4,9 @@
 #
 # Public Methods:
 # #find_specific_value
-# #find_specifc_record
+# #find_specific_value_array
+# #find_specific_field_array
+# #find_specific_fields_hashes
 # #find_specifc_record_unformatted
 # #delete_secondary_kvpairs
 # #delete_record
@@ -13,60 +15,6 @@
 module FeministClassMethods
   
   
-  
-  
-
-  # Public: #get_array_items_for_keyword
-  # Creates an array of all items tagged a specific keyword
-  #
-  # Parameters:
-  # options - Hash
-  #           - keyword - the keyword for which you want to see items                     
-  #
-  # Returns:
-  # An array of hashes representing the records asked for
-  # 
-  # State changes:
-  # None    
-    
-  def get_array_items_for_keyword(options)
-    keyword_text = options["keyword"].to_s
-    
-    keywords_array = DATABASE.execute("select keywords.keyword, item_id, items_tables.table_name FROM keywords_items JOIN keywords ON keywords_items.keyword_id = keywords.id JOIN items_tables ON keywords_items.item_table_id = items_tables.id")
-    
-    delete_secondary_kvpairs(keywords_array, :placeholder) 
-    
-    keywords = []
-    
-    keywords_array.each do |hash|
-      if hash["keyword"] == "#{keyword_text}"
-        keywords.push({"id"=>"#{hash["item_id"].to_s}", "table_name"=>"#{hash["table_name"].to_s}"})
-      end
-    end   
-  
-    tagged_items = []
-    
-    keywords.each do |hash|
-      table_name = "#{hash["table_name"].to_s}"
-      item_id = "#{hash["id"]}"
-      tagged_items.push(DATABASE.execute("SELECT * FROM #{table_name} WHERE id = #{item_id}"))
-    end   
-    
-    tagged_items.flatten! 
-    
-    delete_secondary_kvpairs(tagged_items, :placeholder)
-        
-    tagged_items.each do |hash|
-     
-     if hash.keys[1] == "quote" || hash.keys[1] == "excerpt"
-        name = DATABASE.execute("SELECT person FROM persons WHERE id = #{hash["person_id"].to_s}") 
-        hash["person_id"] = name[0]["person"]      
-      end
-    end
-    
-    return tagged_items
-        
-  end
 
   # Public: #find_specifc_record_unformatted
   # Pulls a specific row or rows
@@ -158,10 +106,10 @@ module FeministClassMethods
     results = []
     
     array.each do |hash|
-      results.push hash["#{field}"]             # IF MESSING UP, I CCHANGED THIS FROM "SOURCE" TO INTERPOLATION 
+      results.push hash["#{field}"]             
     end
     
-    return results # ex: ["The Awakening", "Beloved", "I Am Malala"]
+    return results.uniq # ex: ["The Awakening", "Beloved", "I Am Malala"]
   end
   
   # Public: #find_specific_value
@@ -208,6 +156,52 @@ module FeministClassMethods
       return @temp_unknown_value
     end
     
+  end
+  
+  # Public: #find_specific_value_array
+  # Returns a specific value for a given field and table
+  #
+  # Parameters:
+  # options - Hash
+  #           - field_known   - the field you want to search
+  #           - field_unknown - the field you want the value for
+  #           - table         - the table you want to search     
+  #           - value         - The value you want to search                
+  #       
+  #
+  # Returns:
+  # A specific value
+  #
+  # State changes:
+  # Sets @temp_unknown_value
+  
+  def find_specific_value_array(options)       # Could use to find author id for specific quote, then all quotes                                      from that author
+    table = options["table"]
+    field_known = options["field_known"]
+    field_unknown = options["field_unknown"]
+    value = options["value"]  
+    
+    if value.is_a?(Integer)
+      array = DATABASE.execute("SELECT #{field_unknown} FROM #{table} WHERE #{field_known} = #{value}")
+      
+    else 
+      array = DATABASE.execute("SELECT #{field_unknown} FROM #{table} WHERE #{field_known} = '#{value}'")
+    
+    end
+    
+    value_array = []  
+      
+    if array == []
+      return "Sorry, no #{field_unknown} matched your search."
+    else
+      delete_secondary_kvpairs(array, :placeholder)
+      
+      array.each do |hash|
+          value_array << hash["#{field_unknown}"]
+      end
+    end
+    
+    return value_array
   end
   
     

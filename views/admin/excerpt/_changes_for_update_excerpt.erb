@@ -1,0 +1,22 @@
+<form action="/admin/excerpt/success" method="post">
+
+   
+  <strong>Text:</strong><br>
+  (Maximum of 825 characters.)<br><br>
+  <textarea cols="60" rows="8" maxlength="825" name="excerpt"><%= "#{@new_ex.excerpt}" %>
+  </textarea>
+  <br><br>
+  <strong>Source:<br><br>
+    <input type="text" name="source"><%= "#{@new_ex.source}" %></input><br><br>
+  <strong>Author:</strong><br>
+  (Note: If author is not listed below, you need to <a href="/admin/person?action=new">create a person entry</a> for the author, first.)<br><br>
+  <select name="person_id">
+  <% @person_names_ids.each do |hash| %>  <!-- need to make interpolation of? or de-symbol? -->
+  <option value="<%= "#{hash["id"]}" %>"><%= "#{hash["person"]}" %></option>
+  <% end  %>
+  </select><br><br>
+  <input type="hidden" name="action" value="update">
+  <input type="submit" value="Submit">
+  <br><br>
+  </form>
+

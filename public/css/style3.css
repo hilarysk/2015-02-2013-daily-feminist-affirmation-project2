@@ -1,0 +1,361 @@
+
+html, body {
+  height: 100%;
+}
+
+#wrapper {
+  min-height:100%;
+}
+
+#main {
+  overflow: auto; padding-bottom:12.5%;
+}
+
+body.standard  {
+  font-family: Georgia;
+  font-size: medium;
+  color: #000000;
+  text-decoration: none;
+  line-height: normal;
+  border: 0px;
+  background: #FFFFFF;
+  
+}
+
+.personimagecaption {
+  font-style: italic;
+}
+
+div.reaffirm {
+  position: fixed;
+  left: 1.5%; /* was 20 px */
+  font-family: Impact, Charcoal, sans-serif;
+  margin-top: 0%;
+}
+
+div.reaffirm span.box {
+  background: #FFFFFF;
+}
+
+.headerheading {
+  margin-left: 1%; 
+  font-family: Impact, Charcoal, sans-serif;
+  
+}
+
+.footerfooting {
+  float: right;
+  padding-right: 0.75%; /* was 10 px */
+  font-family: Impact, Charcoal, sans-serif;
+  margin-right: 1.25%; 
+  position: relative; 
+  height: 9%; 
+  clear: both; 
+  margin-bottom: 2.5%;
+  
+}
+
+.floatright {
+  float: right;
+  padding-bottom: 1%; /* was 5px */
+  padding-left: 1%; /* was 3px */
+  padding-right: 1%;
+  width: 40%;
+}
+
+.floatleft {
+  float: left;
+  padding-bottom: 1%; /* was 5px */
+  padding-left: 1%;   /* was 3px */
+  padding-right: 1.25%;
+  width: 24%;
+}
+
+.imglogo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 31%; 
+}
+
+.excerpttext { 
+  font-family: Courier;
+  position: absolute; 
+  margin-top: 1%;
+  font-size: 80%;
+  left: 19%;  
+  width: 60%;
+  min-width: 240px;
+  height: 30%;
+  margin-bottom: 2.5%; 
+  overflow: scroll;
+}
+
+.bottomspacer {
+  height: 6.25%;
+}
+
+.bottomspacer_excerpt {
+  height: 58.25%;
+}
+
+.excerptimage {
+  position: relative;
+  margin-top: 1.25%; /* was 10 px */
+  width: 80%;
+}
+
+body.excerptbackground {
+  background-image: url('/excerptimage6.jpg');
+  background-size: cover;
+  min-width: 400px;
+  background-repeat: no-repeat;
+  position: relative;
+  font-family: Georgia;
+  font-size: medium;
+  color: #000000;
+  text-decoration: none;
+  line-height: normal;
+  border: 0px;
+  padding-bottom: 5%;
+}
+
+.paperimage {
+  min-width: 375px;
+  min-height: 350px;
+  position: static;
+  width: 80%;
+  margin-bottom: -2%;
+  margin-left: 6%;  
+}
+
+
+.machineimage {
+  min-width: 375px;
+  position: static;
+  width: 80%;
+  margin-bottom: -1%;
+  margin-left: 6%;  
+}
+
+.excerpttext2 { 
+  font-family: Courier;
+  position: absolute;
+  margin-top: 5%;
+  font-size: 100%;
+  left: 25%;
+  width: 45%;
+  min-width: 240px;
+  height: 100%;
+  max-height: 350px;
+  margin-bottom: 2.5%;
+  overflow: scroll;
+}
+
+.persontextwrap {
+    float: right;
+    margin-left: 2.3%;
+    width: 40%;
+}
+
+.persontext {
+  width: 27%;
+}
+
+.personpage {
+  width: 70%;
+  margin-left: 100px;
+  margin-bottom: 2.5%;
+  margin-top: 0%;
+}
+
+
+.keywordtext {
+  font-family: Impact, Charcoal, sans-serif;
+  align: center;
+  width: 100%;
+}
+
+.keywordtextexcerpt {
+  font-family: Impact, Charcoal, sans-serif;
+  align: center;
+  width: 200px;
+}
+
+
+.termphonetic {
+  font-family: Tahoma, Verdana, sans-serif; 
+  margin-left: 30%;
+}
+
+.termterm {
+  font-family: Tahoma, Verdana, sans-serif;
+  font-style: italic; 
+  font-size: x-large;  /* ?? */
+  margin-left: 25%; 
+  position: relative;
+  margin-top: -1.25%; 
+}
+
+td.termdefinition {
+  width: 27%;
+  font-family: Tahoma, Verdana, sans-serif;
+  text-align: justify;
+  min-width: 190px;
+}
+
+
+.termtable {
+    width: 40%;
+    margin-left: 20%;
+}
+
+td.termimage {
+  padding-right: 20px;
+  width: 11.7%;
+  vertical-align: top;
+}
+
+.termimagesize {
+  min-width: 75px;
+  width: 100%;
+}
+
+.quoteimagesize {
+  min-width: 10px;
+  width: 200%;
+}
+
+td.quoteleftquotationmark {
+  vertical-align: top;
+  position: relative;
+  padding-right: 5%;
+  padding-top: 5%;
+  min-width: 10px;
+}
+
+td.quoterightquotationmark {
+  vertical-align: bottom;
+  position: relative;
+  padding-left: 0%;
+  padding-bottom: 15%;
+  min-width: 10px;
+}
+
+.quotetable {
+  font-family: Georgia;
+  width: 31.25%;
+  margin-left: 20%;
+}
+
+td.quotetext {
+  font-size: x-large;    /* ?? */
+  width: 27%;
+  text-align: justify;
+  min-width: 225px;
+
+}
+
+.quoteperson {
+  font-family: Helvetica;
+  font-size: large;    /* ?? */
+  font-style: italic;
+  align: right;
+}
+
+.keywordlist {
+  width: 40%;
+  margin-left: 20%;
+  padding-bottom: 5%;
+}
+
+.formattingpartials {
+  width: 40%;
+  margin-left: 20%;
+  padding-bottom: 2.5%;
+}
+
+.newandupdate {
+  width: 40%;
+  margin-left: 20%;
+  padding-bottom: 5%;
+}
+
+.search {
+  width: 23.40%;
+  margin-left: 20%;
+  padding-bottom: 2.5%;
+}
+
+.about {
+  font-family: Georgia;
+  width: 40%;
+  margin-left: 20%;
+  padding-bottom: 5%;
+}
+
+
+.login {
+  width: 23.40%;
+  margin-left: 20%;
+  padding-bottom: 2.5%;
+}
+
+.home {
+  font-family: Tahoma, Verdana, sans-serif;
+  font-size: 200%;  /* ?? */
+  margin-right: auto;
+  margin-left: auto;
+  width: 15.6%;
+  margin-top: 20%;
+  height: 15.6%;
+  
+}
+
+
+.navbutton {
+	-moz-box-shadow:inset 0px 1px 0px 0px #bfbfbf;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #bfbfbf;
+	box-shadow:inset 0px 1px 0px 0px #bfbfbf;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #404040), color-stop(1, #000000) );
+	background:-moz-linear-gradient( center top, #404040 5%, #000000 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#404040', endColorstr='#000000');
+	background-color:#404040;
+	-webkit-border-top-left-radius:0px;
+	-moz-border-radius-topleft:0px;
+	border-top-left-radius:0px;
+	-webkit-border-top-right-radius:0px;
+	-moz-border-radius-topright:0px;
+	border-top-right-radius:0px;
+	-webkit-border-bottom-right-radius:0px;
+	-moz-border-radius-bottomright:0px;
+	border-bottom-right-radius:0px;
+	-webkit-border-bottom-left-radius:0px;
+	-moz-border-radius-bottomleft:0px;
+	border-bottom-left-radius:0px;
+	text-indent:0;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	color:#ffffff;
+	font-family:Impact;
+	font-size:15px;
+  letter-spacing: 1px;
+	font-weight:normal;
+	font-style:normal;
+	height:34px;
+	line-height:34px;
+	width:71px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:3px -3px 0px #000000;
+}
+.navbutton:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #000000), color-stop(1, #404040) );
+	background:-moz-linear-gradient( center top, #000000 5%, #404040 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#404040');
+	background-color:#000000;
+}.navbutton:active {
+	position:relative;
+	top:1px;
+}
+/* This button was generated using CSSButtonGenerator.com */

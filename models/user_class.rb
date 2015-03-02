@@ -10,8 +10,9 @@ require_relative "instance-module.rb"
 # @username - String: username
 # @id       - Integer: user ID, primary key for users table
 # @password - String: user's password
+# @errors   - Hash: any errors when trying to create a new object
 #
-# attr_reader :id
+# attr_reader :id, :errors
 # attr_accessor :password, :username
 #
 # Public Methods:
@@ -27,7 +28,7 @@ class User
   
 
   
-  attr_reader :id
+  attr_reader :id, :errors
   attr_accessor :password, :username
 
   # Private: initialize
@@ -38,17 +39,19 @@ class User
   #           - @id       - Instance variable representing the user ID (primary key)
   #           - @password - Instance variable representing the user's password (persons table primary key)
   #           - @username - Instance variable representing the user text
+  #           - @errors   - Instance variable representing any errors when trying to create a new object
   #
   # Returns:
   # The object
   #
   # State Changes:
-  # Sets instance variables @id, @password, @username     
+  # Sets instance variables @id, @password, @username, @errors    
                                
   def initialize(options)
     @id = options["id"].to_i
     @username = options["username"]
     @password = options["password"]
+    @errors = options["errors"]
     
   end
   
@@ -66,7 +69,7 @@ class User
   
   def insert
     DATABASE.execute("INSERT INTO users (username, password) VALUES 
-                    ('#{@username}', '#{@password}')")
+                    (?, ?)", @username, @password)
     @id = DATABASE.last_insert_row_id
   end
   

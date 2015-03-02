@@ -25,14 +25,12 @@ get "/item" do  ##--> localhost:4546/item?table=quotes&id=4
 
   if params["table"] == "quotes"
     @item = Quote.get_all_specific_quote_data(params["id"])
-    
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"quotes", "id_of_item"=>"#{@item["id"].to_s}"})
 
     erb :"public/quote", :layout => :"/alt_layouts/public_layout"
 
   elsif params["table"] == "excerpts"
     @item = Excerpt.get_all_specific_excerpt_data(params["id"])
-
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"excerpts", "id_of_item"=>"#{@item["id"].to_s}"})
 
     erb :"public/excerpt", :layout => :"/alt_layouts/layout_excerpt"
@@ -40,9 +38,7 @@ get "/item" do  ##--> localhost:4546/item?table=quotes&id=4
   elsif params["table"] == "persons"
     @item = Person.get_all_specific_person_data(params["id"])
 
-    if @item["state"] == ""
-      @item["state"] = ""
-    else
+    if @item["state"] != ""
       @item["state"] = "#{@item["state"]}, "
     end
 
@@ -52,7 +48,6 @@ get "/item" do  ##--> localhost:4546/item?table=quotes&id=4
 
   elsif params["table"] == "terms"
     @item = Term.get_all_specific_term_data(params["id"])
-
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"terms", "id_of_item"=>"#{@item["id"].to_s}"})
 
     erb :"public/term", :layout => :"/alt_layouts/public_layout"
@@ -69,42 +64,37 @@ get "/yay" do
   
   item = (Quote.array_of_quote_records + Term.array_of_term_records + Excerpt.array_of_excerpt_records + Person.array_of_person_records).sample
 
+  # item = Composite.get_all_potential_items.sample # - use joins to get info from each of four tables in one query
+  # Create new Composite class on which to call 
+
   if item.keys[1] == "quote"
     @item = item #==> array of attributes
-
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"quotes", "id_of_item"=>"#{@item["id"].to_s}"})
     
     erb :"public/quote", :layout => :"/alt_layouts/public_layout"
 
   elsif item.keys[1] == "excerpt"
     @item = item
-
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"excerpts", "id_of_item"=>"#{@item["id"].to_s}"})  
     
     erb :"public/excerpt", :layout => :"/alt_layouts/layout_excerpt"
 
   elsif item.keys[1] == "person"
-    @item = item
-    
-    if item["state"] == ""
-      @item["state"] = ""
-    else
-      @item["state"] = "#{item["state"]}, "
+    if item["state"] != ""
+      item["state"] = "#{item["state"]}, "
     end
     
+    @item = item
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"persons", "id_of_item"=>"#{@item["id"].to_s}"})
     
     erb :"public/person", :layout => :"/alt_layouts/public_layout"
 
   elsif item.keys[1] == "term"
     @item = item 
-
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"terms", "id_of_item"=>"#{@item["id"].to_s}"})
     
     erb :"public/term", :layout => :"/alt_layouts/public_layout"
-    
   end
-
 end
 
 get "/keyword" do
@@ -121,16 +111,4 @@ end
 get "/search" do
   @keywords = Keyword.get_array_keywords
   erb :"public/search", :layout => :"/alt_layouts/public_layout"
-end
-
-get "/excerpt_example" do
-  @excerpt = "And if she thought anything, it was No. No. Nono. Nonono. Simple. She just flew. Collected every bit of life she had made, all the parts of her that were precious and fine and beautiful, and carried, pushed, dragged them through the veil, out, away, over there where no one could hurt them. Over there. Outside this place, where they would be safe."
-  @source = "Beloved"
-  @person = "Toni Morrison"
-  
-  keywords = ["black", "author", "United States"]
-  @keyword1 = keywords[0]
-  @keyword2 = keywords[1]
-  @keyword3 = keywords[2]
-  erb :excerpt_example, :layout => :"/alt_layouts/layout_excerpt2"
 end

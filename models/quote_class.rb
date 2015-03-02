@@ -10,8 +10,9 @@ require_relative "instance-module.rb"
 # @quote     - String: Text of quote
 # @id        - Integer: Quote ID, primary key for quotes table
 # @person_id - Integer: ID from persons table (foreign key)
-#
-# attr_reader :id
+# @errors    - Hash representing any errors when trying to create a new object
+
+# attr_reader :id, :errors
 # attr_accessor :person_id, :quote
 #
 # Public Methods:
@@ -27,7 +28,7 @@ class Quote
   
 
   
-  attr_reader :id
+  attr_reader :id, :errors
   attr_accessor :person_id, :quote
 
   # Private: initialize
@@ -38,17 +39,19 @@ class Quote
   #           - @id        - Instance variable representing the quote ID (primary key)
   #           - @person_id - Instance variable representing the quoter's ID (persons table primary key)
   #           - @quote     - Instance variable representing the quote text
+  #           - @errors    - Instance variable representing any errors when trying to create a new object
   #
   # Returns:
   # The object
   #
   # State Changes:
-  # Sets instance variables @id, @person_id, @quote     
+  # Sets instance variables @id, @person_id, @quote, @errors     
                                
   def initialize(options)
     @id = options["id"]
     @quote = options["quote"]
     @person_id = options["person_id"]
+    @errors = options["errors"]
     
   end
   
@@ -66,7 +69,7 @@ class Quote
   
   def insert
     DATABASE.execute("INSERT INTO quotes (quote, person_id) VALUES 
-                    ('#{@quote}', #{@person_id})")
+                    (?, ?)", @quote, @person_id)
     @id = DATABASE.last_insert_row_id
   end
 

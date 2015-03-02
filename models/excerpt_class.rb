@@ -28,7 +28,7 @@ class Excerpt
   include FeministInstanceMethods
 
   
-  attr_reader :id
+  attr_reader :id, :errors
   attr_accessor :person_id, :source, :excerpt
 
 
@@ -46,16 +46,40 @@ class Excerpt
   # The object
   #
   # State Changes:
-  # Sets instance variables @excerpt, @id, @source, @person_id   
+  # Sets instance variables @excerpt, @id, @source, @person_id, @errors
                                
   def initialize(options)
     @id = options["id"].to_i
     @excerpt = options["excerpt"]
     @source = options["source"]
     @person_id = options["person_id"]
+    @errors = {"source"=>[], "excerpt"=>[]} #key would be "source", value would be array of error messages depending on specific error
+    
+    #SOURCE ERRORS
+    
+    (DATABASE.execute("SELECT source FROM excerpts")).each do |hash|
+      if hash["source"] == @source
+        @errors["source"] << "That source is already in the system. Please select the existing source from the dropdown menu, instead of typing it in separately."
+      end
+    end
+    
+    if @source.is_a?(Integer)
+      @source = @source.to_s
+    end
+    
+    # EXCERPT ERRORS
+      
+    (Excerpt.find_specific_field_array({"table"=>"excerpts", "field"=>"excerpt"})).each do |curr_excerpt| 
+      if curr_excerpt.byteslice(0..30) == @excerpt.byteslice(0...30) || curr_excerpt.byteslice(-30..-1) == @excerpt.byteslice(-30..-1)
+        @errors["excerpt"] << "An existing excerpt already contains part or all of the text you're trying to add."
+      end
+    end
+    
     
   end
-  
+    
+    
+      
   # Public: insert
   # Inserts the information collected in initialize into the proper table
   #
@@ -93,7 +117,7 @@ class Excerpt
     
     delete_secondary_kvpairs(excerpts_array, :placeholder)
     
-    return excerpts_array #==> excerpts_array = [{"id"=>"1", "excerpt"=>"sldkjflaskdjfaksldjfaklsdfjasdf", "person"=>"Ella Baker"}]
+    return excerpts_array #==> excerpts_array = [{"id"=>"1", "excerpt"=>"sldkjflaskdjfaksldjfaklsdfjasdf", "source"=>"book", "person"=>"Ella Baker"}]
  
   end
   

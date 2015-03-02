@@ -15,8 +15,9 @@ require_relative "instance-module.rb"
 # @image   - String: Link to the person's image
 # @caption - String: Caption for image
 # @source  - String: Source for the biography
+# @errors  - Instance variable representing any errors when trying to create a new object
 #
-# attr_reader :id
+# attr_reader :id, :errors
 # attr_accessor :country, :bio, :state, :person, :caption, :image, :source
 #
 # Public Methods:
@@ -31,7 +32,7 @@ class Person
   include FeministInstanceMethods
 
   
-  attr_reader :id
+  attr_reader :id, :errors
   attr_accessor :country, :bio, :state, :person, :source, :image, :caption
 
   # Private: initialize
@@ -47,12 +48,12 @@ class Person
   #           - @image   - a link to the person's image
   #           - @caption - the caption for the image
   #           - @source  - the source of the biography
-  #
+  #           - @errors  - any errors lodged when trying to create a new object
   # Returns:
   # The object
   #
   # State Changes:
-  # Sets instance variables @person, @state, @country, @bio, @id, @image, @caption, @source
+  # Sets instance variables @person, @state, @country, @bio, @id, @image, @caption, @source, @errors
                                
   def initialize(options)
     @id = options["id"]
@@ -63,6 +64,7 @@ class Person
     @image = options["image"]
     @caption = options["caption"]
     @source = options["source"]
+    @errors = options["errors"]
     
   end
   
@@ -80,7 +82,7 @@ class Person
   
   def insert
     DATABASE.execute("INSERT INTO persons (person, bio, state, country, image, caption, source) VALUES 
-                    ('#{@person}', '#{@bio}', '#{@state}', '#{@country}', '#{@image}', '#{@caption}', '#{@source}')")
+                    (?, ?, ?, ?, ?, ?, ?)", @person, @bio, @state, @country, @image, @caption, @source)
     @id = DATABASE.last_insert_row_id
   end
   

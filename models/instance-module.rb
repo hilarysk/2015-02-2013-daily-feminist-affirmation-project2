@@ -11,7 +11,39 @@ require "pry"
 
 module FeministInstanceMethods
   
+ # _____________________________________________________________________________________________
+  
+ # #############################   NEED TO TEST YET!! ##########################################
  
+
+  # Public: format_error_messages
+  # Returns a printable array of error messages for a specific object
+  #
+  # Parameters:
+  # None
+  #
+  # Returns:
+  # Printable array of error messages for a specific object
+  #
+  # State Changes:
+  # None  
+    
+    
+  def format_error_messages    
+    error_messages = []    
+  
+    (self.errors).each do |key, value|
+      if value != []
+        error_messages.push "#{key.upcase} ERROR: #{value}"
+      end
+    end
+    
+    return error_messages
+  end
+
+
+  # _____________________________________________________________________________________________
+
 
   # Public: #save
   # Updates a specific record with changes made

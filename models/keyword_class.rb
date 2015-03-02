@@ -9,6 +9,7 @@ require_relative "instance-module.rb"
 # Attributes:
 # @keyword - Instance variable representing the actual keyword
 # @id      - Instance variable representing the keyword ID within the table (primary key)
+# @errors  - Instance variable representing any errors when trying to create a new object
 #
 # attr_reader :id
 # attr_accessor :keyword
@@ -25,7 +26,7 @@ class Keyword
   include FeministInstanceMethods
 
   
-  attr_reader :id
+  attr_reader :id, :errors
   attr_accessor :keyword
 
 
@@ -36,16 +37,17 @@ class Keyword
   # options - Hash
   #           - @keyword - Instance variable representing the actual keyword
   #           - @id      - Instance variable representing the keyword ID within the table (primary key)
-  #
+  #           - @errors  - Instance variable representing any errors when trying to create a new object
   # Returns:
   # The object
   #
   # State Changes:
-  # Sets instance variables @keyword and @id     
+  # Sets instance variables @keyword, @errors and @id     
                                
   def initialize(options)
     @id = options["id"]
     @keyword = options["keyword"]
+    @errors = options["errors"]
   end
   
   # Public: insert
@@ -62,7 +64,7 @@ class Keyword
   
   def insert
     DATABASE.execute("INSERT INTO keywords (keyword) VALUES 
-                    ('#{@keyword}')")
+                    (?)", @keyword)
     @id = DATABASE.last_insert_row_id
   end
 

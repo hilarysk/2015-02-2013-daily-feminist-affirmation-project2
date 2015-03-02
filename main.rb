@@ -21,4 +21,4 @@ require_relative "views/controllers/admin"
 require_relative "views/controllers/public"
 
 #
-# binding.pry
+binding.pry

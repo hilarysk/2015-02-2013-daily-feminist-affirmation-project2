@@ -22,11 +22,6 @@ require_relative "public.rb"
 
 
 
-#
-# - create error messages if username is the same as an exisiting username
-#
-
-
 enable :sessions # https://github.com/mjackson/sinatra-session, https://github.com/mjackson/sinatra-session/blob/master/lib/sinatra/session.rb
 
 # before "/admin/*" do                # maybe this will work better?
@@ -75,21 +70,32 @@ end
 
 get "/admin/excerpt" do 
   if params["action"] == "new"
-    erb :"admin/excerpt/new_excerpt", :locals => {"fail" => ""}
+    @path = request.path_info
+    
+    if params["source"].nil? == false
+      @text_array = Excerpt.find_specific_value_array({"table"=>"excerpts", "field_known"=>"source", "value"=>"#{params["source"]}", "field_unknown"=>"excerpt"})
+      @excerpt_choice = "/admin/excerpt/_sources_for_new_excerpt"
+    end
+  
+  erb :"admin/excerpt/new_excerpt", :locals => {"fail" => ""}
     
   elsif params["action"] == "update"
     @path = request.path_info
     
     if params["source"].nil? == false
       @text_array = Excerpt.find_specific_value_array({"table"=>"excerpts", "field_known"=>"source", "value"=>"#{params["source"]}", "field_unknown"=>"excerpt"})
+      
+      # ^ This needs become this instead: [{"id"=>5, "excerpt"=>"asjdflaksdjflaskdfjalsdfjasdf"}] ??
+      
       @excerpt_choice = "/admin/excerpt/_sources_for_update_excerpt"
       
-    elsif params["ex_text"].nil? == false 
-      info = Excerpt.find_specific_record_unformatted({"table"=>"excerpts", "field"=>"excerpt", "value"=>"#{params["ex_text"]}"})
-      @new_ex = Excerpt.new(info[0])
-      @update_erb = "/admin/excerpt/_changes_for_update_excerpt"
-        
+    elsif params["ex_text"].nil? == false
       
+      a = params["ex_text"].gsub('\'','\'\'')
+      
+      info = Excerpt.find_specific_record_unformatted({"table"=>"excerpts", "field"=>"excerpt", "value"=>"#{a}"})
+      @new_ex = Excerpt.new(info[0]) # object culled based on excerpt (includes original id)
+      @update_erb = "/admin/excerpt/_changes_for_update_excerpt"
     end
     
     erb :"admin/excerpt/update_excerpt"
@@ -99,11 +105,10 @@ end
 
 before "/admin/excerpt/success" do  
   if params["action"] = "new"     
-    (Excerpt.find_specific_field_array({"table"=>"excerpts", "field"=>"excerpt"})).each do |excerpt| 
-      if excerpt.byteslice(0..30) == params["excerpt"].byteslice(0...30) || excerpt.byteslice(-30..-1) == params["excerpt"].byteslice(-30..-1)
-        fail_message = "Hmm, looks like an excerpt containing that text already exists. Feel free to add a different excerpt, though." 
-        redirect to ("admin/excerpt?action=new&fail=#{fail_message}")
-      end
+    new_excerpt = Excerpt.new(params)
+    if new_excerpt.errors != {"source"=>[], "excerpt"=>[]}
+      @fail_message = new_excerpt.format_error_messages
+      erb :"admin/excerpt/new_excerpt" 
     end
   end 
 end
@@ -123,18 +128,22 @@ post "/admin/excerpt/success" do #changed from get
     
     success_message1 = "Your excerpt was successfully added:"
     
-    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}"}
-  
-  elsif params["action"] == "update"
+    keywords_message = ""
+      
+  elsif params["action"] == "update"      #SPLIT UP INTO DIFFERENT ROUTE HANDLERS A LA WAREHOUSE MANAGER
     new_excerpt = Excerpt.new(params)
+    
     new_excerpt.save({"table"=>"excerpts", "item_id"=>"#{(params["id"]).to_s}"})
    
     person1 = Person.find_specific_value({"table"=>"persons", "field_known"=>"id", "value"=>"{(new_excerpt.person_id).to_s}".to_i, "field_unknown"=>"person"})
     
     success_message1 = "The excerpt was successfully updated:"
     
-    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}"}
+    keywords_message = "<h3><em>Thank you!</em></h3><p>Now, <a href='/assign_tag'>add some keywords</a> to describe this excerpt.</p>"
+    
   end
+  erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
+  
 end
 
 

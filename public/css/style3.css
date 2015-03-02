@@ -312,6 +312,9 @@ td.quotetext {
   
 }
 
+.searchnavbuttonlogin {
+  margin-top: 2px;
+}
 
 .navbutton {
 	-moz-box-shadow:inset 0px 1px 0px 0px #bfbfbf;
@@ -355,6 +358,99 @@ td.quotetext {
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#404040');
 	background-color:#000000;
 }.navbutton:active {
+	position:relative;
+	top:1px;
+}
+
+.navbutton2 {
+	-moz-box-shadow:inset 0px 1px 0px 0px #bfbfbf;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #bfbfbf;
+	box-shadow:inset 0px 1px 0px 0px #bfbfbf;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #404040), color-stop(1, #000000) );
+	background:-moz-linear-gradient( center top, #404040 5%, #000000 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#404040', endColorstr='#000000');
+	background-color:#404040;
+	-webkit-border-top-left-radius:0px;
+	-moz-border-radius-topleft:0px;
+	border-top-left-radius:0px;
+	-webkit-border-top-right-radius:0px;
+	-moz-border-radius-topright:0px;
+	border-top-right-radius:0px;
+	-webkit-border-bottom-right-radius:0px;
+	-moz-border-radius-bottomright:0px;
+	border-bottom-right-radius:0px;
+	-webkit-border-bottom-left-radius:0px;
+	-moz-border-radius-bottomleft:0px;
+	border-bottom-left-radius:0px;
+	text-indent:0;
+	border:0px solid #dcdcdc;
+	display:inline-block;
+	color:#ffffff;
+	font-family:Impact;
+	font-size:15px;
+  letter-spacing: 1px;
+	font-weight:normal;
+	font-style:normal;
+  height: 52px;
+  line-height: 24px;
+  width: 75px;
+  padding-top: 4px;
+  text-decoration:none;
+	text-align:center;
+	text-shadow:3px -3px 0px #000000;
+}
+.navbutton2:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #000000), color-stop(1, #404040) );
+	background:-moz-linear-gradient( center top, #000000 5%, #404040 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#404040');
+	background-color:#000000;
+}.navbutton2:active {
+	position:relative;
+	top:1px;
+}
+
+.navbutton3 {
+	-moz-box-shadow:inset 0px 1px 0px 0px #bfbfbf;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #bfbfbf;
+	box-shadow:inset 0px 1px 0px 0px #bfbfbf;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #404040), color-stop(1, #000000) );
+	background:-moz-linear-gradient( center top, #404040 5%, #000000 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#404040', endColorstr='#000000');
+	background-color:#404040;
+	-webkit-border-top-left-radius:0px;
+	-moz-border-radius-topleft:0px;
+	border-top-left-radius:0px;
+	-webkit-border-top-right-radius:0px;
+	-moz-border-radius-topright:0px;
+	border-top-right-radius:0px;
+	-webkit-border-bottom-right-radius:0px;
+	-moz-border-radius-bottomright:0px;
+	border-bottom-right-radius:0px;
+	-webkit-border-bottom-left-radius:0px;
+	-moz-border-radius-bottomleft:0px;
+	border-bottom-left-radius:0px;
+	text-indent:0;
+	border:0px solid #dcdcdc;
+	display:inline-block;
+	color:#ffffff;
+	font-family:Impact;
+	font-size:15px;
+  letter-spacing: 1px;
+	font-weight:normal;
+	font-style:normal;
+	height:34px;
+	line-height:34px;
+	width:75px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:3px -3px 0px #000000;
+}
+.navbutton3:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #000000), color-stop(1, #404040) );
+	background:-moz-linear-gradient( center top, #000000 5%, #404040 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#404040');
+	background-color:#000000;
+}.navbutton3:active {
 	position:relative;
 	top:1px;
 }

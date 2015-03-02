@@ -1,23 +1,31 @@
 <div class="newandupdate"><h1>Add a new excerpt</h1>
-<p><%= "#{params["fail"]}" %></p>  
+<p><%= @fail_message.join("<br>") %></p>  
 
-<p><strong>To see excerpts currently in the collection, click the corresponding below:</strong></p>
-<p><form action="/keyword">
-   <select name="keyword">
+<p><strong>Please double-check that the excerpt you want to add isn't already in the collection:<br><br>
+  First, see if the source is in the database; if so, select it and hit the button to see all existing excerpts for that particular source.</strong></p>
+<p><form action=""<%= "#{@path}" %>"">
+   <select name="source">
      <% @excerpt_sources.each do |source| %>    
        <option value="<%= "#{source}" %>"><%= "#{source}" %></option>
     <% end  %>
-  </select><br><br>
-  <input type="submit" value="See excerpts">
+  </select><br><br>  
+  <input type="hidden" name="action" value="new">
+<input type="submit" value="SEE EXCERPTS" class="navbutton" style="width:105px">
+
+  
   <br><br>
 </form></p>
 
-<p>If the excerpt you want to add isn't included in the list above, please fill out each form below.</p>  
+<% if @excerpt_choice %> 
+  <%= erb :"#{@excerpt_choice}" %>
+<% end %>
+<br><br>
+<hr></hr>
+<p>If the excerpt you want to add isn't included in the list above, then please fill out each every field in the form below.</p>  
   
 <form action="/admin/excerpt/success" method="post">
-<strong>Excerpt text:</strong><br>
-(Maximum of 825 characters.)<br><br>
-<textarea cols="60" rows="8" maxlength="825" name="excerpt">
+<strong>Excerpt text:</strong><br><br>
+<textarea cols="60" rows="8" maxlength="825" autofocus required name="excerpt" placeholder="(Maximum of 825 characters.)">
 </textarea>
 <br><br>
 <strong>Excerpt source:</strong><br>
@@ -29,16 +37,16 @@
   </select><br><br>
   
   Or enter a new source:<br><br>
-  <input type="text" name="source"><br><br>
-<strong>Author:</strong><br>
-(Note: If author is not listed below, you need to <a href="/admin/person?action=new">create a person entry</a> for the author, first.)<br><br>
+  <input type="text" name="source" placeholder="Name of the book or magazine."><br><br>
+<strong>Author/writer:</strong><br>
+(Note: If author or writer is not listed below, you need to <a href="/admin/person?action=new">create a person entry</a> for the author, first.)<br><br>
 <select name="person_id">
 <% @person_names_ids.each do |hash| %>
 <option value="<%= "#{hash["id"]}" %>"><%= "#{hash["person"]}" %></option>
 <% end  %>
 </select><br><br>
 <input type="hidden" name="action" value="new">
-<input type="submit" value="Submit">
+<input class="navbutton" type="submit" value="SUBMIT">
 <br><br>
 </form>
   

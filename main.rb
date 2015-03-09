@@ -1,6 +1,3 @@
-require "pry"
-require "sqlite3"
-require "sinatra"
 require "sinatra/session"
 
 require_relative "models/class-module.rb"

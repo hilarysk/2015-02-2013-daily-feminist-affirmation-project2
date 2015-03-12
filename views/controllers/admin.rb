@@ -1,39 +1,27 @@
-require "pry"
-require "sqlite3"
-require "sinatra"
-require "sinatra/session"
-
-require_relative "../../models/class-module.rb"
-
-require_relative "../../models/instance-module.rb"
-
-require_relative "../../database/database_setup.rb"
-require_relative "../../models/keyworditem_class.rb"
-require_relative "../../models/itemtable_class.rb"
-
-require_relative "../../models/user_class.rb"
-require_relative "../../models/excerpt_class.rb"
-require_relative "../../models/person_class.rb"
-require_relative "../../models/quote_class.rb"
-require_relative "../../models/term_class.rb"
-require_relative "../../models/keyword_class.rb"
-
-require_relative "public.rb"
+enable :sessions 
 
 
+############################################################
+#      ONE OF THESE NEEDS TO WORK
+#      IF METHOD, HOW CALL?
+#      IF BEFORE, CAN'T RUN BEFORE ADMIN/UPDATE_DATABASE
+############################################################
 
-enable :sessions # https://github.com/mjackson/sinatra-session, https://github.com/mjackson/sinatra-session/blob/master/lib/sinatra/session.rb
-
-# before "/admin/*" do                # maybe this will work better?
-#   if session[:user] == nil
-#     @fail_message = "Oops! Looks like you need to login first."
-#     erb :login
+# def logged_in
+#   if session[:user_id] == nil
+#     redirect ("/login?error=Oops! Looks like you need to login first.")
 #   end
 # end
 
+before "/admin/*" do                # working?
+  if session[:user_id] == nil
+    redirect to ("/login?error=Oops! Looks like you need to login first.")
+  end
+end
 
-
-# change user/ to admin/ - save "user" for when actually updating users.
+before "/login" do
+  @fail_message = params["error"]
+end
 
 get '/login' do
   erb :"admin/login", :layout => :"/alt_layouts/public_layout" 
@@ -41,35 +29,37 @@ end
 
 
 get "/user_verification" do
-  auth = User.user_name_pass_search(params)
+  auth = User.where(username: "#{params["username"]}", password: "#{params["password"]}")
   if auth == []
-    @fail_message = "We couldn't find you in the system; please try again." 
-    erb :"admin/login", :layout => :"/alt_layouts/public_layout"
+    redirect to ("/login?error=We couldn't find you in the system; please try again.")
   else
-    session[:user] = auth
+    session[:user_id] = auth[0].id
+    session[:username] = auth[0].username
     redirect to ("/admin/update_database")
   end
 end
 
-get "/admin/update_database" do   
-  if session[:user] == nil                                         
-    @fail_message = "Oops! Looks like you need to login first."  # seems to work, but cookies keep remembering? 
-    erb :"admin/login", :layout => :"/alt_layouts/public_layout" # doesn't actaully work unless i clear my cookies/cache
-  else
-    @username = "#{session[:user].username}"
-    erb :"admin/update_database"
-  end
+get "/admin/update_database" do
+  @username = "#{session[:username]}"
+  erb :"admin/update_database"
 end
 
-["/admin/excerpt", "/admin_excerpt_success"].each do |path|
+#BEFORE METHOD TO SET UP INSTANCE VARIABLES FOR ADDING AND UPDATING EXCERPTS
+
+["/admin/excerpt/new_excerpt", "/admin/excerpt/update_excerpt", "/admin_excerpt_success"].each do |path|
   before path do
     @person_names_ids = Person.find_specific_fields_hashes("field1"=>"id", "field2"=>"person", "table"=>"persons")
     @excerpt_sources = Excerpt.find_specific_field_array({"field"=>"source", "table"=>"excerpts"})
+    
+    if session[:user_id] == nil
+      redirect to ("/login?error=Oops! Looks like you need to login first.")
+    end
   end
 end
 
-get "/admin/excerpt" do 
-  if params["action"] == "new"
+#LOADS ERB TO CREATE NEW EXCERPT
+
+get "/admin/excerpt/new_excerpt" do 
     @path = request.path_info
     
     if params["source"].nil? == false
@@ -77,9 +67,13 @@ get "/admin/excerpt" do
       @excerpt_choice = "/admin/excerpt/_sources_for_new_excerpt"
     end
   
-  erb :"admin/excerpt/new_excerpt", :locals => {"fail" => ""}
+  erb :"admin/excerpt/new_excerpt"
+end
+  
+#LOADS ERB TO UPDATE EXISTING EXCERPT  
+  
     
-  elsif params["action"] == "update"
+post "/admin/excerpt/update_excerpt" do
     @path = request.path_info
     
     if params["source"].nil? == false
@@ -89,9 +83,8 @@ get "/admin/excerpt" do
       
       @excerpt_choice = "/admin/excerpt/_sources_for_update_excerpt"
       
-    elsif params["ex_text"].nil? == false
-      
-      a = params["ex_text"].gsub('\'','\'\'')
+    elsif params["ex_text"].nil? == false #CAN USE HTML5 required  AND VALIDATIONS TO CHECK FOR ERRORS OUTSIDE ROUTE HANDLER
+      a = params["ex_text"].gsub('\'','\'\'') #NEED THIS?
       
       info = Excerpt.find_specific_record_unformatted({"table"=>"excerpts", "field"=>"excerpt", "value"=>"#{a}"})
       @new_ex = Excerpt.new(info[0]) # object culled based on excerpt (includes original id)
@@ -99,17 +92,16 @@ get "/admin/excerpt" do
     end
     
     erb :"admin/excerpt/update_excerpt"
-  end
 end
 
 
 before "/admin/excerpt/success" do  
   if params["action"] = "new"     
     new_excerpt = Excerpt.new(params)
-    if new_excerpt.errors != {"source"=>[], "excerpt"=>[]}
-      @fail_message = new_excerpt.format_error_messages
+    # if new_excerpt.errors != {"source"=>[], "excerpt"=>[]}
+      @fail_message = ""
       erb :"admin/excerpt/new_excerpt" 
-    end
+  
   end 
 end
     
@@ -120,7 +112,7 @@ post "/admin/excerpt/success" do #changed from get
       params["source"] = params["source1"]
     end
     new_excerpt = Excerpt.new(params)
-    new_excerpt.insert
+    new_excerpt.save
     
     # AUTOMATICALLY TAG KEYWORD, SOURCE, PERSON? 
 
@@ -153,44 +145,44 @@ end
 
 
 
-get "/admin/person/new_person" do 
+post "/admin/person/new_person" do 
   erb :"admin/person/new_person"
 end
 
-get "/admin/person/update_person" do 
+post "/admin/person/update_person" do 
   erb :"admin/person/update_person"
 end
 
-get "/admin/quote/new_quote" do 
+post "/admin/quote/new_quote" do 
   erb :"admin/quote/new_quote"
 end
 
-get "/admin/quote/update_quote" do 
+post "/admin/quote/update_quote" do 
   erb :"admin/quote/update_quote"
 end
 
-get "/admin/term/new_term" do 
+post "/admin/term/new_term" do 
   erb :"admin/term/new_term"
 end
 
-get "/admin/term/update_term" do 
+post "/admin/term/update_term" do 
   erb :"admin/term/update_term"
 end
 
-get "/admin/tag/new_tag" do 
+post "/admin/tag/new_tag" do 
   erb :"admin/tag/new_tag"
 end
 
-get "/admin/tag/assign_tag" do 
+post "/admin/tag/assign_tag" do 
   erb :"admin/tag/assign_tag"
 end
 
 
 before "/logout" do 
-  session[:user] == nil
+  session[:user_id] = nil
 end
 
 get "/logout" do
   @logout_message = "You have successfully logged out. Thanks for contributing!"
-  erb :"admin/login", :layout => :"/alt_layouts/public_layout"
+  erb :"admin/login", :layout => :"/alt_layouts/public_layout" 
 end

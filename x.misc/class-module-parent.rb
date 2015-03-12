@@ -19,6 +19,24 @@ end
 
 module Example
   
+  # Public: insert
+  # Inserts the information collected in initialize into the proper table
+  #
+  # Parameters:
+  # None
+  #
+  # Returns:
+  # The object's id number
+  #
+  # State Changes:
+  # Sets @id instance variable
+  
+  def insert
+    DATABASE.execute("INSERT INTO persons (person, bio, state, country, image, caption, source) VALUES 
+                    (?, ?, ?, ?, ?, ?, ?)", @person, @bio, @state, @country, @image, @caption, @source)
+    @id = DATABASE.last_insert_row_id
+  end
+  
   
   # Public: #select_all_names_table
   # Allows a person to find the names of all the items listed for a specific table.

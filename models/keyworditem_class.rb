@@ -1,6 +1,3 @@
-require_relative "class-module.rb"
-require_relative "instance-module.rb"
-
 # Class: KeywordItem
 #
 # Creates keyword-item pairs
@@ -23,49 +20,11 @@ require_relative "instance-module.rb"
 # #grab_items_given_id_table_keyword
 # #get_person_name_for_keyword_items
 
-class KeywordItem
+class KeywordItem < ActiveRecord::Base
   extend FeministClassMethods
   include FeministInstanceMethods
-
-  attr_accessor :item_id, :keyword_id, :item_table_id
-
-
-  # Private: initialize
-  # Grabs information for keyword-value pair
-  #
-  # Parameters:
-  # options - Hash
-  #           - @item_id       - Instance variable representing the ID of the particular term
-  #           - @keyword_id    - Instance variable representing the ID of the keyword
-  #           - @item_table_id - Represents table of item
-  # Returns:
-  # The object
-  #
-  # State Changes:
-  # Sets instance variables @keyword_id, @item_id, @item_table_id
-                               
-  def initialize(options)
-    @keyword_id = options["keyword_id"]
-    @item_id = options["item_id"]
-    @item_table_id = options["item_table_id"]
-  end
   
-  # Public: insert
-  # Inserts the information collected in initialize into the proper table
-  #
-  # Parameters:
-  # None
-  #
-  # Returns:
-  # Empty array
-  #
-  # State Changes:
-  # None
-  
-  def insert
-    DATABASE.execute("INSERT INTO keywords_items (keyword_id, item_id, item_table_id) VALUES 
-                    (?, ?, ?)", @keyword_id, @item_id, @item_table_id)
-  end
+  #??????????????????
 
   # Public: #self.get_array_keywords_for_item
   # Creates an array of all items from persons table
@@ -85,7 +44,7 @@ class KeywordItem
     id_of_item = options["id_of_item"].to_i
     table_name = options["table"].to_s
     
-    keywords_array = DATABASE.execute("select keywords.keyword, item_id, items_tables.table_name FROM keywords_items JOIN keywords ON keywords_items.keyword_id = keywords.id JOIN items_tables ON keywords_items.item_table_id = items_tables.id")
+    keywords_array = DATABASE.execute("select keywords.keyword, item_id, item_tables.table_name FROM keyword_items JOIN keywords ON keyword_items.keyword_id = keywords.id JOIN item_tables ON keyword_items.item_table_id = item_tables.id")
     # ==> [{"keyword"=>"Beloved","item_id"=>1, "table_name"=>"excerpts", 0=>"Beloved", 1=>1, 2=>"excerpts"}, {"keyword"=>"United States", "item_id"=>1,"table_name"=>"excerpts", 0=>"United States", 1=>1, 2=>"excerpts"}]
     
     delete_secondary_kvpairs(keywords_array, :placeholder) # ==>keywords_array = [{"keyword"=>"Beloved","item_id"=>1, "table_name"=>"excerpts"}, {"keyword"=>"United States", "item_id"=>1,"table_name"=>"excerpts""}]
@@ -119,7 +78,7 @@ class KeywordItem
   def self.get_array_items_for_keyword(options) # divide sections into separate private methods like secondary_kv_pairs
     keyword_text = options["keyword"].to_s
     
-    keywords_array = DATABASE.execute("select keywords.keyword, item_id, items_tables.table_name FROM keywords_items JOIN keywords ON keywords_items.keyword_id = keywords.id JOIN items_tables ON keywords_items.item_table_id = items_tables.id")
+    keywords_array = DATABASE.execute("SELECT keywords.keyword, item_id, item_tables.table_name FROM keyword_items JOIN keywords ON keyword_items.keyword_id = keywords.id JOIN item_tables ON keyword_items.item_table_id = item_tables.id")
     
     delete_secondary_kvpairs(keywords_array, :placeholder) 
     
@@ -132,9 +91,9 @@ class KeywordItem
     return tagged_items
     
   end
-      
-  private
   
+      
+
   # Private: #grab_table_item_id_for_specific_keyword
   # Creates an array of all items tagged a specific keyword
   #
@@ -149,7 +108,7 @@ class KeywordItem
   # None   
 
 
-  def grab_table_item_id_for_specific_keyword(keyword, array)
+  def self.grab_table_item_id_for_specific_keyword(keyword, array)
     
     keywords = []
     
@@ -176,7 +135,7 @@ class KeywordItem
   # None 
   
   
-  def grab_items_given_id_table_keyword(array)
+  def self.grab_items_given_id_table_keyword(array)
     tagged_items = []
     
     array.each do |hash|
@@ -205,7 +164,7 @@ class KeywordItem
   # State changes:
   # None   
   
-  def get_person_name_for_keyword_items(array)
+  def self.get_person_name_for_keyword_items(array)
     array.each do |hash|
       if hash.keys[1] == "quote" || hash.keys[1] == "excerpt"
         name = DATABASE.execute("SELECT person FROM persons WHERE id = #{hash["person_id"].to_s}") 

@@ -22,56 +22,10 @@ require_relative "instance-module.rb"
 # Private Methods:
 # #initialize
 
-class Quote
+class Quote < ActiveRecord::Base
   extend FeministClassMethods
   include FeministInstanceMethods
-  
 
-  
-  attr_reader :id, :errors
-  attr_accessor :person_id, :quote
-
-  # Private: initialize
-  # Gets information to create new quotes
-  #
-  # Parameters:
-  # options - Hash
-  #           - @id        - Instance variable representing the quote ID (primary key)
-  #           - @person_id - Instance variable representing the quoter's ID (persons table primary key)
-  #           - @quote     - Instance variable representing the quote text
-  #           - @errors    - Instance variable representing any errors when trying to create a new object
-  #
-  # Returns:
-  # The object
-  #
-  # State Changes:
-  # Sets instance variables @id, @person_id, @quote, @errors     
-                               
-  def initialize(options)
-    @id = options["id"]
-    @quote = options["quote"]
-    @person_id = options["person_id"]
-    @errors = options["errors"]
-    
-  end
-  
-  # Public: insert
-  # Inserts the information collected in initialize into the proper table
-  #
-  # Parameters:
-  # None
-  #
-  # Returns:
-  # The object's id number
-  #
-  # State Changes:
-  # Sets @id instance variable
-  
-  def insert
-    DATABASE.execute("INSERT INTO quotes (quote, person_id) VALUES 
-                    (?, ?)", @quote, @person_id)
-    @id = DATABASE.last_insert_row_id
-  end
 
   # Public: #self.array_of_quote_records
   # Creates an array of all items from quotes table

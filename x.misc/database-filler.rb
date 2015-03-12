@@ -152,7 +152,7 @@ w = Person.new({"person"=>"The Indelicates", "bio"=>"", "state"=>"", "country"=>
 
 EX = Person.new({"person"=>"", "bio"=>"", "state"=>"", "country"=>"", "image"=>"", "caption"=>"", "source"=>""})
 
-items_tables:
+item_table:
 
 a = ItemTable.new({"table_name"=>"persons"})
 b = ItemTable.new({"table_name"=>"quotes"})
@@ -161,7 +161,7 @@ d = ItemTable.new({"table_name"=>"terms"})
 
 
 
-keywords_items:
+keyword_items:
 
 a = KeywordItem.new({"keyword_id"=>"26", "item_id"=>"1", "item_table_id"=>"3"})   #Beloved excerpt
 b = KeywordItem.new({"keyword_id"=>"40", "item_id"=>"1", "item_table_id"=>"3"})
@@ -274,4 +274,4 @@ ac = KeywordItem.new({"keyword_id"=>"45", "item_id"=>"3", "item_table_id"=>"3"})
                                                                
 EX = KeywordItem.new({"keyword_id"=>"", "item_id"=>"", "item_table_id"=>""})
 
-.insert
+.save

@@ -18,49 +18,11 @@ require_relative "instance-module.rb"
 # Private Methods:
 # #initialize
 
-class ItemTable
+class ItemTable < ActiveRecord::Base
   extend FeministClassMethods
   include FeministInstanceMethods
 
-  attr_accessor :table_name
-  attr_reader :id
-
-
-  # Private: initialize
-  # Grabs information for table-id pair
-  #
-  # Parameters:
-  # options - Hash
-  #           - @table_name - Instance variable representing the name of a table
-  #           - @id         - Instance variable representing the ID 
-  # Returns:
-  # The object
-  #
-  # State Changes:
-  # Sets instance variables @id, @table_name  
-                               
-  def initialize(options)
-    @id = options["id"]
-    @table_name = options["table_name"]
-  end
-  
-  # Public: insert
-  # Inserts the information collected in initialize into the proper table
-  #
-  # Parameters:
-  # None
-  #
-  # Returns:
-  # Empty array
-  #
-  # State Changes:
-  # None
-  
-  def insert
-    DATABASE.execute("INSERT INTO items_tables (table_name) VALUES 
-                    ('#{@table_name}')")
-    @id = DATABASE.last_insert_row_id
-  end
+  has_many :item_ids, through: :keyword_items #??????
 
     
 end

@@ -11,6 +11,10 @@ html, body {
   overflow: auto; padding-bottom:12.5%;
 }
 
+.error {
+  color: #DC143C;
+}
+
 body.standard  {
   font-family: Georgia;
   font-size: medium;
@@ -270,7 +274,7 @@ td.quotetext {
 }
 
 .formattingpartials {
-  width: 40%;
+  width: 100%;
   margin-left: 20%;
   padding-bottom: 2.5%;
 }

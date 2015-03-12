@@ -9,7 +9,6 @@ require_relative "instance-module.rb"
 # Attributes:
 # @keyword - Instance variable representing the actual keyword
 # @id      - Instance variable representing the keyword ID within the table (primary key)
-# @errors  - Instance variable representing any errors when trying to create a new object
 #
 # attr_reader :id
 # attr_accessor :keyword
@@ -21,14 +20,9 @@ require_relative "instance-module.rb"
 # Private Methods:
 # #initialize
 
-class Keyword
+class Keyword < ActiveRecord::Base
   extend FeministClassMethods
   include FeministInstanceMethods
-
-  
-  attr_reader :id, :errors
-  attr_accessor :keyword
-
 
   # Private: initialize
   # Creates new keywords
@@ -37,7 +31,6 @@ class Keyword
   # options - Hash
   #           - @keyword - Instance variable representing the actual keyword
   #           - @id      - Instance variable representing the keyword ID within the table (primary key)
-  #           - @errors  - Instance variable representing any errors when trying to create a new object
   # Returns:
   # The object
   #
@@ -47,25 +40,6 @@ class Keyword
   def initialize(options)
     @id = options["id"]
     @keyword = options["keyword"]
-    @errors = options["errors"]
-  end
-  
-  # Public: insert
-  # Inserts the information collected in initialize into the proper table
-  #
-  # Parameters:
-  # None
-  #
-  # Returns:
-  # The object's id number
-  #
-  # State Changes:
-  # Sets @id instance variable
-  
-  def insert
-    DATABASE.execute("INSERT INTO keywords (keyword) VALUES 
-                    (?)", @keyword)
-    @id = DATABASE.last_insert_row_id
   end
 
   # Public: #self.get_array_keywords

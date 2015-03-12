@@ -11,10 +11,7 @@ require_relative "instance-module.rb"
 # @definition - String: Variable representing the term's definition
 # @term       - String: Variable representing the term 
 # @phonetic   - String: The phoentic spelling of the term
-#@errors      - Hash: Any errors when trying to create a new object
 #
-# attr_reader :id, :errors
-# attr_accessor :definition, :text
 #
 # Public Methods:
 # #insert
@@ -23,58 +20,11 @@ require_relative "instance-module.rb"
 # Private Methods:
 # #initialize
 
-class Term
+class Term < ActiveRecord::Base
   extend FeministClassMethods
   include FeministInstanceMethods
   
-
   
-  attr_reader :id, :errors
-  attr_accessor :definition, :term, :phonetic
-
-  # Private: initialize
-  # Gets information to create new quotes
-  #
-  # Parameters:
-  # options - Hash
-  #           - @id         - the term ID (primary key)
-  #           - @definition - the term's definition
-  #           - @term       - the term 
-  #           - @phonetic   - phonetic spelling of the term
-  #           - @used       - holds value 0 for if not used yet; 1 for if used
-  #           - @errors     - any errors when trying to create a new object
-  #
-  # Returns:
-  # An object of the class
-  #
-  # State Changes:
-  # Sets instance variables @id, @definition, @term, @phonetic, @used, @errors
-                               
-  def initialize(options)
-    @id = options["id"]
-    @term = options["term"]
-    @definition = options["definition"]
-    @phonetic = options["phonetic"]
-    @errors = options["errors"]
-  end
-  
-  # Public: insert
-  # Inserts the information collected in initialize into the proper table
-  #
-  # Parameters:
-  # None
-  #
-  # Returns:
-  # The object's id number
-  #
-  # State Changes:
-  # Sets @id instance variable
-  
-  def insert
-    DATABASE.execute("INSERT INTO terms (term, definition, phonetic) VALUES 
-                    (?, ?, ?)", @term, @definition, @phonetic)
-    @id = DATABASE.last_insert_row_id
-  end
 
 
   # Public: #self.array_of_term_records

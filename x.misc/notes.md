@@ -92,7 +92,7 @@ SELECT keywords.keyword, matches.item_id, matches.item_type FROM keywords JOIN m
  ID  name
  1  quotes
  2  terms
- 3  persons
+ 3  people
  4 excerpts
  
  

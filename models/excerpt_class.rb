@@ -11,7 +11,7 @@ require_relative "instance-module.rb"
 # @excerpt   - String: Text of Excerpt
 # @id        - Integer: Excerpt ID, primary key for excerpts table
 # @source    - String: Source of excerpt
-# @person_id - Integer: Foreign key linked to ID primary key from persons table
+# @person_id - Integer: Foreign key linked to ID primary key from people table
 #
 # attr_reader :id
 # attr_accessor :person_id, :source, :excerpt
@@ -39,7 +39,7 @@ class Excerpt < ActiveRecord::Base
   #           - @excerpt   - String: Text of Excerpt
   #           - @id        - Integer: Excerpt ID, primary key for excerpts table
   #           - @source    - String: Source of excerpt (magazine, book, song, etc.)
-  #           - @person_id - Integer: Foreign key linked to ID primary key from persons table
+  #           - @person_id - Integer: Foreign key linked to ID primary key from people table
   #          
   # Returns:
   # The object
@@ -90,7 +90,7 @@ class Excerpt < ActiveRecord::Base
   # None    
     
   def self.array_of_excerpt_records
-    excerpts_array = DATABASE.execute("SELECT excerpts.id, excerpts.excerpt, excerpts.source, persons.person FROM excerpts JOIN persons ON excerpts.person_id = persons.id") # returns array of hashes, each has is a record
+    excerpts_array = DATABASE.execute("SELECT excerpts.id, excerpts.excerpt, excerpts.source, people.person FROM excerpts JOIN people ON excerpts.person_id = people.id") # returns array of hashes, each has is a record
     
     delete_secondary_kvpairs(excerpts_array, :placeholder)
     

@@ -27,7 +27,7 @@ class KeywordItem < ActiveRecord::Base
   #??????????????????
 
   # Public: #self.get_array_keywords_for_item
-  # Creates an array of all items from persons table
+  # Creates an array of all items from people table
   #
   # Parameters:
   # Options hash
@@ -167,7 +167,7 @@ class KeywordItem < ActiveRecord::Base
   def self.get_person_name_for_keyword_items(array)
     array.each do |hash|
       if hash.keys[1] == "quote" || hash.keys[1] == "excerpt"
-        name = DATABASE.execute("SELECT person FROM persons WHERE id = #{hash["person_id"].to_s}") 
+        name = DATABASE.execute("SELECT person FROM people WHERE id = #{hash["person_id"].to_s}") 
       
         hash["person_id"] = name[0]["person"]      
       end

@@ -31,8 +31,8 @@
 <strong>Excerpt source:</strong><br>
   Choose from existing sources:<br><br>                                   
    <select name="source1">
-     <% @excerpt_sources.each do |source| %>
-       <option value="<%= "#{source}" %>"><%= "#{source}" %></option>
+     <% @excerpt_sources.each do |object| %>
+       <option value="<%= "#{object.source}" %>"><%= "#{object.source}" %></option>
     <% end  %>
   </select><br><br>
   
@@ -41,8 +41,8 @@
 <strong>Author/writer:</strong><br>
 (Note: If author or writer is not listed below, you need to <a href="/admin/person?action=new">create a person entry</a> for the author, first.)<br><br>
 <select name="person_id">
-<% @person_names_ids.each do |hash| %>
-<option value="<%= "#{hash["id"]}" %>"><%= "#{hash["person"]}" %></option>
+<% @person_names_ids.each do |object| %>
+<option value="<%= "#{object.id}" %>"><%= "#{object.person}" %></option>
 <% end  %>
 </select><br><br>
 <input type="hidden" name="action" value="new">

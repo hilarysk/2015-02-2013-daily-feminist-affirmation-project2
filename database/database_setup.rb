@@ -2,11 +2,11 @@ DATABASE = SQLite3::Database.new("/Users/hilarysk/Code/2015-02-13-daily-feminist
 
 DATABASE.results_as_hash = true
 
-DATABASE.execute("CREATE TABLE IF NOT EXISTS excerpts (id INTEGER PRIMARY KEY, excerpt TEXT, source TEXT, person_id INTEGER, FOREIGN KEY(person_id) REFERENCES persons(id))")
+DATABASE.execute("CREATE TABLE IF NOT EXISTS excerpts (id INTEGER PRIMARY KEY, excerpt TEXT, source TEXT, person_id INTEGER, FOREIGN KEY(person_id) REFERENCES people(id))")
 
-DATABASE.execute("CREATE TABLE IF NOT EXISTS persons (id INTEGER PRIMARY KEY, person TEXT, bio TEXT, state TEXT, country TEXT, image TEXT, caption TEXT, source TEXT)")
+DATABASE.execute("CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY, person TEXT, bio TEXT, state TEXT, country TEXT, image TEXT, caption TEXT, source TEXT)")
 
-DATABASE.execute("CREATE TABLE IF NOT EXISTS quotes (id INTEGER PRIMARY KEY, quote TEXT, person_id INTEGER, FOREIGN KEY(person_id) REFERENCES persons(id))")
+DATABASE.execute("CREATE TABLE IF NOT EXISTS quotes (id INTEGER PRIMARY KEY, quote TEXT, person_id INTEGER, FOREIGN KEY(person_id) REFERENCES people(id))")
 
 DATABASE.execute("CREATE TABLE IF NOT EXISTS terms (id INTEGER PRIMARY KEY, term TEXT, definition TEXT, phonetic TEXT)")
 
@@ -38,6 +38,6 @@ DATABASE.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, user
 #
 # DATABASE.execute("CREATE TABLE IF NOT EXISTS keywords_excerpts (keyword_id INTEGER, excerpt_id INTEGER, FOREIGN KEY(keyword_id) REFERENCES keywords(id), FOREIGN KEY(excerpt_id) REFERENCES excerpts(id))")
 #
-# DATABASE.execute("CREATE TABLE IF NOT EXISTS keywords_persons (keyword_id INTEGER, person_id INTEGER, FOREIGN KEY(keyword_id) REFERENCES keywords(id), FOREIGN KEY(person_id) REFERENCES persons(id))")
+# DATABASE.execute("CREATE TABLE IF NOT EXISTS keywords_people (keyword_id INTEGER, person_id INTEGER, FOREIGN KEY(keyword_id) REFERENCES keywords(id), FOREIGN KEY(person_id) REFERENCES people(id))")
 #
 #

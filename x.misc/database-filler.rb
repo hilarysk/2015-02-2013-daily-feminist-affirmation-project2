@@ -121,7 +121,7 @@ h = Quote.new({"quote"=>"For most of history, \"Anonymous\" was a woman.", "pers
 
 EX = Quote.new({"quote"=>"", "person_id"=>""})
 
-persons:
+people:
 
 
 a = Person.new({"person"=>"Ella Baker", "bio"=>"Ella Jo Baker was born on Dec. 13, 1903, in Norfolk, Virginia, though she grew up in North Carolina. The pride and resilience of her grandmother, a former slave, in the face of racism and injustice, inspired Ms. Baker throughout her life. She studied at Shaw University in Raleigh, North Carolina, starting at age 15. After graduating as valedictorian, she moved to New York City and joined joined the Young Negroes Cooperative League, whose purpose was to develop black economic power through collective planning. She also involved herself with several women''s organizations. <br><br>Ms. Baker worked for the NAACP from 1940 to 1946, and helped organize Martin Luther King''s then-new organization, the Southern Christian Leadership Conference, or SCLC. She left SCLC after the first lunch counter sit-in protest in April 1960 to help found the Student Nonviolent Coordinating Committee, or SNCC. In 1964, SNCC helped create Freedom Summer, an effort to focus national attention on Mississippi''s racism and to register black voters. With Ella Baker''s guidance and encouragement, SNCC became one of the foremost advocates for human rights in the country. <br><br>Ella Baker once said, \"This may only be a dream of mine, but I think it can be made real.\"", "state"=>"Virginia", "country"=>"United States", "image"=>"http://ellabakercenter.org/sites/default/files/site/media/ella3.gif", "caption"=>"Courtesy of the Ella Baker Center for Human Rights", "source"=>"<a href=\"http://ellabakercenter.org/about/who-was-ella-baker\">The Ella Baker Center for Human Rights</a>"})
@@ -154,7 +154,7 @@ EX = Person.new({"person"=>"", "bio"=>"", "state"=>"", "country"=>"", "image"=>"
 
 item_table:
 
-a = ItemTable.new({"table_name"=>"persons"})
+a = ItemTable.new({"table_name"=>"people"})
 b = ItemTable.new({"table_name"=>"quotes"})
 c = ItemTable.new({"table_name"=>"excerpts"})
 d = ItemTable.new({"table_name"=>"terms"})

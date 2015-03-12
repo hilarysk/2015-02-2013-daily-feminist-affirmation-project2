@@ -9,7 +9,7 @@ require_relative "instance-module.rb"
 # Attributes:
 # @quote     - String: Text of quote
 # @id        - Integer: Quote ID, primary key for quotes table
-# @person_id - Integer: ID from persons table (foreign key)
+# @person_id - Integer: ID from people table (foreign key)
 # @errors    - Hash representing any errors when trying to create a new object
 
 # attr_reader :id, :errors
@@ -40,7 +40,7 @@ class Quote < ActiveRecord::Base
   # None
     
   def self.array_of_quote_records
-    quotes_array = DATABASE.execute("SELECT quotes.id, quotes.quote, persons.person FROM quotes JOIN persons ON quotes.person_id = persons.id") # returns array of hashes, each has is a record
+    quotes_array = DATABASE.execute("SELECT quotes.id, quotes.quote, people.person FROM quotes JOIN people ON quotes.person_id = people.id") # returns array of hashes, each has is a record
     
     delete_secondary_kvpairs(quotes_array, :placeholder)
     

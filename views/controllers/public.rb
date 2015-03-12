@@ -12,14 +12,14 @@ get "/item" do  ##--> localhost:4546/item?table=quotes&id=4
 
     erb :"public/excerpt", :layout => :"/alt_layouts/layout_excerpt"
 
-  elsif params["table"] == "persons"
+  elsif params["table"] == "people"
     @item = Person.get_all_specific_person_data(params["id"])
 
     if @item["state"] != ""
       @item["state"] = "#{@item["state"]}, "
     end
 
-    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"persons", "id_of_item"=>"#{@item["id"].to_s}"})
+    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"people", "id_of_item"=>"#{@item["id"].to_s}"})
 
     erb :"public/person", :layout => :"/alt_layouts/public_layout"
 
@@ -62,7 +62,7 @@ get "/yay" do
     end
     
     @item = item
-    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"persons", "id_of_item"=>"#{@item["id"].to_s}"})
+    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"people", "id_of_item"=>"#{@item["id"].to_s}"})
     
     erb :"public/person", :layout => :"/alt_layouts/public_layout"
 

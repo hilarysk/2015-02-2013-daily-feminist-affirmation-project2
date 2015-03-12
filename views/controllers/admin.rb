@@ -39,8 +39,8 @@ end
 
 ["/admin/excerpt/new_excerpt", "/admin/excerpt/update_excerpt", "/admin/excerpt/new_success", "/admin/excerpt/update_success"].each do |path|
   before path do
-    @person_names_ids = Person.find_specific_fields_hashes("field1"=>"id", "field2"=>"person", "table"=>"persons")
-    @excerpt_sources = Excerpt.find_specific_field_array({"field"=>"source", "table"=>"excerpts"})
+    @person_names_ids = Person.select("id, person")
+    @excerpt_sources = Excerpt.select("source")
     
     # IS THIS CHECK NEEDED? DOES THIS OVERWRITE THE BEFORE METHOD ABOVE?
     
@@ -98,7 +98,7 @@ post "/admin/excerpt/new_success" do #changed from get
   
   # AUTOMATICALLY TAG KEYWORD, SOURCE, PERSON? 
 
-  person1 = Person.find_specific_value({"table"=>"persons", "field_known"=>"id", "value"=>"#{params["person_id"].to_s}".to_i, "field_unknown"=>"person"})
+  person1 = Person.find_specific_value({"table"=>"people", "field_known"=>"id", "value"=>"#{params["person_id"].to_s}".to_i, "field_unknown"=>"person"})
   success_message1 = "Your excerpt was successfully added:"
   keywords_message = ""
   
@@ -114,7 +114,7 @@ post "/admin/excerpt/update_success" do
   
   new_excerpt.save({"table"=>"excerpts", "item_id"=>"#{(params["id"]).to_s}"})
  
-  person1 = Person.find_specific_value({"table"=>"persons", "field_known"=>"id", "value"=>"{(new_excerpt.person_id).to_s}".to_i, "field_unknown"=>"person"})
+  person1 = Person.find_specific_value({"table"=>"people", "field_known"=>"id", "value"=>"{(new_excerpt.person_id).to_s}".to_i, "field_unknown"=>"person"})
   success_message1 = "The excerpt was successfully updated:"
   keywords_message = "<h3><em>Thank you!</em></h3><p>Now, <a href='/assign_tag'>add some keywords</a> to describe this excerpt.</p>"
 

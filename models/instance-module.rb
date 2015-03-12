@@ -12,40 +12,40 @@ require "pry"
 module FeministInstanceMethods
   
 
-  # Public: #save
-  # Updates a specific record with changes made
+  # # Public: #save
+  # # Updates a specific record with changes made
+  # #
+  # # Parameters:
+  # # options - Hash
+  # #           - table   - The table in which the record resides
+  # #           - item_id - Exisiting ID for the record we want to update
+  # #
+  # # Returns:
+  # # An empty array
   #
-  # Parameters:
-  # options - Hash
-  #           - table   - The table in which the record resides
-  #           - item_id - Exisiting ID for the record we want to update
-  #             
-  # Returns:
-  # An empty array                                                               
-                                                                                 
-  def save(options)                                                              
-    table = options["table"]                                            
-    item_id = options["item_id"]
-    
-    attributes = []
-                                                                                 
-    instance_variables.each do |i|                                               
-      attributes << i.to_s.delete("@")                                           
-    end                                                                          
-                                                                                 
-    query_hash = {}                                                 
-                                                                                 
-    attributes.each do |a|                                                       
-      value = self.send(a)
-      query_hash[a] = value                                                       
-    end                                                                
-
-    query_hash.each do |key, value|
-      DATABASE.execute("UPDATE #{table} SET #{key} = ? WHERE id = #{item_id}", value)
-    end
-                                                                                 
-  end
-  
+  # def save(options)
+  #   table = options["table"]
+  #   item_id = options["item_id"]
+  #
+  #   attributes = []
+  #
+  #   instance_variables.each do |i|
+  #     attributes << i.to_s.delete("@")
+  #   end
+  #
+  #   query_hash = {}
+  #
+  #   attributes.each do |a|
+  #     value = self.send(a)
+  #     query_hash[a] = value
+  #   end
+  #
+  #   query_hash.each do |key, value|
+  #     DATABASE.execute("UPDATE #{table} SET #{key} = ? WHERE id = #{item_id}", value)
+  #   end
+  #
+  # end
+  #
   
 
   # Public: #search_table_by_value

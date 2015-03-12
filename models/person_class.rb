@@ -8,7 +8,7 @@ require_relative "instance-module.rb"
 #
 # Attributes:
 # @person  - String: Name of person
-# @id      - Integer: Person ID, primary key for persons table
+# @id      - Integer: Person ID, primary key for people table
 # @bio     - String: Person's biography
 # @state   - String: State where person was born
 # @country - String: Country where person was born
@@ -35,23 +35,23 @@ class Person < ActiveRecord::Base
   has_many :quotes
   
   # Public: #self.array_of_person_records
-  # Creates an array of all items from persons table
+  # Creates an array of all items from people table
   #
   # Parameters:
   # None                    
   #
   # Returns:
-  # An array of all persons records
+  # An array of all people records
   # 
   # State changes:
   # None    
   
   def self.array_of_person_records
-    persons_array = DATABASE.execute("SELECT id, person, bio, state, country, image, caption, source FROM persons") 
+    people_array = DATABASE.execute("SELECT id, person, bio, state, country, image, caption, source FROM people") 
     
-    delete_secondary_kvpairs(persons_array, :placeholder)
+    delete_secondary_kvpairs(people_array, :placeholder)
     
-    return persons_array 
+    return people_array 
  
   end
   

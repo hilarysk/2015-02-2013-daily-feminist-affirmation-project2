@@ -32,7 +32,7 @@ module Example
   # Sets @id instance variable
   
   def insert
-    DATABASE.execute("INSERT INTO persons (person, bio, state, country, image, caption, source) VALUES 
+    DATABASE.execute("INSERT INTO people (person, bio, state, country, image, caption, source) VALUES 
                     (?, ?, ?, ?, ?, ?, ?)", @person, @bio, @state, @country, @image, @caption, @source)
     @id = DATABASE.last_insert_row_id
   end

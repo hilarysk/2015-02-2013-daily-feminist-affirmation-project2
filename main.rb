@@ -5,6 +5,7 @@ require "pry"
 require "sqlite3"
 require "sinatra"
 require "sinatra/activerecord"
+require "bcrypt"
 
 require_relative "models/class-module.rb"
 require_relative "models/instance-module.rb"

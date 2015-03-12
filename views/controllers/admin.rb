@@ -18,13 +18,15 @@ end
 # CHECKS TO MAKE SURE USER IS IN SYSTEM; IF NOT, RETURNS THEM TO LOGIN PAGE WITH ERROR MESSAGE
 
 get "/user_verification" do
-  auth = User.where(username: "#{params["username"]}", password: "#{params["password"]}")
-  if auth == []
-    redirect to ("/login?error=We couldn't find you in the system; please try again.")
-  else
-    session[:user_id] = auth[0].id
-    session[:username] = auth[0].username
+  # pass = BCrypt::Password.create(params["password"])
+  user = User.where(username: "#{params["username"]}").take    
+  
+  if user.password == params["password"]
+    session[:user_id] = user.id
+    session[:username] = user.username
     redirect to ("/admin/update_database")
+  else 
+    redirect to ("/login?error=We couldn't find you in the system; please try again.")    
   end
 end
 

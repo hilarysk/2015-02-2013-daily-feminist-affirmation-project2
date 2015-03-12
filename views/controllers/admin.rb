@@ -1,32 +1,21 @@
 enable :sessions 
 
+# MAKES SURE USER IS LOGGED-IN BEFORE ADMIN PAGE WILL LOAD
 
-############################################################
-#      ONE OF THESE NEEDS TO WORK
-#      IF METHOD, HOW CALL?
-#      IF BEFORE, CAN'T RUN BEFORE ADMIN/UPDATE_DATABASE
-############################################################
-
-# def logged_in
-#   if session[:user_id] == nil
-#     redirect ("/login?error=Oops! Looks like you need to login first.")
-#   end
-# end
-
-before "/admin/*" do                # working?
+before "/admin/*" do
   if session[:user_id] == nil
     redirect to ("/login?error=Oops! Looks like you need to login first.")
   end
 end
 
-before "/login" do
-  @fail_message = params["error"]
-end
+# WHERE USER LOGS IN
 
 get '/login' do
+  @fail_message = params["error"]
   erb :"admin/login", :layout => :"/alt_layouts/public_layout" 
 end
 
+# CHECKS TO MAKE SURE USER IS IN SYSTEM; IF NOT, RETURNS THEM TO LOGIN PAGE WITH ERROR MESSAGE
 
 get "/user_verification" do
   auth = User.where(username: "#{params["username"]}", password: "#{params["password"]}")
@@ -39,17 +28,21 @@ get "/user_verification" do
   end
 end
 
+# LOADS PAGE WITH ADMINISTRATIVE ACTIONS
+
 get "/admin/update_database" do
   @username = "#{session[:username]}"
   erb :"admin/update_database"
 end
 
-#BEFORE METHOD TO SET UP INSTANCE VARIABLES FOR ADDING AND UPDATING EXCERPTS
+# BEFORE METHOD TO SET UP INSTANCE VARIABLES FOR ADDING AND UPDATING EXCERPTS
 
-["/admin/excerpt/new_excerpt", "/admin/excerpt/update_excerpt", "/admin_excerpt_success"].each do |path|
+["/admin/excerpt/new_excerpt", "/admin/excerpt/update_excerpt", "/admin/excerpt/new_success", "/admin/excerpt/update_success"].each do |path|
   before path do
     @person_names_ids = Person.find_specific_fields_hashes("field1"=>"id", "field2"=>"person", "table"=>"persons")
     @excerpt_sources = Excerpt.find_specific_field_array({"field"=>"source", "table"=>"excerpts"})
+    
+    # IS THIS CHECK NEEDED? DOES THIS OVERWRITE THE BEFORE METHOD ABOVE?
     
     if session[:user_id] == nil
       redirect to ("/login?error=Oops! Looks like you need to login first.")
@@ -57,7 +50,7 @@ end
   end
 end
 
-#LOADS ERB TO CREATE NEW EXCERPT
+# LOADS ERB TO CREATE NEW EXCERPT
 
 get "/admin/excerpt/new_excerpt" do 
     @path = request.path_info
@@ -70,8 +63,7 @@ get "/admin/excerpt/new_excerpt" do
   erb :"admin/excerpt/new_excerpt"
 end
   
-#LOADS ERB TO UPDATE EXISTING EXCERPT  
-  
+# LOADS ERB TO UPDATE EXISTING EXCERPT  
     
 post "/admin/excerpt/update_excerpt" do
     @path = request.path_info
@@ -94,53 +86,40 @@ post "/admin/excerpt/update_excerpt" do
     erb :"admin/excerpt/update_excerpt"
 end
 
+# NEW EXCERPT SUCCESS - !!!!!!!!!!!!! NEED TO PUT ERRORS HERE !!!!!!!!!!!! / AUTO TAG KEYWORDS
 
-before "/admin/excerpt/success" do  
-  if params["action"] = "new"     
-    new_excerpt = Excerpt.new(params)
-    # if new_excerpt.errors != {"source"=>[], "excerpt"=>[]}
-      @fail_message = ""
-      erb :"admin/excerpt/new_excerpt" 
-  
-  end 
-end
-    
-
-post "/admin/excerpt/success" do #changed from get
-  if params["action"] == "new"
-    if params["source"] == ""
-      params["source"] = params["source1"]
-    end
-    new_excerpt = Excerpt.new(params)
-    new_excerpt.save
-    
-    # AUTOMATICALLY TAG KEYWORD, SOURCE, PERSON? 
-
-    person1 = Person.find_specific_value({"table"=>"persons", "field_known"=>"id", "value"=>"#{params["person_id"].to_s}".to_i, "field_unknown"=>"person"})
-    
-    success_message1 = "Your excerpt was successfully added:"
-    
-    keywords_message = ""
-      
-  elsif params["action"] == "update"      #SPLIT UP INTO DIFFERENT ROUTE HANDLERS A LA WAREHOUSE MANAGER
-    new_excerpt = Excerpt.new(params)
-    
-    new_excerpt.save({"table"=>"excerpts", "item_id"=>"#{(params["id"]).to_s}"})
-   
-    person1 = Person.find_specific_value({"table"=>"persons", "field_known"=>"id", "value"=>"{(new_excerpt.person_id).to_s}".to_i, "field_unknown"=>"person"})
-    
-    success_message1 = "The excerpt was successfully updated:"
-    
-    keywords_message = "<h3><em>Thank you!</em></h3><p>Now, <a href='/assign_tag'>add some keywords</a> to describe this excerpt.</p>"
-    
+post "/admin/excerpt/new_success" do #changed from get
+  if params["source"] == ""
+    params["source"] = params["source1"]
   end
-  erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
   
+  new_excerpt = Excerpt.new(params)
+  new_excerpt.save
+  
+  # AUTOMATICALLY TAG KEYWORD, SOURCE, PERSON? 
+
+  person1 = Person.find_specific_value({"table"=>"persons", "field_known"=>"id", "value"=>"#{params["person_id"].to_s}".to_i, "field_unknown"=>"person"})
+  success_message1 = "Your excerpt was successfully added:"
+  keywords_message = ""
+  
+  erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
 end
+     
+# UPDATED EXCERPT SUCCESS - !!!!!!!!!!!!! NEED TO PUT ERRORS HERE !!!!!!!!!!!!     
+      
+post "/admin/excerpt/update_success" do 
+  new_excerpt = Excerpt.new(params)
+  
+  # ERROR CHECK GOES HERE
+  
+  new_excerpt.save({"table"=>"excerpts", "item_id"=>"#{(params["id"]).to_s}"})
+ 
+  person1 = Person.find_specific_value({"table"=>"persons", "field_known"=>"id", "value"=>"{(new_excerpt.person_id).to_s}".to_i, "field_unknown"=>"person"})
+  success_message1 = "The excerpt was successfully updated:"
+  keywords_message = "<h3><em>Thank you!</em></h3><p>Now, <a href='/assign_tag'>add some keywords</a> to describe this excerpt.</p>"
 
-
-
-
+  erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
+end
 
 
 
@@ -178,9 +157,16 @@ post "/admin/tag/assign_tag" do
 end
 
 
+
+
+# BEFORE LOGOUT TO RESET SESSION
+
 before "/logout" do 
   session[:user_id] = nil
+  session[:username] = nil
 end
+
+# LOGOUT ROUTE ADDS LOGOUT MESSAGE LOADS LOGIN
 
 get "/logout" do
   @logout_message = "You have successfully logged out. Thanks for contributing!"

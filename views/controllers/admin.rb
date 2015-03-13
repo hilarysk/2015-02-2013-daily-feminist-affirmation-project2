@@ -61,11 +61,16 @@ end
 
 post "/admin/create" do
   new_user = User.new(params)
-  #validation issues?
-  new_user.password = params[:password]
-  new_user.save!
-  redirect to ("/admin/update_database?message=New user successfully created: Email: #{new_user.email},  ID: #{new_user.id}, Privilege Level: #{new_user.privilege}")
-    # end
+  if new_user.valid?
+    new_user.password = params[:password]
+    new_user.save!
+    redirect to ("/admin/update_database?message=New user successfully created: Email: #{new_user.email},  ID: #{new_user.id}, Privilege Level: #{new_user.privilege}")
+  else 
+    new_user.errors
+    binding.pry
+    #create errors message instance variable or something to push to page
+    erb :"/admin/create"
+  end
 end
 
 # LOADS PAGE WITH ADMINISTRATIVE ACTIONS

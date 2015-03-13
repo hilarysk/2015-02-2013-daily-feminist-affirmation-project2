@@ -1,15 +1,14 @@
 <div class="newandupdate"><h1>Add a new excerpt</h1>
 <p><%= @fail_message %><%= @fail_message2 %></p>  
 
-<p><strong>Please double-check that the excerpt you want to add isn't already in the collection:<br><br>
-  First, see if the source is in the database; if so, select it and hit the button to see all existing excerpts for that particular source.</strong></p>
-<p><form action=""<%= "#{@path}" %>"">
+<p><strong>1. Please double-check that the excerpt you want to add isn't already in the collection:</strong><br><br>
+  First, see if the excerpt's source is in the library; if so, select that source, and hit the button to see existing excerpts.</p>
+<p><form action="<%= "#{@path}" %>">
    <select name="source">
      <% @excerpt_sources.each do |source| %>    
        <option value="<%= "#{source}" %>"><%= "#{source}" %></option>
     <% end  %>
   </select><br><br>  
-  <input type="hidden" name="action" value="new">
 <input type="submit" value="SEE EXCERPTS" class="navbutton" style="width:105px">
 
   
@@ -21,7 +20,7 @@
 <% end %>
 <br><br>
 <hr></hr>
-<p>If the excerpt you want to add isn't included in the list above, then please fill out each every field in the form below.</p>  
+<p><strong>2. If the excerpt you want to add isn't included in the list above, then please fill out each every field in the form below.</strong></p>  
   
 <form action="/admin/excerpt/success" method="post">
 <strong>Excerpt text:</strong><br><br>
@@ -31,8 +30,8 @@
 <strong>Excerpt source:</strong><br>
   Choose from existing sources:<br><br>                                   
    <select name="source1">
-     <% @excerpt_sources.each do |object| %>
-       <option value="<%= "#{object.source}" %>"><%= "#{object.source}" %></option>
+     <% @excerpt_sources.each do |source| %>
+       <option value="<%= "#{source}" %>"><%= "#{source}" %></option>
     <% end  %>
   </select><br><br>
   

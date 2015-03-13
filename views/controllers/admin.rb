@@ -57,18 +57,16 @@ end
 
 # POST CREATE NEW USER - CHECKS FOR ERRORS, SAVES NEW USER
 
-########################### Still need to add validations check
-
 post "/admin/create" do
   new_user = User.new(params)
+  
   if new_user.valid?
     new_user.password = params[:password]
     new_user.save!
     redirect to ("/admin/update_database?message=New user successfully created: Email: #{new_user.email},  ID: #{new_user.id}, Privilege Level: #{new_user.privilege}")
+  
   else 
-    new_user.errors
-    binding.pry
-    #create errors message instance variable or something to push to page
+    @error_messages = new_user.errors.to_a
     erb :"/admin/create"
   end
 end
@@ -90,7 +88,7 @@ end
 ["/admin/excerpt/new_excerpt", "/admin/excerpt/update_excerpt", "/admin/excerpt/new_success", "/admin/excerpt/update_success"].each do |path|
   before path do
     @person_names_ids = Person.select("id, person")
-    @excerpt_sources = Excerpt.select("source")
+    @excerpt_sources = Excerpt.uniq.pluck("source")
     
     # IS THIS CHECK NEEDED? DOES THIS OVERWRITE THE BEFORE METHOD ABOVE?
     
@@ -101,6 +99,7 @@ end
 end
 
 # LOADS ERB TO CREATE NEW EXCERPT
+#################### CAN SWITCH TO ACTIVE RECORD
 
 get "/admin/excerpt/new_excerpt" do 
     @path = request.path_info
@@ -113,7 +112,8 @@ get "/admin/excerpt/new_excerpt" do
   erb :"admin/excerpt/new_excerpt"
 end
   
-# LOADS ERB TO UPDATE EXISTING EXCERPT  
+# LOADS ERB TO UPDATE EXISTING EXCERPT 
+#################### CAN SWITCH TO ACTIVE RECORD 
     
 post "/admin/excerpt/update_excerpt" do
     @path = request.path_info
@@ -126,9 +126,8 @@ post "/admin/excerpt/update_excerpt" do
       @excerpt_choice = "/admin/excerpt/_sources_for_update_excerpt"
       
     elsif params["ex_text"].nil? == false #CAN USE HTML5 required  AND VALIDATIONS TO CHECK FOR ERRORS OUTSIDE ROUTE HANDLER
-      a = params["ex_text"].gsub('\'','\'\'') #NEED THIS?
       
-      info = Excerpt.find_specific_record_unformatted({"table"=>"excerpts", "field"=>"excerpt", "value"=>"#{a}"})
+      info = Excerpt.find_specific_record_unformatted({"table"=>"excerpts", "field"=>"excerpt", "value"=>"#{params["ex_text"]}"})
       @new_ex = Excerpt.new(info[0]) # object culled based on excerpt (includes original id)
       @update_erb = "/admin/excerpt/_changes_for_update_excerpt"
     end

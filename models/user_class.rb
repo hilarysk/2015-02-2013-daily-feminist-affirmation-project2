@@ -19,6 +19,10 @@ class User < ActiveRecord::Base
   include FeministInstanceMethods
   include BCrypt
     
+  validates :email, uniqueness: { case_sensitive: false }
+  validates :email, :password, presence: true  
+  
+    
   def password
     @password ||= Password.new(password_hash)
   end

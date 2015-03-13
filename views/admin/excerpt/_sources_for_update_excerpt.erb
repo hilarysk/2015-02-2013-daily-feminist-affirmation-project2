@@ -2,9 +2,9 @@
 
 <p>Click the text that matches the beginning of the excerpt you want to update:</p>
 <form>
-<select name="ex_text">
-<p><% @text_array.each do |s| %>
-  <option value="<%= "#{s}" %>"><%= "#{s.byteslice(0...30)}" %></option>
+<select name="id">
+<p><% @text_array.each do |object| %>
+  <option value="<%= "#{object.id}" %>"><%= "#{object.excerpt.byteslice(0...30)}" %></option>
   <% end %></p>
 </select>
 <br><br>

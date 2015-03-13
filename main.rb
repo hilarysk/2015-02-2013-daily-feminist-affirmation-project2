@@ -27,10 +27,14 @@ require_relative "views/controllers/public"
 set :database, {adapter: "sqlite3", database: "feminist_affirmation.db"}
 
 #ADD VALIDATION FOR CLASSES
-# - DailyFemAff Active Record
+# - DailyFemAff Active Record - more than halfway done
+#    - need help with joins for keyword_items_ids table and readonly database??
+# - DailyFemAff finish admin stuff
+# - DailyFemAff (make more responsive? - take fixed menu and make one where click three bars to see and it appears --> https://github.com/StevenThiesfeld/2015-02-13-fantasy-marvel-league/blob/master/public/css/new-styles.css - nav-trigger class for hiding menu
 # - DailyFemAff JS for main page
-# - DailyFemAff update forms HTML5, finish admin stuff
-# - DailyFemAff (make more responsive? - take fixed menu and make one where click three bars to see and it appears)
 # - DailyFemAff (let people subscribe to get one in email per day)
+
+
+
 
 # binding.pry

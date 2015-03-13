@@ -1,4 +1,8 @@
 <div class="search"><h1>Create a new administrator:</h1>
+  <p class="error"><% @error_messages.each do |message|  %>
+    <%= "ERROR: " + message %><br>
+    <% end %>
+  </p>
   <form action="/admin/create" method="post">
     <strong>Email:</strong><br><br>
     <input type="email" name="email" required>

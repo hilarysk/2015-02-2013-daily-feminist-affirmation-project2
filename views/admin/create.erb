@@ -1,0 +1,24 @@
+<div class="search"><h1>Create a new administrator:</h1>
+  <form action="/admin/create" method="post">
+    <strong>Email:</strong><br><br>
+    <input type="email" name="email" required>
+  <br><br>
+    <strong>Password:</strong><br><br>
+    <input type="password" name="password" required>
+  <br><br>
+    <strong>Privilege level:</strong><br>
+    <ul>
+      <li>1 - All-access</li>
+      <li>2 - Can add to or delete from library, but not create users</li>
+      <li>3 - Can add to library, but not create users or delete items</li>
+    </ul>
+    <input type="number" width="20px" name="privilege" min="1" max="3" required>
+  <br><br>
+    <input class="button" type="submit" value="SUBMIT">
+  <br><br>
+  </form>
+</div>
+  
+
+
+  

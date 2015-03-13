@@ -30,7 +30,7 @@ set :database, {adapter: "sqlite3", database: "feminist_affirmation.db"}
 # - DailyFemAff Active Record
 # - DailyFemAff JS for main page
 # - DailyFemAff update forms HTML5, finish admin stuff
-# - DailyFemAff (attach username to contributions)
 # - DailyFemAff (make more responsive? - take fixed menu and make one where click three bars to see and it appears)
 # - DailyFemAff (let people subscribe to get one in email per day)
-binding.pry
+
+# binding.pry

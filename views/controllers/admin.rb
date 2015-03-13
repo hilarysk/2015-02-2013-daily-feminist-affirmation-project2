@@ -15,25 +15,68 @@ get '/login' do
   erb :"admin/login", :layout => :"/alt_layouts/public_layout" 
 end
 
+#FOR WHEN USING RAILS - SENDS EMAIL IF USER FORGETS PASSWORD - NOT VALID YET
+
+before "/login-forgot" do
+  user = User.find_by(email: params[:email])
+  random_password = Array.new(10).map { (65 + rand(58)).chr }.join
+  user.password = random_password
+  user.save!
+  Mailer.create_and_deliver_password_change(user, random_password)
+  @message = "Your new, temporary password has been emailed to you."
+  erb :"admin/login", :layout => :"/alt_layouts/public_layout"
+end
+
 # CHECKS TO MAKE SURE USER IS IN SYSTEM; IF NOT, RETURNS THEM TO LOGIN PAGE WITH ERROR MESSAGE
 
 get "/user_verification" do
-  # pass = BCrypt::Password.create(params["password"])
-  user = User.where(username: "#{params["username"]}").take    
-  
-  if user.password == params["password"]
+  user = User.find_by(email: params["email"])    
+  if BCrypt::Password.new(user.password) == params["password"].to_s
     session[:user_id] = user.id
-    session[:username] = user.username
+    session[:email] = user.email
+    session[:privilege] = user.privilege
     redirect to ("/admin/update_database")
   else 
     redirect to ("/login?error=We couldn't find you in the system; please try again.")    
   end
 end
 
+# BEFORE CREATE NEW USER PAGE LOADS, MAKES SURE PERSON LOGGED IN HAS ENOUGH PRIVILEGE
+
+before "/admin/create" do
+  if session[:privilege].to_i > 1
+    redirect to ("/admin/update_database?error=Looks like you might need to check your privilege; you don't seem to have permission to do that.")
+  end
+end
+
+# CREATE NEW USER
+
+get "/admin/create" do
+  erb :"/admin/create"
+end
+
+# POST CREATE NEW USER - CHECKS FOR ERRORS, SAVES NEW USER
+
+########################### Still need to add validations check
+
+post "/admin/create" do
+  new_user = User.new(params)
+  #validation issues?
+  new_user.password = params[:password]
+  new_user.save!
+  redirect to ("/admin/update_database?message=New user successfully created: Email: #{new_user.email},  ID: #{new_user.id}, Privilege Level: #{new_user.privilege}")
+    # end
+end
+
 # LOADS PAGE WITH ADMINISTRATIVE ACTIONS
 
 get "/admin/update_database" do
-  @username = "#{session[:username]}"
+  if session[:privilege] == 1
+    @create_option = "<li><a href='/admin/create'>Add new administrator</a></li>"
+  end
+  @error = params["error"]
+  @message = params["message"]
+  @email = "#{session[:email]}"
   erb :"admin/update_database"
 end
 
@@ -102,6 +145,9 @@ post "/admin/excerpt/new_success" do #changed from get
 
   person1 = Person.find_specific_value({"table"=>"people", "field_known"=>"id", "value"=>"#{params["person_id"].to_s}".to_i, "field_unknown"=>"person"})
   success_message1 = "Your excerpt was successfully added:"
+  
+  #something ilke, if params["source"] is not a keyword, add it to keyword table and assign it to item in table ... ugh. that table, tho. then add in message that #{keyword1} etc. was added automatically.
+  
   keywords_message = ""
   
   erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
@@ -124,31 +170,58 @@ post "/admin/excerpt/update_success" do
 end
 
 
+#### look through ^^ again for places to switch out for ActiveRecord, then allow to add people and keywords first, then quotes. Terms leave off for now, because don't have good system for IPA? Or include but it's a hassle for user. 
 
-
-post "/admin/person/new_person" do 
+get "/admin/person/new_person" do 
   erb :"admin/person/new_person"
+end
+
+post "/admin/person/new_success" do 
+  erb :"public/keyword/person_formatting"
 end
 
 post "/admin/person/update_person" do 
   erb :"admin/person/update_person"
 end
 
+post "/admin/person/update_success" do 
+  erb :"public/keyword/person_formatting"
+end
+
 post "/admin/quote/new_quote" do 
   erb :"admin/quote/new_quote"
 end
 
+post "/admin/quote/new_success" do 
+  erb :"public/keyword/quote_formatting"
+end
+
 post "/admin/quote/update_quote" do 
   erb :"admin/quote/update_quote"
+end
+  
+post "/admin/quote/update_success" do 
+  erb :"public/keyword/quote_formatting"
 end
 
 post "/admin/term/new_term" do 
   erb :"admin/term/new_term"
 end
 
+post "/admin/term/new_success" do 
+  erb :"public/keyword/term_formatting"
+end
+
 post "/admin/term/update_term" do 
   erb :"admin/term/update_term"
 end
+
+post "/admin/term/update_success" do 
+  erb :"public/keyword/term_formatting"
+end
+
+
+
 
 post "/admin/tag/new_tag" do 
   erb :"admin/tag/new_tag"
@@ -165,7 +238,7 @@ end
 
 before "/logout" do 
   session[:user_id] = nil
-  session[:username] = nil
+  session[:email] = nil
 end
 
 # LOGOUT ROUTE ADDS LOGOUT MESSAGE LOADS LOGIN

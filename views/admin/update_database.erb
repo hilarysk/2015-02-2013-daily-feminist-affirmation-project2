@@ -1,4 +1,5 @@
-<div class="search"><h1>Welcome, <%= @username %>!</h1>
+<div class="search"><h1>Welcome, <%= @email %>!</h1>
+<p><%= @message %><div class="error"><%= @error %></div></p>
 <p>What would you like to do today?</p>
 <p><strong>Add a new item:</strong></p>
 <ul>
@@ -6,6 +7,7 @@
   <li><a href="/admin/term/new_term">Term</a></li> <!-- might need to delete so just /admin/term -->
   <li><a href="/admin/quote/new_quote">Quote</a></li>
   <li><a href="/admin/person/new_person">Person</a></li>
+  <%= @create_option %>
 </ul>
 <p><strong>Update an existing item:</strong></p>
 <ul>
@@ -18,5 +20,6 @@
 <ul>
   <li><a href="/admin/tag/new_tag">Add tags</a></li>
   <li><a href="/admin/tag/assign_tag">Assign tags to items</a></li>
-</ul></div>
+</ul>
+</div>
 <div class="bottomspacer"></div>

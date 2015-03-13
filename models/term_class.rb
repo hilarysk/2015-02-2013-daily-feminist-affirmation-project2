@@ -24,7 +24,8 @@ class Term < ActiveRecord::Base
   extend FeministClassMethods
   include FeministInstanceMethods
   
-  
+  has_many :keyword_items, as: :item
+
 
 
   # Public: #self.array_of_term_records

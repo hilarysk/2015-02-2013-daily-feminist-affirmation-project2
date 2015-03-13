@@ -4,8 +4,8 @@
 
 <form action="/keyword">
 <br><select name="keyword">
-<% @keywords.each do |hash| %>
-<option value="<%= hash["keyword"] %>"><%= hash["keyword"] %></option>
+<% @keywords.each do |object| %>
+<option value="<%= object.keyword %>"><%= object.keyword %></option>
 <% end %>
 </select>
 <br><br>

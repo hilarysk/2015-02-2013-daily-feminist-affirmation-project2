@@ -1,5 +1,5 @@
 # LINK TO SEE SPECIFIC ITEM
-
+###############################################
 get "/item" do  ##--> localhost:4567/item?table=quotes&id=4
 
   if params["table"] == "quotes"
@@ -9,7 +9,7 @@ get "/item" do  ##--> localhost:4567/item?table=quotes&id=4
     erb :"public/quote", :layout => :"/alt_layouts/public_layout"
 
   elsif params["table"] == "excerpts"
-    @item = Excerpt..where("id = ?", params["id"])[0]
+    @item = Excerpt.where("id = ?", params["id"])[0]
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"excerpts", "id_of_item"=>"#{@item.id.to_s}"})
 
     erb :"public/excerpt", :layout => :"/alt_layouts/layout_excerpt"
@@ -42,6 +42,7 @@ get "/home" do
 end
 
 # PAGE WITH MAIN CONTENT FOR PUBLIC
+#################################################
 
 get "/yay" do
     
@@ -78,7 +79,7 @@ get "/yay" do
 end
 
 #LOADS KEYWORD PAGE
-
+######################################
 get "/keyword" do
   @keyword = params["keyword"]
   @results = KeywordItem.get_array_items_for_keyword({"keyword"=>"#{@keyword.to_s}"})
@@ -95,6 +96,10 @@ end
 #LOADS SEARCH PAGE
 
 get "/search" do
-  @keywords = Keyword.select("keyword")
+  @keywords = Keyword.select("keyword").to_a  
+  @keywords.delete_if do |object|
+    object.keyword == "quote" || object.keyword == "excerpt" || object.keyword == "term" || object.keyword == "person"
+  end  
+      
   erb :"public/search", :layout => :"/alt_layouts/public_layout"
 end

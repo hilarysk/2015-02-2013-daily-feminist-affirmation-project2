@@ -13,11 +13,8 @@ DATABASE.execute("CREATE TABLE IF NOT EXISTS terms (id INTEGER PRIMARY KEY, term
 
 DATABASE.execute("CREATE TABLE IF NOT EXISTS keywords (id INTEGER PRIMARY KEY, keyword TEXT)")
 
-DATABASE.execute("CREATE TABLE IF NOT EXISTS keyword_items (keyword_id INTEGER, item_id INTEGER, item_table_id INTEGER, FOREIGN KEY(item_table_id) REFERENCES item_tables(id), FOREIGN KEY(keyword_id) REFERENCES keywords(id))")
+DATABASE.execute("CREATE TABLE IF NOT EXISTS keyword_items (keyword_id INTEGER, item_id INTEGER, item_type TEXT, FOREIGN KEY(keyword_id) REFERENCES keywords(id))")
 
-DATABASE.execute("CREATE TABLE IF NOT EXISTS item_tables (id INTEGER PRIMARY KEY, table_name TEXT)")
+# DATABASE.execute("CREATE TABLE IF NOT EXISTS item_tables (id INTEGER PRIMARY KEY, table_name TEXT)")
 
 DATABASE.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT UNIQUE, password_hash TEXT, privilege INTEGER)")
-
-
-# ADD FOREIGN KEY USER_ID TO EXCERPTS, TERMS, PEOPLE, QUOTES TO SEE WHICH ADMINSITRATOR ADDED WHICH ITEM

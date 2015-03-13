@@ -141,13 +141,13 @@ post "/admin/excerpt/new_success" do #changed from get
   
   if new_excerpt.valid?
     new_excerpt.save   # AUTOMATICALLY TAG KEYWORD, SOURCE, PERSON? 
-    person1 = Person.find_specific_value({"table"=>"people", "field_known"=>"id", "value"=>"#{params["person_id"].to_s}".to_i, "field_unknown"=>"person"})
+    person1 = Person.where("id = ?", params["person_id"])[0].person
     success_message1 = "Your excerpt was successfully added:"
   
     #something ilke, if params["source"] is not a keyword, add it to keyword table and assign it to item in table ... ugh.      that table, tho. then add in message that #{keyword1} etc. was added automatically.
-    keywords_message = ""
+    @add_keywords = ""
   
-    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
+    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}"}
   
   else
     @error_messages = new_excerpt.errors.to_a

@@ -1,5 +1,3 @@
-require_relative "class-module.rb"
-require_relative "instance-module.rb"
 
 # Class: Match
 #
@@ -22,7 +20,7 @@ class ItemTable < ActiveRecord::Base
   extend FeministClassMethods
   include FeministInstanceMethods
 
-  has_many :item_ids, through: :keyword_items #??????
+  
 
     
 end

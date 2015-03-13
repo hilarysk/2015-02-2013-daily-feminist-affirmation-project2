@@ -28,6 +28,16 @@ class Excerpt < ActiveRecord::Base
   include FeministInstanceMethods
   
   belongs_to :person
+  
+  has_many :keyword_items, as: :item
+
+  
+  
+  
+  
+  
+  
+  
 
 #     #SOURCE ERRORS
 #

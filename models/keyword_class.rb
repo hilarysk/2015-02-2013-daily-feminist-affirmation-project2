@@ -24,24 +24,30 @@ class Keyword < ActiveRecord::Base
   extend FeministClassMethods
   include FeministInstanceMethods
 
-  # Private: initialize
-  # Creates new keywords
-  #
-  # Parameters:
-  # options - Hash
-  #           - @keyword - Instance variable representing the actual keyword
-  #           - @id      - Instance variable representing the keyword ID within the table (primary key)
-  # Returns:
-  # The object
-  #
-  # State Changes:
-  # Sets instance variables @keyword, @errors and @id     
-                               
-  def initialize(options)
-    @id = options["id"]
-    @keyword = options["keyword"]
+  has_many :keyword_items
+  
+  has_many :excerpts, :through => :keyword_items, source_type: "Excerpt", source: :item
+  has_many :quotes, :through => :keyword_items, source_type: "Quote", source: :item
+  has_many :people, :through => :keyword_items, source_type: "Person", source: :item
+  has_many :terms, :through => :keyword_items, source_type: "Term", source: :item
+  
+  def items
+    array = []
+    self.excerpts.each do |object|
+      array.push object
+    end
+    self.quotes.each do |object|
+      array.push object
+    end
+    self.terms.each do |object|
+      array.push object
+    end
+    self.people.each do |object|
+      array.push object
+    end
+    return array
   end
-
+    
   # Public: #self.get_array_keywords
   # Creates an array of all keywords
   #

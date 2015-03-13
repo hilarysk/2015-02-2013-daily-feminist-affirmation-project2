@@ -33,6 +33,13 @@ class Person < ActiveRecord::Base
 
   has_many :excerpts
   has_many :quotes
+
+  has_many :keyword_items, as: :item
+  
+  
+  
+  
+  
   
   # Public: #self.array_of_person_records
   # Creates an array of all items from people table

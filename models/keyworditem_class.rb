@@ -26,6 +26,9 @@ class KeywordItem < ActiveRecord::Base
   extend FeministClassMethods
   include FeministInstanceMethods
   
+  belongs_to :keyword
+  belongs_to :item, polymorphic: true #builds in item_id and item_type
+  
   #??????????????????
 
   # Public: #self.get_array_keywords_for_item

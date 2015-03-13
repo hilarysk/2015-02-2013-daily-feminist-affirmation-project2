@@ -99,13 +99,12 @@ end
 end
 
 # LOADS ERB TO CREATE NEW EXCERPT
-#################### CAN SWITCH TO ACTIVE RECORD
 
 get "/admin/excerpt/new_excerpt" do 
     @path = request.path_info
     
     if params["source"].nil? == false
-      @text_array = Excerpt.find_specific_value_array({"table"=>"excerpts", "field_known"=>"source", "value"=>"#{params["source"]}", "field_unknown"=>"excerpt"})
+      @text_array = Excerpt.where("source = ?", params["source"])
       @excerpt_choice = "/admin/excerpt/_sources_for_new_excerpt"
     end
   
@@ -119,16 +118,13 @@ post "/admin/excerpt/update_excerpt" do
     @path = request.path_info
     
     if params["source"].nil? == false
-      @text_array = Excerpt.find_specific_value_array({"table"=>"excerpts", "field_known"=>"source", "value"=>"#{params["source"]}", "field_unknown"=>"excerpt"})
-      
-      # ^ This needs become this instead: [{"id"=>5, "excerpt"=>"asjdflaksdjflaskdfjalsdfjasdf"}] ??
-      
+      @text_array = Excerpt.where("source = ?", params["source"])
       @excerpt_choice = "/admin/excerpt/_sources_for_update_excerpt"
       
-    elsif params["ex_text"].nil? == false #CAN USE HTML5 required  AND VALIDATIONS TO CHECK FOR ERRORS OUTSIDE ROUTE HANDLER
+    elsif params["ex_text"].nil? == false #CAN USE HTML5 required  AND VALIDATIONS TO CHECK FOR ERRORS 
       
-      info = Excerpt.find_specific_record_unformatted({"table"=>"excerpts", "field"=>"excerpt", "value"=>"#{params["ex_text"]}"})
-      @new_ex = Excerpt.new(info[0]) # object culled based on excerpt (includes original id)
+      info = Excerpt.where("id = ?", params["id"])
+      @new_ex = Excerpt.new(info[0])
       @update_erb = "/admin/excerpt/_changes_for_update_excerpt"
     end
     
@@ -157,24 +153,27 @@ post "/admin/excerpt/new_success" do #changed from get
   erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
 end
      
-# UPDATED EXCERPT SUCCESS - !!!!!!!!!!!!! NEED TO PUT ERRORS HERE !!!!!!!!!!!!     
+# UPDATED EXCERPT SUCCESS - need to test ^^ deploy up here
+#####################################    
       
 post "/admin/excerpt/update_success" do 
   new_excerpt = Excerpt.new(params)
   
-  # ERROR CHECK GOES HERE
+  if new_excerpt.valid?
+    new_excerpt.save! #need exclamation?
+    person1 = Person.where("id = ?", new_excerpt.person_id)
+    success_message1 = "The excerpt was successfully updated:"
+    keywords_message = "<h3><em>Thank you!</em></h3><p>Now, <a href='/assign_tag'>add some keywords</a> to describe this excerpt.</p>"
+    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1.person}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
   
-  new_excerpt.save({"table"=>"excerpts", "item_id"=>"#{(params["id"]).to_s}"})
- 
-  person1 = Person.find_specific_value({"table"=>"people", "field_known"=>"id", "value"=>"{(new_excerpt.person_id).to_s}".to_i, "field_unknown"=>"person"})
-  success_message1 = "The excerpt was successfully updated:"
-  keywords_message = "<h3><em>Thank you!</em></h3><p>Now, <a href='/assign_tag'>add some keywords</a> to describe this excerpt.</p>"
-
-  erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
+  else 
+    @error_messages = new_user.errors.to_a
+    erb :"/admin/excerpt/update_excerpt"
+  
+  end
 end
 
-
-#### look through ^^ again for places to switch out for ActiveRecord, then allow to add people and keywords first, then quotes. Terms leave off for now, because don't have good system for IPA? Or include but it's a hassle for user. 
+#### allow to add people and keywords first, then quotes. Terms leave off for now, because don't have good system for IPA? Or include but it's a hassle for user. 
 
 get "/admin/person/new_person" do 
   erb :"admin/person/new_person"

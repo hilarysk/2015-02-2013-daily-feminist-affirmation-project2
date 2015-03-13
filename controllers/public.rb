@@ -1,31 +1,33 @@
-get "/item" do  ##--> localhost:4546/item?table=quotes&id=4
+# LINK TO SEE SPECIFIC ITEM
+
+get "/item" do  ##--> localhost:4567/item?table=quotes&id=4
 
   if params["table"] == "quotes"
-    @item = Quote.get_all_specific_quote_data(params["id"])
-    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"quotes", "id_of_item"=>"#{@item["id"].to_s}"})
+    @item = Quote.where("id = ?", params["id"])[0]
+    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"quotes", "id_of_item"=>"#{@item.id.to_s}"})
 
     erb :"public/quote", :layout => :"/alt_layouts/public_layout"
 
   elsif params["table"] == "excerpts"
-    @item = Excerpt.get_all_specific_excerpt_data(params["id"])
-    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"excerpts", "id_of_item"=>"#{@item["id"].to_s}"})
+    @item = Excerpt..where("id = ?", params["id"])[0]
+    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"excerpts", "id_of_item"=>"#{@item.id.to_s}"})
 
     erb :"public/excerpt", :layout => :"/alt_layouts/layout_excerpt"
 
   elsif params["table"] == "people"
-    @item = Person.get_all_specific_person_data(params["id"])
+    @item = Person.where("id = ?", params["id"])[0]
 
-    if @item["state"] != ""
-      @item["state"] = "#{@item["state"]}, "
+    if @item.state != ""
+      @item.state = "#{@item.state}, "
     end
 
-    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"people", "id_of_item"=>"#{@item["id"].to_s}"})
+    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"people", "id_of_item"=>"#{@item.id.to_s}"})
 
     erb :"public/person", :layout => :"/alt_layouts/public_layout"
 
   elsif params["table"] == "terms"
-    @item = Term.get_all_specific_term_data(params["id"])
-    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"terms", "id_of_item"=>"#{@item["id"].to_s}"})
+    @item = Term.where("id = ?", params["id"])[0]
+    @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"terms", "id_of_item"=>"#{@item.id.to_s}"})
 
     erb :"public/term", :layout => :"/alt_layouts/public_layout"
 
@@ -33,32 +35,33 @@ get "/item" do  ##--> localhost:4546/item?table=quotes&id=4
   
 end
 
+# HOME PAGE
+
 get "/home" do 
   erb :"public/home", :layout => :"alt_layouts/layout_home"
 end
 
+# PAGE WITH MAIN CONTENT FOR PUBLIC
+
 get "/yay" do
-  
-  item = (Quote.array_of_quote_records + Term.array_of_term_records + Excerpt.array_of_excerpt_records + Person.array_of_person_records).sample
+    
+  item = (Quote.all + Term.all + Excerpt.all + Person.all).sample
 
-  # item = Composite.get_all_potential_items.sample # - use joins to get info from each of four tables in one query
-  # Create new Composite class on which to call 
-
-  if item.keys[1] == "quote"
-    @item = item #==> array of attributes
+  if item.class == Quote
+    @item = item #==> object of attributes
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"quotes", "id_of_item"=>"#{@item["id"].to_s}"})
     
     erb :"public/quote", :layout => :"/alt_layouts/public_layout"
 
-  elsif item.keys[1] == "excerpt"
+  elsif item.class == Excerpt
     @item = item
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"excerpts", "id_of_item"=>"#{@item["id"].to_s}"})  
     
     erb :"public/excerpt", :layout => :"/alt_layouts/layout_excerpt"
 
-  elsif item.keys[1] == "person"
-    if item["state"] != ""
-      item["state"] = "#{item["state"]}, "
+  elsif item.class == Person
+    if item.state != ""
+      item.state = "#{item.state}, "
     end
     
     @item = item
@@ -66,13 +69,15 @@ get "/yay" do
     
     erb :"public/person", :layout => :"/alt_layouts/public_layout"
 
-  elsif item.keys[1] == "term"
+  elsif item.class == Term
     @item = item 
     @keywords = KeywordItem.get_array_keywords_for_item({"table"=>"terms", "id_of_item"=>"#{@item["id"].to_s}"})
     
     erb :"public/term", :layout => :"/alt_layouts/public_layout"
   end
 end
+
+#LOADS KEYWORD PAGE
 
 get "/keyword" do
   @keyword = params["keyword"]
@@ -81,11 +86,15 @@ get "/keyword" do
   erb :"public/keyword/keyword_partials", :layout => :"/alt_layouts/public_layout"
 end
 
+#LOADS ABOUT PAGE
+
 get "/about" do
   erb :"public/about", :layout => :"/alt_layouts/public_layout"
 end
 
+#LOADS SEARCH PAGE
+
 get "/search" do
-  @keywords = Keyword.get_array_keywords
+  @keywords = Keyword.select("keyword")
   erb :"public/search", :layout => :"/alt_layouts/public_layout"
 end

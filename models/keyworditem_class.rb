@@ -7,6 +7,8 @@
 # @item_id       - Integer: ID for the item (primary key ID from corresponding table)
 # @item_table_id - Integer: ID for the table where the item resides
 #
+######################### NEED PRIMARY KEY ID? ###########################
+#
 # attr_accessor :item_id, :keyword_id, :item_table_id
 #
 # Public Methods:

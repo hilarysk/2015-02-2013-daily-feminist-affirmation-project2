@@ -15,7 +15,7 @@ get '/login' do
   erb :"admin/login", :layout => :"/alt_layouts/public_layout" 
 end
 
-#FOR WHEN USING RAILS - SENDS EMAIL IF USER FORGETS PASSWORD - NOT VALID YET
+#FOR WHEN USING RAILS - SENDS EMAIL IF USER FORGETS PASSWORD - NOT VALID YET BC NOT USING RAILS
 
 before "/login-forgot" do
   user = User.find_by(email: params[:email])
@@ -112,16 +112,15 @@ get "/admin/excerpt/new_excerpt" do
 end
   
 # LOADS ERB TO UPDATE EXISTING EXCERPT 
-#################### CAN SWITCH TO ACTIVE RECORD 
-    
-post "/admin/excerpt/update_excerpt" do
+############################################ test    
+get "/admin/excerpt/update_excerpt" do
     @path = request.path_info
     
     if params["source"].nil? == false
       @text_array = Excerpt.where("source = ?", params["source"])
       @excerpt_choice = "/admin/excerpt/_sources_for_update_excerpt"
       
-    elsif params["ex_text"].nil? == false #CAN USE HTML5 required  AND VALIDATIONS TO CHECK FOR ERRORS 
+    elsif params["id"].nil? == false #CAN USE HTML5 required  AND VALIDATIONS TO CHECK FOR ERRORS 
       
       info = Excerpt.where("id = ?", params["id"])
       @new_ex = Excerpt.new(info[0])
@@ -139,18 +138,22 @@ post "/admin/excerpt/new_success" do #changed from get
   end
   
   new_excerpt = Excerpt.new(params)
-  new_excerpt.save
   
-  # AUTOMATICALLY TAG KEYWORD, SOURCE, PERSON? 
-
-  person1 = Person.find_specific_value({"table"=>"people", "field_known"=>"id", "value"=>"#{params["person_id"].to_s}".to_i, "field_unknown"=>"person"})
-  success_message1 = "Your excerpt was successfully added:"
+  if new_excerpt.valid?
+    new_excerpt.save   # AUTOMATICALLY TAG KEYWORD, SOURCE, PERSON? 
+    person1 = Person.find_specific_value({"table"=>"people", "field_known"=>"id", "value"=>"#{params["person_id"].to_s}".to_i, "field_unknown"=>"person"})
+    success_message1 = "Your excerpt was successfully added:"
   
-  #something ilke, if params["source"] is not a keyword, add it to keyword table and assign it to item in table ... ugh. that table, tho. then add in message that #{keyword1} etc. was added automatically.
+    #something ilke, if params["source"] is not a keyword, add it to keyword table and assign it to item in table ... ugh.      that table, tho. then add in message that #{keyword1} etc. was added automatically.
+    keywords_message = ""
   
-  keywords_message = ""
+    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
   
-  erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
+  else
+    @error_messages = new_excerpt.errors.to_a
+    erb :"/admin/excerpt/new_excerpt"
+  end
+    
 end
      
 # UPDATED EXCERPT SUCCESS - need to test ^^ deploy up here
@@ -167,13 +170,17 @@ post "/admin/excerpt/update_success" do
     erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1.person}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
   
   else 
-    @error_messages = new_user.errors.to_a
+    @error_messages = new_excerpt.errors.to_a
     erb :"/admin/excerpt/update_excerpt"
   
   end
 end
 
 #### allow to add people and keywords first, then quotes. Terms leave off for now, because don't have good system for IPA? Or include but it's a hassle for user. 
+
+
+
+
 
 get "/admin/person/new_person" do 
   erb :"admin/person/new_person"
@@ -242,6 +249,7 @@ end
 before "/logout" do 
   session[:user_id] = nil
   session[:email] = nil
+  session[:privilege] = nil
 end
 
 # LOGOUT ROUTE ADDS LOGOUT MESSAGE LOADS LOGIN

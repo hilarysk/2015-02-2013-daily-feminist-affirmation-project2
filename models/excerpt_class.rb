@@ -28,30 +28,6 @@ class Excerpt < ActiveRecord::Base
   include FeministInstanceMethods
   
   belongs_to :person
-  #has_and_belongs_to_many :keywords?
-  
-
-  # Private: initialize
-  # Starts and then plays the game with the provided players.
-  #
-  # Parameters:
-  # options - Hash
-  #           - @excerpt   - String: Text of Excerpt
-  #           - @id        - Integer: Excerpt ID, primary key for excerpts table
-  #           - @source    - String: Source of excerpt (magazine, book, song, etc.)
-  #           - @person_id - Integer: Foreign key linked to ID primary key from people table
-  #          
-  # Returns:
-  # The object
-  #
-  # State Changes:
-  # Sets instance variables @excerpt, @id, @source, @person_id
-                               
-  def initialize(options)
-    @id = options["id"].to_i
-    @excerpt = options["excerpt"]
-    @source = options["source"]
-    @person_id = options["person_id"]
 
 #     #SOURCE ERRORS
 #
@@ -74,49 +50,5 @@ class Excerpt < ActiveRecord::Base
 #     end
     
     
-  end
-
-
-  # Public: #self.array_of_excerpt_records
-  # Creates an array of all items from excerpts table
-  #
-  # Parameters:
-  # None                    
-  #
-  # Returns:
-  # An array of all excerpts records
-  # 
-  # State changes:
-  # None    
-    
-  def self.array_of_excerpt_records
-    excerpts_array = DATABASE.execute("SELECT excerpts.id, excerpts.excerpt, excerpts.source, people.person FROM excerpts JOIN people ON excerpts.person_id = people.id") # returns array of hashes, each has is a record
-    
-    delete_secondary_kvpairs(excerpts_array, :placeholder)
-    
-    return excerpts_array #==> excerpts_array = [{"id"=>"1", "excerpt"=>"sldkjflaskdjfaksldjfaklsdfjasdf", "source"=>"book", "person"=>"Ella Baker"}]
- 
-  end
-  
-  # Public: #self.get_all_specific_excerpt_data
-  # Creates an array with a hash containing all excerpt info
-  #
-  # Parameters:
-  # id - id of the record sought                    
-  #
-  # Returns:
-  # An array of a hash representing the record asked for
-  # 
-  # State changes:
-  # None    
-    
-  def self.get_all_specific_excerpt_data(id)
-    Excerpt.array_of_excerpt_records.each do |hash|
-      if hash["id"] == id.to_i
-        return hash
-      end
-    end
-        
-  end
     
 end

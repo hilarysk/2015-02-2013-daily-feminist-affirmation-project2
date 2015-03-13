@@ -5,11 +5,11 @@
    
   <strong>Text:</strong><br>
   (Maximum of 825 characters.)<br><br>
-  <textarea cols="60" rows="8" maxlength="825" name="excerpt"><%= "#{@new_ex.excerpt}" %>
+  <textarea cols="60" rows="8" maxlength="825" required name="excerpt"><%= "#{@new_ex.excerpt}" %>
   </textarea>
   <br><br>
   <strong>Source:<br><br></strong>
-    <input type="text" name="source" value="<%= "#{@new_ex.source}" %>"></input><br><br>
+    <input type="text" name="source" required value="<%= "#{@new_ex.source}" %>"></input><br><br>
   <strong>Author:</strong><br>
   (Note: If author is not listed below, you need to <a href="/admin/person?action=new">create a person entry</a> for the author, first.)<br><br>
   <select name="person_id">
@@ -17,8 +17,7 @@
   <option value="<%= "#{object.id}" %>"><%= "#{object.person}" %></option>
   <% end  %>
   </select><br><br>
-  <input type="hidden" name="action" value="update">
-  <input type="hidden" name= "id" value="<%= "#{(@new_ex.id).to_s}" %>">
+  <!-- <input type="hidden" name= "id" value="<%= "#{(@new_ex.id).to_s}" %>"> -->
   <input type="submit" class="navbutton" value="SUBMIT">
   <br><br>
   </form>

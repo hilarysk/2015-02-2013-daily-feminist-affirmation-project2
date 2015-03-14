@@ -1,9 +1,15 @@
 <div class="search"><h1>Create a new administrator:</h1>
-  <p class="error"><% @error_messages.each do |message|  %>
-    <%= "ERROR: " + message %><br>
+  <p class="error">
+    <% if @error_messages %>
+      <% @error_messages.each do |message|  %>
+        <%= "ERROR: " + message %><br>
+      <% end %>
     <% end %>
   </p>
   <form action="/admin/create" method="post">
+    <strong>Full name:</strong><br><br>
+      <input type="text" name="user_name" required>
+    <br><br>
     <strong>Email:</strong><br><br>
     <input type="email" name="email" required>
   <br><br>

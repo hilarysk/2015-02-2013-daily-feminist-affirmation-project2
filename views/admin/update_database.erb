@@ -1,4 +1,4 @@
-<div class="search"><h1>Welcome, <%= @email %>!</h1>
+<div class="search"><h1>Welcome, <%= @name %>!</h1>
 <p><%= @message %><div class="error"><%= @error %></div></p>
 <p>What would you like to do today?</p>
 <p><strong>Add a new item:</strong></p>
@@ -8,6 +8,7 @@
   <li><a href="/admin/quote/new_quote">Quote</a></li>
   <li><a href="/admin/person/new_person">Person</a></li>
   <%= @create_option %>
+  <%= @contrib_option %>
 </ul>
 <p><strong>Update an existing item:</strong></p>
 <ul>

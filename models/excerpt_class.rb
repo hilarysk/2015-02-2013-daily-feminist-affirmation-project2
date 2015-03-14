@@ -28,6 +28,7 @@ class Excerpt < ActiveRecord::Base
   include FeministInstanceMethods
   
   belongs_to :person
+  belongs_to :user
   
   has_many :keyword_items, as: :item
 

@@ -11,6 +11,15 @@ require "pry"
 
 module FeministInstanceMethods
   
+  def get_keywords
+    array = []
+    self.keyword_items.each do |object|
+      array.push object.keyword.keyword 
+    end
+    
+    return array
+  end
+  
 
   # # Public: #save
   # # Updates a specific record with changes made

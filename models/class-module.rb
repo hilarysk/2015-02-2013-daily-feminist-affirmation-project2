@@ -14,6 +14,12 @@
 
 module FeministClassMethods
   
+
+  
+  
+  
+  
+  
   
 
   # Public: #find_specifc_record_unformatted

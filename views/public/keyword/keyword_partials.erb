@@ -1,22 +1,22 @@
 <div class="keywordlist"><h1 align="center">Items tagged "<%= "#{@keyword}" %>"</h1><br><br>
 
-  <%  @results.each do |hash| %>
-   <% if hash.keys[1] == "quote" %>
-     <%= erb :"public/keyword/_quote_formatting", :locals => {:quote => "#{hash["quote"]}", :quoter => "#{hash["person_id"]}", :success_message=>""} %>
+  <%  @results.each do |object| %>
+   <% if object.class == Quote %>
+     <%= erb :"public/keyword/_quote_formatting", :locals => {:quote => "#{object.quote}", :quoter => "#{object.person.person}", :success_message=>""} %>
    
-   <% elsif hash.keys[1] == "term"%>
-     <%= erb :"public/keyword/_term_formatting", :locals => {:term => "#{hash["term"]}", :definition => "#{hash["definition"]}", :phonetic => "#{hash["phonetic"]}", :success_message=>""} %>
+   <% elsif object.class == Term%>
+     <%= erb :"public/keyword/_term_formatting", :locals => {:term => "#{object.term}", :definition => "#{object.definition}", :phonetic => "#{object.phonetic}", :success_message=>""} %>
      
-  <% elsif hash.keys[1] == "excerpt"%>
-    <%= erb :"public/keyword/_excerpt_formatting", :locals => {:excerpt => "#{hash["excerpt"]}", :person => "#{hash["person_id"]}", :source => "#{hash["source"]}", :success_message=>""} %>
+  <% elsif object.class == Excerpt%>
+    <%= erb :"public/keyword/_excerpt_formatting", :locals => {:excerpt => "#{object.excerpt}", :person => "#{object.person.person}", :source => "#{object.source}", :success_message=>""} %>
      
-   <% elsif hash.keys[1] == "person"%>
-     <% if hash["state"] == ""%>
+   <% elsif object.class == Person%>
+     <% if object.state == ""%>
        <% @state = "" %>
      <% else  %>
-        <% @state = "#{hash["state"]}, " %>
+        <% @state = "#{object.state}, " %>
      <% end  %>
-     <%= erb :"public/keyword/_person_formatting", :locals => {:bio => "#{hash["bio"]}", :name => "#{hash["person"]}", :image => "#{hash["image"]}", :source => "#{hash["source"]}", :state => "#{@state}", :country => "#{hash["country"]}", :caption => "#{hash["caption"]}", :success_message=>""} %>
+     <%= erb :"public/keyword/_person_formatting", :locals => {:bio => "#{object.bio}", :name => "#{object.person}", :image => "#{object.image}", :source => "#{object.source}", :state => "#{@state}", :country => "#{object.country}", :caption => "#{object.caption}", :success_message=>""} %>
 
      
      

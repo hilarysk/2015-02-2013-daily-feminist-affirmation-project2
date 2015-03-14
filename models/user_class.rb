@@ -3,7 +3,8 @@
 # Creates different users.
 #
 # Attributes:
-# @emain    - String: User email
+# @email    - String: User email
+# @user_name     - String: User name
 # @id       - Integer: user ID, primary key for users table
 # @password - String: user's password
 #
@@ -22,6 +23,10 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: { case_sensitive: false }
   validates :email, :password, presence: true  
   
+  has_many :terms
+  has_many :excerpts
+  has_many :people
+  has_many :quotes
     
   def password
     @password ||= Password.new(password_hash)
@@ -31,5 +36,23 @@ class User < ActiveRecord::Base
     @password = Password.create(new_password)
     self.password_hash = @password
   end
+  
+  def items_array
+    array = []
+    self.excerpts.each do |object|
+      array.push object
+    end
+    self.quotes.each do |object|
+      array.push object
+    end
+    self.terms.each do |object|
+      array.push object
+    end
+    self.people.each do |object|
+      array.push object
+    end
+    return array
+  end
 
+  
 end

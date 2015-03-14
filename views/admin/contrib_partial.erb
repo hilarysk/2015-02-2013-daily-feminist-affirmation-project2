@@ -1,0 +1,24 @@
+<h3 align="center">Items added by "<%= "#{@user.user_name}" %>"</h3>
+
+<%  @items.each do |object| %>
+ <% if object.class == Quote %>
+   <%= erb :"public/keyword/_quote_formatting", :locals => {:quote => "#{object.quote}", :quoter => "#{object.person.person}", :success_message=>""} %>
+ 
+ <% elsif object.class == Term%>
+   <%= erb :"public/keyword/_term_formatting", :locals => {:term => "#{object.term}", :definition => "#{object.definition}", :phonetic => "#{object.phonetic}", :success_message=>""} %>
+   
+<% elsif object.class == Excerpt%>
+  <%= erb :"public/keyword/_excerpt_formatting", :locals => {:excerpt => "#{object.excerpt}", :person => "#{object.person.person}", :source => "#{object.source}", :success_message=>""} %>
+   
+ <% elsif object.class == Person%>
+   <% if object.state == ""%>
+     <% @state = "" %>
+   <% else  %>
+      <% @state = "#{object.state}, " %>
+   <% end  %>
+   <%= erb :"public/keyword/_person_formatting", :locals => {:bio => "#{object.bio}", :name => "#{object.person}", :image => "#{object.image}", :source => "#{object.source}", :state => "#{@state}", :country => "#{object.country}", :caption => "#{object.caption}", :success_message=>""} %>
+
+   
+   
+ <% end %>
+<% end %>

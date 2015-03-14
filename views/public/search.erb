@@ -5,7 +5,11 @@
 <form action="/keyword">
 <br><select name="keyword">
 <% @keywords.each do |object| %>
-<option value="<%= object.keyword %>"><%= object.keyword %></option>
+  <% if object.keyword.length > 40 %>
+    <option value="<%= object.keyword %>"><%= object.keyword.byteslice(0...40) %> ...</option>
+  <% else %>
+    <option value="<%= object.keyword %>"><%= object.keyword %></option>
+  <% end %>
 <% end %>
 </select>
 <br><br>

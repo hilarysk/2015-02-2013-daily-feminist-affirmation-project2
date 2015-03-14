@@ -35,6 +35,7 @@ get "/user_verification" do
     session[:user_id] = user.id
     session[:email] = user.email
     session[:privilege] = user.privilege
+    session[:name] = user.user_name
     redirect to ("/admin/update_database")
   else 
     redirect to ("/login?error=We couldn't find you in the system; please try again.")    
@@ -43,9 +44,12 @@ end
 
 # BEFORE CREATE NEW USER PAGE LOADS, MAKES SURE PERSON LOGGED IN HAS ENOUGH PRIVILEGE
 
-before "/admin/create" do
-  if session[:privilege].to_i > 1
-    redirect to ("/admin/update_database?error=Looks like you might need to check your privilege; you don't seem to have permission to do that.")
+["/admin/create", "/admin/contrib"].each do |path|
+  before path do 
+    if session[:privilege].to_i > 1
+      redirect to ("/admin/update_database?error=Looks like you might need to check your privilege; you don't seem to have permission to do that. :(")
+    end
+    
   end
 end
 
@@ -57,13 +61,14 @@ end
 
 # POST CREATE NEW USER - CHECKS FOR ERRORS, SAVES NEW USER
 
+#################################### test
+
 post "/admin/create" do
   new_user = User.new(params)
+  new_user.password = params[:password]
   
-  if new_user.valid?
-    new_user.password = params[:password]
-    new_user.save!
-    redirect to ("/admin/update_database?message=New user successfully created: Email: #{new_user.email},  ID: #{new_user.id}, Privilege Level: #{new_user.privilege}")
+  if new_user.create
+    redirect to ("/admin/update_database?message=New user successfully created:<br><strong>Name:</strong> #{new_user.user_name}<br><strong>Email:</strong> #{new_user.email}<br><strong>ID:</strong> #{new_user.id}<br><strong>Privilege Level:</strong> #{new_user.privilege}")
   
   else 
     @error_messages = new_user.errors.to_a
@@ -76,12 +81,30 @@ end
 get "/admin/update_database" do
   if session[:privilege] == 1
     @create_option = "<li><a href='/admin/create'>Add new administrator</a></li>"
+    @contrib_option = "<li><a href='/admin/contrib'>See administrator's contributions</a></li>"
   end
   @error = params["error"]
   @message = params["message"]
-  @email = "#{session[:email]}"
+  @name = "#{session[:name]}"
   erb :"admin/update_database"
 end
+
+# SEE LIST OF WHO CONTRIBUTED WHAT
+
+###############################################  test
+get "/admin/contrib" do 
+  @all_admins = User.all
+  @path = request.path_info
+  
+  if params["id"].nil? == false
+    @user = User.find_by("id = ?", params["id"])
+    @items = @user.items_array.sort_by { |object| [object.created_at, object.updated_at].max }.reverse!
+    @specific_contrib = "/admin/contrib_partial"
+  end
+  
+  erb :"/admin/contrib"
+end
+  
 
 # BEFORE METHOD TO SET UP INSTANCE VARIABLES FOR ADDING AND UPDATING EXCERPTS
 
@@ -122,30 +145,50 @@ get "/admin/excerpt/update_excerpt" do
       
     elsif params["id"].nil? == false #CAN USE HTML5 required  AND VALIDATIONS TO CHECK FOR ERRORS 
       
-      info = Excerpt.where("id = ?", params["id"])
-      @new_ex = Excerpt.new(info[0])
+      info = Excerpt.find_by("id = ?", params["id"])
+      @new_ex = Excerpt.new(info)
       @update_erb = "/admin/excerpt/_changes_for_update_excerpt"
     end
     
     erb :"admin/excerpt/update_excerpt"
 end
 
-# NEW EXCERPT SUCCESS - !!!!!!!!!!!!! NEED TO PUT ERRORS HERE !!!!!!!!!!!! / AUTO TAG KEYWORDS
+# NEW EXCERPT SUCCESS
+########################### can refactor ######################## need to test
 
-post "/admin/excerpt/new_success" do #changed from get
+post "/admin/excerpt/new_success" do
   if params["source"] == ""
     params["source"] = params["source1"]
   end
   
+  params["user_id"] = session[:id]
+  
   new_excerpt = Excerpt.new(params)
   
-  if new_excerpt.valid?
-    new_excerpt.save   # AUTOMATICALLY TAG KEYWORD, SOURCE, PERSON? 
-    person1 = Person.where("id = ?", params["person_id"])[0].person
+  if new_excerpt.create   
+    person1 = Person.find_by("id = ?", params["person_id"]).person
     success_message1 = "Your excerpt was successfully added:"
-  
-    #something ilke, if params["source"] is not a keyword, add it to keyword table and assign it to item in table ... ugh.      that table, tho. then add in message that #{keyword1} etc. was added automatically.
-    @add_keywords = ""
+    
+    ################### PULL OUT INTO SELF METHOD FOR EACH CLASS ###########################
+    
+    @source_keyword = Keyword.find_by("keyword = ?", params["source"])
+    # If source for the new excerpt isn't already a keyword, it makes a  new one
+    if @source_keyword == nil
+      @source_keyword = Keyword.create({"keyword" => "#{params["source"]}"})
+    end
+    # Tags excerpt with source
+    KeywordItem.create({"keyword_id"=>@source_keyword.id, "item_type"=>"Excerpt", "item_id"=> new_excerpt.id})
+    # Tags excerpt with person
+    person_keyword = Keyword.find_by("keyword = ?", new_excerpt.person.person)
+    KeywordItem.create({"keyword_id"=>person_keyword.id, "item_type"=>"Excerpt", "item_id"=> new_excerpt.id})
+    # Tags excerpt with "excerpt"
+    excerpt_keyword = Keyword.find_by("keyword = ?", "excerpt")
+    KeywordItem.create({"keyword_id"=>excerpt_keyword.id, "item_type"=>"Excerpt", "item_id"=> new_excerpt.id})
+    
+    ########################################################################################
+   
+    # Keyword message      
+    @add_keywords = "Your new excerpt was automatically tagged #{@source_keyword}, #{person_keyword} and \"excerpt\"."
   
     erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}"}
   
@@ -156,17 +199,17 @@ post "/admin/excerpt/new_success" do #changed from get
     
 end
      
-# UPDATED EXCERPT SUCCESS - need to test ^^ deploy up here
-#####################################    
+# UPDATED EXCERPT SUCCESS
+##################################### need to test   
       
 post "/admin/excerpt/update_success" do 
-  new_excerpt = Excerpt.new(params)
+  params["user_id"] = session[:id]
+  new_excerpt = Excerpt.new(params) #should include ID since updating, not creating
   
-  if new_excerpt.valid?
-    new_excerpt.save! #need exclamation?
-    person1 = Person.where("id = ?", new_excerpt.person_id)
+  if new_excerpt.save
+    person1 = Person.find_by("id = ?", new_excerpt.person_id)
     success_message1 = "The excerpt was successfully updated:"
-    keywords_message = "<h3><em>Thank you!</em></h3><p>Now, <a href='/assign_tag'>add some keywords</a> to describe this excerpt.</p>"
+    keywords_message = "<h3><em>Thank you!</em></h3><p>Here are the current keywords: #{new_excerpt.get_keywords.join(", ")}.<br><br><a href='/assign_tag'>Add more keywords</a> to describe this excerpt, if you'd like.</p>"
     erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1.person}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
   
   else 
@@ -250,6 +293,7 @@ before "/logout" do
   session[:user_id] = nil
   session[:email] = nil
   session[:privilege] = nil
+  session[:user_name] = nil
 end
 
 # LOGOUT ROUTE ADDS LOGOUT MESSAGE LOADS LOGIN

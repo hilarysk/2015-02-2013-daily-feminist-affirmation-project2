@@ -1,7 +1,3 @@
-require_relative "class-module.rb"
-require_relative "instance-module.rb"
-
-
 # Class: Keyword
 #
 # Creates different keywords and assigns them to an ID
@@ -31,7 +27,7 @@ class Keyword < ActiveRecord::Base
   has_many :people, :through => :keyword_items, source_type: "Person", source: :item
   has_many :terms, :through => :keyword_items, source_type: "Term", source: :item
   
-  def items
+  def items_array
     array = []
     self.excerpts.each do |object|
       array.push object
@@ -46,25 +42,6 @@ class Keyword < ActiveRecord::Base
       array.push object
     end
     return array
-  end
-    
-  # Public: #self.get_array_keywords
-  # Creates an array of all keywords
-  #
-  # Parameters:
-  # None                    
-  #
-  # Returns:
-  # An array of all keywords
-  # 
-  # State changes:
-  # None
-  
-  def self.get_array_keywords
-    keywords_array = DATABASE.execute("SELECT keyword FROM keywords")
-    
-    return keywords_array.shuffle!
-       
   end
     
 end

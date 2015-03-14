@@ -27,10 +27,7 @@ require_relative "controllers/public"
 set :database, {adapter: "sqlite3", database: "feminist_affirmation.db"}
 
 #ADD VALIDATION FOR CLASSES
-# - DailyFemAff Active Record - more than halfway done
-#    - need help with joins for keyword_items_ids table?? - polymorphic association
 # - DailyFemAff finish admin stuff 
-#      -add so that people of privilege 1 can see contributions by specific contributor
 # - DailyFemAff (make more responsive? - take fixed menu and make one where click three bars to see and it appears --> https://github.com/StevenThiesfeld/2015-02-13-fantasy-marvel-league/blob/master/public/css/new-styles.css - nav-trigger class for hiding menu
 # - DailyFemAff JS for main page
 # - DailyFemAff (let people subscribe to get one in email per day)

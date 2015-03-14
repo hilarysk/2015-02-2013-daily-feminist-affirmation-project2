@@ -33,6 +33,7 @@ class Person < ActiveRecord::Base
 
   has_many :excerpts
   has_many :quotes
+  belongs_to :user
 
   has_many :keyword_items, as: :item
   

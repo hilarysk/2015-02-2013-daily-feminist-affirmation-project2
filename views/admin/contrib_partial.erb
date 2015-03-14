@@ -1,4 +1,4 @@
-<h3 align="center">Items added by "<%= "#{@user.user_name}" %>"</h3>
+<p><strong>Items added by:</strong> <%= "#{@user.user_name}" %><br><strong>Administrator since</strong>: <%= @user.created_at %></p>
 
 <%  @items.each do |object| %>
  <% if object.class == Quote %>

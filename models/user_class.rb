@@ -37,6 +37,23 @@ class User < ActiveRecord::Base
     self.password_hash = @password
   end
   
+  def items_array_sorted_descending
+    array = []
+    self.excerpts.each do |object|
+      array.push object
+    end
+    self.quotes.each do |object|
+      array.push object
+    end
+    self.terms.each do |object|
+      array.push object
+    end
+    self.people.each do |object|
+      array.push object
+    end
+    return array.sort! {|b,a| a.updated_at<=>b.updated_at}
+  end
+  
   def items_array
     array = []
     self.excerpts.each do |object|

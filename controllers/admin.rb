@@ -68,6 +68,8 @@ post "/admin/create" do
   new_user.password = params[:password]
   
   if new_user.create
+    new_user.updated_at = new_user.created_at #makes so updated_at isn't null
+    new_user.save                             #seems like should be better way ....
     redirect to ("/admin/update_database?message=New user successfully created:<br><strong>Name:</strong> #{new_user.user_name}<br><strong>Email:</strong> #{new_user.email}<br><strong>ID:</strong> #{new_user.id}<br><strong>Privilege Level:</strong> #{new_user.privilege}")
   
   else 
@@ -91,14 +93,13 @@ end
 
 # SEE LIST OF WHO CONTRIBUTED WHAT
 
-###############################################  test
 get "/admin/contrib" do 
   @all_admins = User.all
   @path = request.path_info
   
   if params["id"].nil? == false
     @user = User.find_by("id = ?", params["id"])
-    @items = @user.items_array.sort_by { |object| [object.created_at, object.updated_at].max }.reverse!
+    @items = @user.items_array_sorted_descending
     @specific_contrib = "/admin/contrib_partial"
   end
   
@@ -165,7 +166,9 @@ post "/admin/excerpt/new_success" do
   
   new_excerpt = Excerpt.new(params)
   
-  if new_excerpt.create   
+  if new_excerpt.create
+    new_excerpt.updated_at = new_excerpt.created_at #seeds updated_at so that not null for comparison
+    new_excerpt.save   
     person1 = Person.find_by("id = ?", params["person_id"]).person
     success_message1 = "Your excerpt was successfully added:"
     

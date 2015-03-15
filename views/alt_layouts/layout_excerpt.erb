@@ -1,46 +1,35 @@
 <!DOCTYPE HTML>
-<html lang="en">
-<head>
-<title>Daily Feminist Affirmation</title>
-<meta name="description" content="Everyone needs a little more feminism in their lives. "/>
+  <html lang="en">
+  <head>
+    <title>Daily Feminist Affirmation</title>
+    <meta name="description" content="Everyone needs a little more feminism in their lives. "/>
+    <link rel="stylesheet" href="/css/style3.css" type="text/css" media="screen" title="no title" charset="utf-8"> 
+    <script src="/js/global.js" type="text/javascript" charset="utf-8"></script>
+  </head>
 
-<link rel="stylesheet" href="/css/style3.css" type="text/css" media="screen" title="no title" charset="utf-8"> 
+  <div id="wrapper">
+    <div id="header" link="#000000" vlink="#000000" alink="#000000">
+      <h4 class="headerheading">DAILY FEMINIST AFFIRMATION</h4>
+      <div id="jsReaffirm" class="reaffirm">
+        <a id="publicMenuAnchor" href="#">MENU</a>
+        <div id="publicMenu" style="display:none">
+            <a href="/yay" class="adminbutton">REAFFIRM</a>
+            <a href="/about" class="adminbutton">ABOUT</a>      
+            <a href="/search" class="adminbutton">SEARCH</a>
+          </div>
+      </div>
 
-</head>
-<div id="wrapper">
+    <hr></hr>
+    </div>
 
-<div id="header" link="#000000" vlink="#000000" alink="#000000">
-
-  <h4 class="headerheading">DAILY FEMINIST AFFIRMATION</h4>
-<hr></hr>
-</div>
-  <div class="graycolumn">
-    <div class="reaffirm"><a href="/yay" class="navbutton">REAFFIRM</a><br><a href="/about" class="navbutton">ABOUT</a><br><a class="navbutton" href="/search">SEARCH</a>
+    <div main>
+      <body link="#000000" vlink="#000000" alink="#000000">
+        <%= yield %>
+      </body>
     </div>
   </div>
-<div main>
-<body link="#000000" vlink="#000000" alink="#000000">
   
-  
-
-
-<%= yield %>
-
-
-
-
-</body>
-</div>
-
-</div>
-<!-- <div class="bottomspacer_excerpt"></div>
-<div class="bottomspace"></div> -->
-
-<div id="footer"> <hr>
-<h4 class="footerfooting"><a href="/login">LOGIN</a></h4>
-
-</div>
-
-
-
+  <div id="footer"> <hr>
+    <h4 class="footerfooting"><a href="/login">LOGIN</a></h4>
+  </div>
 </html>

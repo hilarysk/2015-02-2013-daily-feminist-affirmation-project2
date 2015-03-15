@@ -61,7 +61,7 @@ end
 
 # POST CREATE NEW USER - CHECKS FOR ERRORS, SAVES NEW USER
 
-#################################### test
+#################################### test that updated_at gets saved
 
 post "/admin/create" do
   new_user = User.new(params)

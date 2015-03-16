@@ -2,7 +2,6 @@ require 'rubygems'
 require 'bundler/setup'
 
 require "pry"
-require "sqlite3"
 require "sinatra"
 require "sinatra/activerecord"
 require "bcrypt"
@@ -10,6 +9,8 @@ require "json"
 
 configure :development do
 set :database, {adapter: "sqlite3", database: "feminist_affirmation.db"}
+require "sqlite3"
+
 end
 
 configure :production do

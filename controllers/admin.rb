@@ -68,8 +68,6 @@ post "/admin/create" do
   new_user.password = params[:password]
   
   if new_user.create
-    new_user.updated_at = new_user.created_at #makes so updated_at isn't null
-    new_user.save                             #seems like should be better way ....
     redirect to ("/admin/update_database?message=New user successfully created:<br><strong>Name:</strong> #{new_user.user_name}<br><strong>Email:</strong> #{new_user.email}<br><strong>ID:</strong> #{new_user.id}<br><strong>Privilege Level:</strong> #{new_user.privilege}")
   
   else 

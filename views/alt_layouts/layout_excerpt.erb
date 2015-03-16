@@ -9,7 +9,7 @@
 
   <div id="wrapper">
     <div id="header" link="#000000" vlink="#000000" alink="#000000">
-      <h4 class="headerheading">DAILY FEMINIST AFFIRMATION</h4>
+      <h4 class="headerheading"><a href="/yay" id="excerptLayoutLink">DAILY FEMINIST AFFIRMATION</a></h4>
       <div id="jsReaffirm" class="reaffirm">
         <a id="publicMenuAnchor" href="#">MENU</a>
         <div id="publicMenu" style="display:none">
@@ -24,7 +24,9 @@
 
     <div main>
       <body link="#000000" vlink="#000000" alink="#000000">
-        <%= yield %>
+        <div id="yieldExcerpt">
+          <%= yield %>
+        </div>
       </body>
     </div>
   </div>

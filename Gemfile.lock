@@ -53,6 +53,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt
+  json
   pry
   sinatra!
   sinatra-activerecord

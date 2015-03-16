@@ -6,6 +6,7 @@ require "sqlite3"
 require "sinatra"
 require "sinatra/activerecord"
 require "bcrypt"
+require "json"
 
 require_relative "models/class-module.rb"
 require_relative "models/instance-module.rb"
@@ -27,8 +28,11 @@ require_relative "controllers/public"
 set :database, {adapter: "sqlite3", database: "feminist_affirmation.db"}
 
 #ADD VALIDATION FOR CLASSES
+# - add reaffirm button somewhere on screen - make that fixed? Or just make title a link?
 # - DailyFemAff finish admin stuff 
 # - DailyFemAff JS for main page
+
+
 # - DailyFemAff (let people subscribe to get one in email per day)
 
 # rewatch videos on association and deployment

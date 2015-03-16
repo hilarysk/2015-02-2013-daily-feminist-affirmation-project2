@@ -60,6 +60,10 @@ get "/whoops" do
   erb :whoops, :layout => :"/alt_layouts/public_layout"
 end
 
+get "/" do
+  redirect to ("/home")
+end
+
 # HOME PAGE
 
 get "/home" do 

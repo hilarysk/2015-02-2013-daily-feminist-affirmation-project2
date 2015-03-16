@@ -76,9 +76,7 @@ unless ActiveRecord::Base.connection.table_exists?(:users)
  end
 end
 
-a = User.new({"email"=>"hilarysk@gmail.com", "password"=>"Buffygirl12!@", "privilege"=>1})
-a.password = "Buffygirl12!@"
-a.save
+
 
 Keyword.create({"keyword"=>"Ella Baker"})
 Keyword.create({"keyword"=>"Ida B. Wells"})

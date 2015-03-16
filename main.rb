@@ -25,10 +25,12 @@ require_relative "models/keyword_class.rb"
 require_relative "controllers/admin"
 require_relative "controllers/public"
 
+configure :development do
 set :database, {adapter: "sqlite3", database: "feminist_affirmation.db"}
+end
+
 
 #ADD VALIDATION FOR CLASSES
-# - add reaffirm button somewhere on screen - make that fixed? Or just make title a link?
 # - DailyFemAff finish admin stuff 
 # - DailyFemAff JS for main page
 

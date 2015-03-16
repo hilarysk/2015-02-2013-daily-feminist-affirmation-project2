@@ -3,10 +3,10 @@ enable :sessions
 # MAKES SURE USER IS LOGGED-IN BEFORE ADMIN PAGE WILL LOAD
 
 # before "/admin/*" do
-  if session[:user_id] == nil
-    redirect to ("/login?error=Oops! Looks like you need to login first.")
-  end
-end
+#   if session[:user_id] == nil
+#     redirect to ("/login?error=Oops! Looks like you need to login first.")
+#   end
+# end
 
 # WHERE USER LOGS IN
 

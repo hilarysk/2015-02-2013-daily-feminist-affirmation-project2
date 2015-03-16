@@ -71,8 +71,12 @@ end
 get "/yay" do 
     
   item = (Quote.all + Term.all + Excerpt.all + Person.all).sample
+  
+  if item == nil
+    
+    redirect to ("/whoops")
 
-  if item.class == Quote
+  elsif item.class == Quote
     @item = item #==> object of attributes
     @keywords = @item.get_keywords
 

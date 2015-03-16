@@ -24,11 +24,9 @@ configure :production do
  :encoding => 'utf8'
  )
 end
-
+require_relative "database/database_setup.rb"
 require_relative "models/class-module.rb"
 require_relative "models/instance-module.rb"
-
-require_relative "database/database_setup.rb"
 require_relative "models/keyworditem_class.rb"
 require_relative "models/itemtable_class.rb"
 

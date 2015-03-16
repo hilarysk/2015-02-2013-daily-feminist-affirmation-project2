@@ -2,7 +2,7 @@ enable :sessions
 
 # MAKES SURE USER IS LOGGED-IN BEFORE ADMIN PAGE WILL LOAD
 
-before "/admin/*" do
+# before "/admin/*" do
   if session[:user_id] == nil
     redirect to ("/login?error=Oops! Looks like you need to login first.")
   end
@@ -44,14 +44,14 @@ end
 
 # BEFORE CREATE NEW USER PAGE LOADS, MAKES SURE PERSON LOGGED IN HAS ENOUGH PRIVILEGE
 
-["/admin/create", "/admin/contrib"].each do |path|
-  before path do 
-    if session[:privilege].to_i > 1
-      redirect to ("/admin/update_database?error=Looks like you might need to check your privilege; you don't seem to have permission to do that. :(")
-    end
-    
-  end
-end
+# ["/admin/create", "/admin/contrib"].each do |path|
+#   before path do
+#     if session[:privilege].to_i > 1
+#       redirect to ("/admin/update_database?error=Looks like you might need to check your privilege; you don't seem to have permission to do that. :(")
+#     end
+#
+#   end
+# end
 
 # CREATE NEW USER
 

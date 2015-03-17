@@ -153,13 +153,7 @@
 # Person.create({"person"=>"The Indelicates", "bio"=>"", "state"=>"", "country"=>"", "image"=>"", "caption"=>"", "source"=>""})
 #
 # EX = Person.create({"person"=>"", "bio"=>"", "state"=>"", "country"=>"", "image"=>"", "caption"=>"", "source"=>""})
-#
-# item_table:
-#
-# a = ItemTable.create({"table_name"=>"people"})
-# b = ItemTable.create({"table_name"=>"quotes"})
-# c = ItemTable.create({"table_name"=>"excerpts"})
-# d = ItemTable.create({"table_name"=>"terms"})
+
 #
 #
 #
@@ -176,7 +170,7 @@
 # KeywordItem.create({"keyword_id"=>"44", "item_id"=>"2", "item_type"=>"Excerpt"})
 # KeywordItem.create({"keyword_id"=>"29", "item_id"=>"2", "item_type"=>"Excerpt"})
 # KeywordItem.create({"keyword_id"=>"24", "item_id"=>"2", "item_type"=>"Excerpt"})
-# KeywordItem.create({"keyword_id"=>"1", "item_id"=>"1", "item_type"=>"Person"})   #ella baker
+# KeywordItem.create({"keyword_id"=>"1", "item_id"=>"1", "item_type"=>"Person"})    #ella baker
 # KeywordItem.create({"keyword_id"=>"28", "item_id"=>"1", "item_type"=>"Person"})
 # KeywordItem.create({"keyword_id"=>"36", "item_id"=>"1", "item_type"=>"Person"})
 # KeywordItem.create({"keyword_id"=>"40", "item_id"=>"1", "item_type"=>"Person"})
@@ -202,10 +196,10 @@
 # KeywordItem.create({"keyword_id"=>"39", "item_id"=>"5", "item_type"=>"Person"})
 # KeywordItem.create({"keyword_id"=>"36", "item_id"=>"5", "item_type"=>"Person"})
 # KeywordItem.create({"keyword_id"=>"37", "item_id"=>"5", "item_type"=>"Person"})
-# KeywordItem.create({"keyword_id"=>"8", "item_id"=>"6", "item_type"=>"Person"})   #gloria steinem
+# KeywordItem.create({"keyword_id"=>"8", "item_id"=>"6", "item_type"=>"Person"})    #gloria steinem
 # KeywordItem.create({"keyword_id"=>"28", "item_id"=>"6", "item_type"=>"Person"})
 # KeywordItem.create({"keyword_id"=>"40", "item_id"=>"6", "item_type"=>"Person"})
-# KeywordItem.create({"keyword_id"=>"9", "item_id"=>"7", "item_type"=>"Person"})   #malala
+# KeywordItem.create({"keyword_id"=>"9", "item_id"=>"7", "item_type"=>"Person"})    #malala
 # KeywordItem.create({"keyword_id"=>"23", "item_id"=>"7", "item_type"=>"Person"})
 # KeywordItem.create({"keyword_id"=>"28", "item_id"=>"7", "item_type"=>"Person"})
 # KeywordItem.create({"keyword_id"=>"43", "item_id"=>"8", "item_type"=>"Person"})   #kate chopin
@@ -225,17 +219,17 @@
 # KeywordItem.create({"keyword_id"=>"26", "item_id"=>"9", "item_type"=>"Person"})
 # KeywordItem.create({"keyword_id"=>"6", "item_id"=>"9", "item_type"=>"Person"})
 #
-# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"1", "item_type"=>"Term"})  # intersectional feminism
+# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"1", "item_type"=>"Term"})    # intersectional feminism
 # KeywordItem.create({"keyword_id"=>"38", "item_id"=>"1", "item_type"=>"Term"})
 # KeywordItem.create({"keyword_id"=>"41", "item_id"=>"1", "item_type"=>"Term"})
-# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"2", "item_type"=>"Term"})  #lived experience
-# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"3", "item_type"=>"Term"})  #privilege
-# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"4", "item_type"=>"Term"})  #gender binary
-# KeywordItem.create({"keyword_id"=>"38", "item_id"=>"4", "item_type"=>"Term"})
-# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"5", "item_type"=>"Term"})  #schrodinger's rapist
-# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"6", "item_type"=>"Term"})   #mansplain
-# KeywordItem.create({"keyword_id"=>"1", "item_id"=>"1", "item_type"=>"Quote"})    #struggle is eternal
-# KeywordItem.create({"keyword_id"=>"40", "item_id"=>"1", "item_type"=>"Quote"})
+# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"2", "item_type"=>"Term"})      #lived experience
+# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"3", "item_type"=>"Term"})      #privilege
+# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"4", "item_type"=>"Term"})      #gender binary
+# KeywordItem.create({"keyword_id"=>"38", "item_id"=>"4", "item_type"=>"Term"})      
+# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"5", "item_type"=>"Term"})      #schrodinger's rapist
+# KeywordItem.create({"keyword_id"=>"31", "item_id"=>"6", "item_type"=>"Term"})       #mansplain
+# KeywordItem.create({"keyword_id"=>"1", "item_id"=>"1", "item_type"=>"Quote"})        #struggle is eternal
+# KeywordItem.create({"keyword_id"=>"40", "item_id"=>"1", "item_type"=>"Quote"})     
 #
 # KeywordItem.create({"keyword_id"=>"36", "item_id"=>"1", "item_type"=>"Quote"})
 # KeywordItem.create({"keyword_id"=>"41", "item_id"=>"1", "item_type"=>"Quote"})
@@ -262,11 +256,11 @@
 # KeywordItem.create({"keyword_id"=>"40", "item_id"=>"3", "item_type"=>"Quote"})
 # KeywordItem.create({"keyword_id"=>"40", "item_id"=>"4", "item_type"=>"Quote"})
 #
-# KeywordItem.create({"keyword_id"=>"8", "item_id"=>"4", "item_type"=>"Excerpt"}) # steinem excerpt
+# KeywordItem.create({"keyword_id"=>"8", "item_id"=>"4", "item_type"=>"Excerpt"})    # steinem excerpt
 # KeywordItem.create({"keyword_id"=>"29", "item_id"=>"4", "item_type"=>"Excerpt"})
 # KeywordItem.create({"keyword_id"=>"24", "item_id"=>"4", "item_type"=>"Excerpt"})
 # KeywordItem.create({"keyword_id"=>"46", "item_id"=>"4", "item_type"=>"Excerpt"})
-# KeywordItem.create({"keyword_id"=>"9", "item_id"=>"3", "item_type"=>"Excerpt"}) #malala excerpt
+# KeywordItem.create({"keyword_id"=>"9", "item_id"=>"3", "item_type"=>"Excerpt"})    #malala excerpt
 # KeywordItem.create({"keyword_id"=>"29", "item_id"=>"3", "item_type"=>"Excerpt"})
 # KeywordItem.create({"keyword_id"=>"41", "item_id"=>"3", "item_type"=>"Excerpt"})
 # KeywordItem.create({"keyword_id"=>"24", "item_id"=>"3", "item_type"=>"Excerpt"})

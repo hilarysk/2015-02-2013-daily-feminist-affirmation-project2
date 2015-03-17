@@ -112,46 +112,42 @@ end
 
 # XHR REQUEST WHEN HIT REAFFIRM BUTTON
 
-post "/yay" do 
-    
-  item = (Quote.all + Term.all + Excerpt.all + Person.all).sample
-
-  if item.class == Quote
-    a = item.as_json
-    a["keywords"] = item.get_keywords
-    a.to_json
-    binding.pry
-    erb :"public/quote", :layout => :"/alt_layouts/public_layout"
-
-  elsif item.class == Excerpt
-    a = item.as_json
-    a["keywords"] = item.get_keywords
-    a.to_json
-    binding.pry
-    
-    erb :"public/excerpt", :layout => :"/alt_layouts/layout_excerpt"
-
-  elsif item.class == Person
-    if item.state != ""
-      item.state = "#{item.state}, "
-    end
-    
-    a = item.as_json
-    a["keywords"] = item.get_keywords
-    a.to_json
-    binding.pry
-    
-    erb :"public/person", :layout => :"/alt_layouts/public_layout"
-
-  elsif item.class == Term
-    a = item.as_json
-    a["keywords"] = item.get_keywords
-    a.to_json
-    binding.pry
-    
-    erb :"public/term", :layout => :"/alt_layouts/public_layout"
-  end
-end
+# post "/yay" do
+#
+#   item = (Quote.all + Term.all + Excerpt.all + Person.all).sample
+#
+#   if item.class == Quote
+#     a = item.as_json
+#     a["keywords"] = item.get_keywords
+#     a.to_json
+#     erb :"public/quote", :layout => :"/alt_layouts/public_layout"
+#
+#   elsif item.class == Excerpt
+#     a = item.as_json
+#     a["keywords"] = item.get_keywords
+#     a.to_json
+#
+#     erb :"public/excerpt", :layout => :"/alt_layouts/layout_excerpt"
+#
+#   elsif item.class == Person
+#     if item.state != ""
+#       item.state = "#{item.state}, "
+#     end
+#
+#     a = item.as_json
+#     a["keywords"] = item.get_keywords
+#     a.to_json
+#
+#     erb :"public/person", :layout => :"/alt_layouts/public_layout"
+#
+#   elsif item.class == Term
+#     a = item.as_json
+#     a["keywords"] = item.get_keywords
+#     a.to_json
+#
+#     erb :"public/term", :layout => :"/alt_layouts/public_layout"
+#   end
+# end
 
 #LOADS KEYWORD PAGE
 

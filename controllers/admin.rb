@@ -66,7 +66,12 @@ post "/admin/create" do
   new_user.password = params[:password]
 
   if new_user.save
-    redirect to ("/admin/update_database?message=New user successfully created:<br><strong>Name:</strong> #{new_user.user_name}<br><strong>Email:</strong> #{new_user.email}<br><strong>ID:</strong> #{new_user.id}<br><strong>Privilege Level:</strong> #{new_user.privilege}")
+    session[:message] = "New user successfully created:<br>
+                        <strong>Name:</strong>
+                        #{new_user.user_name}<br><strong>Email:</strong> #{new_user.email}<br>
+                        <strong>ID:</strong> #{new_user.id}<br>
+                        <strong>Privilege Level:</strong> #{new_user.privilege}"
+    redirect to ("/admin/update_database")
   
   else 
     @error_messages = new_user.errors.to_a
@@ -81,9 +86,11 @@ get "/admin/update_database" do
     @create_option = "<li><a href='/admin/create'>Add new administrator</a></li>"
     @contrib_option = "<li><a href='/admin/contrib'>See administrator's contributions</a></li>"
   end
+  
   @error = params["error"]
-  @message = params["message"]
+  @message = session[:message]
   @name = "#{session[:name]}"
+  
   erb :"admin/update_database"
 end
 
@@ -301,6 +308,7 @@ before "/logout" do
   session[:email] = nil
   session[:privilege] = nil
   session[:user_name] = nil
+  session[:message] = nil
 end
 
 # LOGOUT ROUTE ADDS LOGOUT MESSAGE LOADS LOGIN

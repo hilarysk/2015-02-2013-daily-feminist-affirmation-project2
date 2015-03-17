@@ -251,76 +251,76 @@ end
 
 
 
-before "/admin/person/new_person" do 
-  redirect to ("/coming_soon")
+get "/admin/person/new_person" do 
+  erb :"admin/comingsoon"
   # erb :"admin/person/new_person"
 end
 
-before "/admin/person/new_success" do 
-  redirect to ("/coming_soon")
+get "/admin/person/new_success" do 
+  erb :"admin/comingsoon"
   # erb :"public/keyword/person_formatting"
 end
 
-before "/admin/person/update_person" do 
-  redirect to ("/coming_soon")
+get "/admin/person/update_person" do 
+  erb :"admin/comingsoon"
   # erb :"admin/person/update_person"
 end
 
-before "/admin/person/update_success" do 
-  redirect to ("/coming_soon")
+get "/admin/person/update_success" do 
+  erb :"admin/comingsoon"
   # erb :"public/keyword/person_formatting"
 end
 
-before "/admin/quote/new_quote" do 
-  redirect to ("/coming_soon")
+get "/admin/quote/new_quote" do 
+  erb :"admin/comingsoon"
   # erb :"admin/quote/new_quote"
 end
 
-before "/admin/quote/new_success" do 
-  redirect to ("/coming_soon")
+get "/admin/quote/new_success" do 
+  erb :"admin/comingsoon"
   # erb :"public/keyword/quote_formatting"
 end
 
-before "/admin/quote/update_quote" do 
-  redirect to ("/coming_soon")
+get "/admin/quote/update_quote" do 
+  erb :"admin/comingsoon"
   # erb :"admin/quote/update_quote"
 end
   
-before "/admin/quote/update_success" do 
-  redirect to ("/coming_soon")
+get "/admin/quote/update_success" do 
+  erb :"admin/comingsoon"
   # erb :"public/keyword/quote_formatting"
 end
 
-before "/admin/term/new_term" do 
-  redirect to ("/coming_soon")
+get "/admin/term/new_term" do 
+  erb :"admin/comingsoon"
   # erb :"admin/term/new_term"
 end
 
-before "/admin/term/new_success" do 
-  redirect to ("/coming_soon")
+get "/admin/term/new_success" do 
+  erb :"admin/comingsoon"
   # erb :"public/keyword/term_formatting"
 end
 
-before "/admin/term/update_term" do 
-  redirect to ("/coming_soon")
+get "/admin/term/update_term" do 
+  erb :"admin/comingsoon"
   # erb :"admin/term/update_term"
 end
 
-before "/admin/term/update_success" do 
-  redirect to ("/coming_soon")
+get "/admin/term/update_success" do 
+  erb :"admin/comingsoon"
   # erb :"public/keyword/term_formatting"
 end
 
 
 
 
-before "/admin/tag/new_tag" do 
-  redirect to ("/coming_soon")
+get "/admin/tag/new_tag" do 
+  erb :"admin/comingsoon"
   # erb :"admin/tag/new_tag"
 end
 
-before "/admin/tag/assign_tag" do 
-  redirect to ("/coming_soon")
+get "/admin/tag/assign_tag" do 
+  erb :"admin/comingsoon"
   # erb :"admin/tag/assign_tag"
 end
 

@@ -1,8 +1,15 @@
 <div class="formattingpartials">
-<h1><%= "#{success_message}"%></h1>
-<hr></hr><br>
-<p align="center"><strong>EXCERPT</strong></p>
-<p>"<%= "#{excerpt}" %>"</p>
-<p align="right">- <em><%= "#{source}" %></em>, <%= "#{person}" %><br></p>
-<%= @add_keywords %>
+  <h1><%= "#{success_message}"%>
+  </h1>
+  <hr></hr><br>
+  <p align="center"><strong>EXCERPT</strong>
+  </p>
+  
+  <p>"<%= "#{excerpt}" %>"
+  </p>
+
+  <p align="right">- <em><%= "#{source}" %></em>, <%= "#{person}" %><br>
+  </p>
+  
+  <p><%= @add_keywords %><%= "#{add_keywords}" %></p>
 </div>

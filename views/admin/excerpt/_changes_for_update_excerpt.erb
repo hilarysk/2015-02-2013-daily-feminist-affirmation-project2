@@ -1,5 +1,7 @@
 <hr></hr>
 
+<h1>Make changes to the excerpt:</h1>
+
 <form action="/admin/excerpt/update_success" method="post">
 
    
@@ -17,7 +19,7 @@
   <option value="<%= "#{object.id}" %>"><%= "#{object.person}" %></option>
   <% end  %>
   </select><br><br>
-  <!-- <input type="hidden" name= "id" value="<%= "#{(@new_ex.id).to_s}" %>"> -->
+  <input type="hidden" name="id" value="<%= "#{(@new_ex.id).to_s}" %>">
   <input type="submit" class="navbutton" value="SUBMIT">
   <br><br>
   </form>

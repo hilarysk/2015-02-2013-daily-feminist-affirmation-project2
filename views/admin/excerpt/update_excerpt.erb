@@ -7,8 +7,8 @@
 <form>
 <p>Sources:</p>
 <select name="source">
-<p><% @excerpt_sources.each do |object| %>
-  <option value="<%= "#{object.source}" %>"><%= "#{object.source}" %></option>
+<p><% @excerpt_sources.each do |source| %>
+  <option value="<%= "#{source}" %>"><%= "#{source}" %></option>
   <% end %></p>
 </select>
 <br><br>

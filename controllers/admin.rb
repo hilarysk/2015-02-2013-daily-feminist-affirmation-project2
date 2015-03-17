@@ -2,11 +2,11 @@ enable :sessions
 
 # MAKES SURE USER IS LOGGED-IN BEFORE ADMIN PAGE WILL LOAD
 
-# before "/admin/*" do
-#   if session[:user_id] == nil
-#     redirect to ("/login?error=Oops! Looks like you need to login first.")
-#   end
-# end
+before "/admin/*" do
+  if session[:user_id] == nil
+    redirect to ("/login?error=Oops! Looks like you need to login first.")
+  end
+end
 
 # WHERE USER LOGS IN
 
@@ -44,14 +44,14 @@ end
 
 # BEFORE CREATE NEW USER PAGE LOADS, MAKES SURE PERSON LOGGED IN HAS ENOUGH PRIVILEGE
 
-# ["/admin/create", "/admin/contrib"].each do |path|
-#   before path do
-#     if session[:privilege].to_i > 1
-#       redirect to ("/admin/update_database?error=Looks like you might need to check your privilege; you don't seem to have permission to do that. :(")
-#     end
-#
-#   end
-# end
+["/admin/create", "/admin/contrib"].each do |path|
+  before path do
+    if session[:privilege].to_i > 1
+      redirect to ("/admin/update_database?error=Looks like you might need to check your privilege; you don't seem to have permission to do that. :(")
+    end
+
+  end
+end
 
 # CREATE NEW USER
 
@@ -60,8 +60,6 @@ get "/admin/create" do
 end
 
 # POST CREATE NEW USER - CHECKS FOR ERRORS, SAVES NEW USER
-
-#################################### test that updated_at gets saved
 
 post "/admin/create" do
   new_user = User.new(params)
@@ -103,7 +101,6 @@ get "/admin/contrib" do
   
   erb :"/admin/contrib"
 end
-  
 
 # BEFORE METHOD TO SET UP INSTANCE VARIABLES FOR ADDING AND UPDATING EXCERPTS
 
@@ -132,44 +129,28 @@ get "/admin/excerpt/new_excerpt" do
   
   erb :"admin/excerpt/new_excerpt"
 end
-  
-# LOADS ERB TO UPDATE EXISTING EXCERPT 
-############################################ test    
-get "/admin/excerpt/update_excerpt" do
-    @path = request.path_info
-    
-    if params["source"].nil? == false
-      @text_array = Excerpt.where("source = ?", params["source"])
-      @excerpt_choice = "/admin/excerpt/_sources_for_update_excerpt"
-      
-    elsif params["id"].nil? == false #CAN USE HTML5 required  AND VALIDATIONS TO CHECK FOR ERRORS 
-      
-      info = Excerpt.find_by("id = ?", params["id"])
-      @new_ex = Excerpt.new(info)
-      @update_erb = "/admin/excerpt/_changes_for_update_excerpt"
-    end
-    
-    erb :"admin/excerpt/update_excerpt"
-end
 
 # NEW EXCERPT SUCCESS
-########################### can refactor ######################## need to test
+########################### can refactor ######################## 
 
 post "/admin/excerpt/new_success" do
+  params["excerpt"].strip!
+  
   if params["source"] == ""
     params["source"] = params["source1"]
-  end
+    params.delete("source1")
+    params["source"].strip!
+  end  
   
-  params["user_id"] = session[:id]
+  params["user_id"] = session[:user_id]
   
   new_excerpt = Excerpt.new(params)
-  
-  if new_excerpt.create
-    new_excerpt.updated_at = new_excerpt.created_at #seeds updated_at so that not null for comparison
+
+  if new_excerpt.valid?
     new_excerpt.save   
     person1 = Person.find_by("id = ?", params["person_id"]).person
     success_message1 = "Your excerpt was successfully added:"
-    
+        
     ################### PULL OUT INTO SELF METHOD FOR EACH CLASS ###########################
     
     @source_keyword = Keyword.find_by("keyword = ?", params["source"])
@@ -177,19 +158,24 @@ post "/admin/excerpt/new_success" do
     if @source_keyword == nil
       @source_keyword = Keyword.create({"keyword" => "#{params["source"]}"})
     end
+    
     # Tags excerpt with source
-    KeywordItem.create({"keyword_id"=>@source_keyword.id, "item_type"=>"Excerpt", "item_id"=> new_excerpt.id})
+    KeywordItem.create({"keyword_id"=>@source_keyword.id, "item_type"=>"Excerpt", "item_id"=>new_excerpt.id})
     # Tags excerpt with person
     person_keyword = Keyword.find_by("keyword = ?", new_excerpt.person.person)
-    KeywordItem.create({"keyword_id"=>person_keyword.id, "item_type"=>"Excerpt", "item_id"=> new_excerpt.id})
+    KeywordItem.create({"keyword_id"=>person_keyword.id, "item_type"=>"Excerpt", "item_id"=>new_excerpt.id})
     # Tags excerpt with "excerpt"
     excerpt_keyword = Keyword.find_by("keyword = ?", "excerpt")
-    KeywordItem.create({"keyword_id"=>excerpt_keyword.id, "item_type"=>"Excerpt", "item_id"=> new_excerpt.id})
+    KeywordItem.create({"keyword_id"=>excerpt_keyword.id, "item_type"=>"Excerpt", "item_id"=>new_excerpt.id})
     
     ########################################################################################
    
     # Keyword message      
-    @add_keywords = "Your new excerpt was automatically tagged #{@source_keyword}, #{person_keyword} and \"excerpt\"."
+    @add_keywords = "<hr></hr><h3><em>Thank you!</em></h3><p>Your new excerpt was automatically tagged:
+                    <ul><li><strong>\"#{@source_keyword.keyword}\"</strong></li>
+                    <li><strong>\"#{person_keyword.keyword}\"</strong></li>
+                    <li><strong>\"excerpt\"</strong></li></ul>
+                    <br>Go <a href='/assign_tag'>here</a> to add more keywords to describe this excerpt.</p>"
   
     erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}"}
   
@@ -199,19 +185,39 @@ post "/admin/excerpt/new_success" do
   end
     
 end
-     
+  
+# LOADS ERB TO UPDATE EXISTING EXCERPT 
+    
+get "/admin/excerpt/update_excerpt" do
+    @path = request.path_info
+    
+    if params["source"].nil? == false
+      @text_array = Excerpt.where("source = ?", params["source"])
+      @excerpt_choice = "/admin/excerpt/_sources_for_update_excerpt"
+      
+    elsif params["id"].nil? == false
+      
+      info = Excerpt.find_by("id = ?", params["id"]).as_json
+      @new_ex = Excerpt.new(info)
+      @update_erb = "/admin/excerpt/_changes_for_update_excerpt"
+    end
+    
+    erb :"admin/excerpt/update_excerpt"
+end
+
 # UPDATED EXCERPT SUCCESS
-##################################### need to test   
       
 post "/admin/excerpt/update_success" do 
-  params["user_id"] = session[:id]
-  new_excerpt = Excerpt.new(params) #should include ID since updating, not creating
+  params["user_id"] = session[:user_id]
+  params["excerpt"].strip!
+  params["source"].strip!
+  existing_excerpt = Excerpt.find_by("id = #{params["id"]}") #object of existing excerpt
   
-  if new_excerpt.save
-    person1 = Person.find_by("id = ?", new_excerpt.person_id)
+  if existing_excerpt.update(params)
+    person1 = Person.find_by("id = ?", existing_excerpt.person_id).person
     success_message1 = "The excerpt was successfully updated:"
-    keywords_message = "<h3><em>Thank you!</em></h3><p>Here are the current keywords: #{new_excerpt.get_keywords.join(", ")}.<br><br><a href='/assign_tag'>Add more keywords</a> to describe this excerpt, if you'd like.</p>"
-    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{new_excerpt.excerpt}", "source"=>"#{new_excerpt.source}", "person"=>"#{person1.person}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords_message}"}
+    keywords = "<hr></hr><h3><em>Thank you!</em></h3><p>Here are the current keywords: <br><strong><ul><li>#{existing_excerpt.get_keywords.join("</li><li>")}</li></ul></strong><br><a href='/assign_tag'>Add more keywords</a> to describe this excerpt, if you'd like.</p>"
+    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{existing_excerpt.excerpt}", "source"=>"#{existing_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords}"}
   
   else 
     @error_messages = new_excerpt.errors.to_a

@@ -27,5 +27,7 @@ class Excerpt < ActiveRecord::Base
   
   has_many :keyword_items, as: :item
 
+  validates :excerpt, uniqueness: { case_sensitive: false }
+  validates :excerpt, :source, presence: true  
     
 end

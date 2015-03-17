@@ -65,7 +65,7 @@ post "/admin/create" do
   new_user = User.new(params)
   new_user.password = params[:password]
 
-  if new_user.create
+  if new_user.save
     redirect to ("/admin/update_database?message=New user successfully created:<br><strong>Name:</strong> #{new_user.user_name}<br><strong>Email:</strong> #{new_user.email}<br><strong>ID:</strong> #{new_user.id}<br><strong>Privilege Level:</strong> #{new_user.privilege}")
   
   else 

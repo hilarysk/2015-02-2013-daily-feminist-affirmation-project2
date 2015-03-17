@@ -94,6 +94,12 @@ get "/admin/update_database" do
   erb :"admin/update_database"
 end
 
+################################################# NOT WORKING TO CLEAR SESSION MESSAGE
+post "/admin/update_database" do  #????
+  session[:message] = nil
+  erb :"admin/update_database"
+end
+
 # SEE LIST OF WHO CONTRIBUTED WHAT
 
 get "/admin/contrib" do 
@@ -234,69 +240,88 @@ post "/admin/excerpt/update_success" do
   end
 end
 
+get "/coming_soon" do
+  erb :"/admin/comingsoon"
+end
+
 #### allow to add people and keywords first, then quotes. Terms leave off for now, because don't have good system for IPA? Or include but it's a hassle for user. 
 
 
 
 
 
+
 get "/admin/person/new_person" do 
-  erb :"admin/person/new_person"
+  redirect to ("/coming_soon")
+  # erb :"admin/person/new_person"
 end
 
-post "/admin/person/new_success" do 
-  erb :"public/keyword/person_formatting"
+get "/admin/person/new_success" do 
+  redirect to ("/coming_soon")
+  # erb :"public/keyword/person_formatting"
 end
 
-post "/admin/person/update_person" do 
-  erb :"admin/person/update_person"
+get "/admin/person/update_person" do 
+  redirect to ("/coming_soon")
+  # erb :"admin/person/update_person"
 end
 
-post "/admin/person/update_success" do 
-  erb :"public/keyword/person_formatting"
+get "/admin/person/update_success" do 
+  redirect to ("/coming_soon")
+  # erb :"public/keyword/person_formatting"
 end
 
-post "/admin/quote/new_quote" do 
-  erb :"admin/quote/new_quote"
+get "/admin/quote/new_quote" do 
+  redirect to ("/coming_soon")
+  # erb :"admin/quote/new_quote"
 end
 
-post "/admin/quote/new_success" do 
-  erb :"public/keyword/quote_formatting"
+get "/admin/quote/new_success" do 
+  redirect to ("/coming_soon")
+  # erb :"public/keyword/quote_formatting"
 end
 
-post "/admin/quote/update_quote" do 
-  erb :"admin/quote/update_quote"
+get "/admin/quote/update_quote" do 
+  redirect to ("/coming_soon")
+  # erb :"admin/quote/update_quote"
 end
   
-post "/admin/quote/update_success" do 
-  erb :"public/keyword/quote_formatting"
+get "/admin/quote/update_success" do 
+  redirect to ("/coming_soon")
+  # erb :"public/keyword/quote_formatting"
 end
 
-post "/admin/term/new_term" do 
-  erb :"admin/term/new_term"
+get "/admin/term/new_term" do 
+  redirect to ("/coming_soon")
+  # erb :"admin/term/new_term"
 end
 
-post "/admin/term/new_success" do 
-  erb :"public/keyword/term_formatting"
+get "/admin/term/new_success" do 
+  redirect to ("/coming_soon")
+  # erb :"public/keyword/term_formatting"
 end
 
-post "/admin/term/update_term" do 
-  erb :"admin/term/update_term"
+get "/admin/term/update_term" do 
+  redirect to ("/coming_soon")
+  # erb :"admin/term/update_term"
 end
 
-post "/admin/term/update_success" do 
-  erb :"public/keyword/term_formatting"
+get "/admin/term/update_success" do 
+  redirect to ("/coming_soon")
+  # erb :"public/keyword/term_formatting"
 end
 
 
 
 
-post "/admin/tag/new_tag" do 
-  erb :"admin/tag/new_tag"
+get "/admin/tag/new_tag" do 
+  redirect to ("/coming_soon")
+  # erb :"admin/tag/new_tag"
 end
 
-post "/admin/tag/assign_tag" do 
-  erb :"admin/tag/assign_tag"
+get "/admin/tag/assign_tag" do 
+  redirect to ("/coming_soon")
+  # erb :"admin/tag/assign_tag"
 end
 
 

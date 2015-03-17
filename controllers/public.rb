@@ -54,7 +54,7 @@ get "/item" do  ##--> localhost:4567/item?table=quotes&id=4
   
 end
 
-# Error page
+# ERROR PAGE
 
 get "/whoops" do 
   erb :whoops, :layout => :"/alt_layouts/public_layout"
@@ -110,6 +110,37 @@ get "/yay" do
   end
 end
 
+#LOADS KEYWORD PAGE
+
+get "/keyword" do
+  @keyword = params["keyword"]
+  @results = Keyword.find_by("keyword = ?", @keyword).items_array
+  
+  erb :"public/keyword/keyword_partials", :layout => :"/alt_layouts/public_layout"
+end
+
+#LOADS ABOUT PAGE
+
+get "/about" do
+  erb :"public/about", :layout => :"/alt_layouts/public_layout"
+end
+
+#LOADS SEARCH PAGE
+
+get "/search" do
+  @keywords = Keyword.select("keyword").to_a  
+  @keywords.delete_if do |object|
+    object.keyword == "quote" || object.keyword == "excerpt" || object.keyword == "term" || object.keyword == "person"
+  end  
+      
+  erb :"public/search", :layout => :"/alt_layouts/public_layout"
+end
+
+
+
+
+
+
 # XHR REQUEST WHEN HIT REAFFIRM BUTTON
 
 # post "/yay" do
@@ -148,29 +179,3 @@ end
 #     erb :"public/term", :layout => :"/alt_layouts/public_layout"
 #   end
 # end
-
-#LOADS KEYWORD PAGE
-
-get "/keyword" do
-  @keyword = params["keyword"]
-  @results = Keyword.find_by("keyword = ?", @keyword).items_array
-  
-  erb :"public/keyword/keyword_partials", :layout => :"/alt_layouts/public_layout"
-end
-
-#LOADS ABOUT PAGE
-
-get "/about" do
-  erb :"public/about", :layout => :"/alt_layouts/public_layout"
-end
-
-#LOADS SEARCH PAGE
-
-get "/search" do
-  @keywords = Keyword.select("keyword").to_a  
-  @keywords.delete_if do |object|
-    object.keyword == "quote" || object.keyword == "excerpt" || object.keyword == "term" || object.keyword == "person"
-  end  
-      
-  erb :"public/search", :layout => :"/alt_layouts/public_layout"
-end

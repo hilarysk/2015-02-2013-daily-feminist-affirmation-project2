@@ -223,8 +223,9 @@ post "/admin/excerpt/update_success" do
   if existing_excerpt.update(params)
     person1 = Person.find_by("id = ?", existing_excerpt.person_id).person
     success_message1 = "The excerpt was successfully updated:"
-    keywords = "<hr></hr><h3><em>Thank you!</em></h3><p>Here are the current keywords: <br><strong><ul><li>#{existing_excerpt.get_keywords.join("</li><li>")}</li></ul></strong><br><a href='/assign_tag'>Add more keywords</a> to describe this excerpt, if you'd like.</p>"
-    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{existing_excerpt.excerpt}", "source"=>"#{existing_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}", "add_keywords"=>"#{keywords}"}
+    @add_keywords = "<hr></hr><h3><em>Thank you!</em></h3><p>Here are the current keywords: <br><strong><ul><li>#{existing_excerpt.get_keywords.join('</li><li>')}</li></ul></strong><br><a href='/assign_tag'>Add more keywords</a> to describe this excerpt, if you'd like.</p>"
+        
+    erb :"/public/keyword/_excerpt_formatting", :locals => {"excerpt"=>"#{existing_excerpt.excerpt}", "source"=>"#{existing_excerpt.source}", "person"=>"#{person1}", "success_message" => "#{success_message1}"}
   
   else 
     @error_messages = new_excerpt.errors.to_a

@@ -257,9 +257,10 @@ td.termimage {
 }
 
 .keywordlist {
-  width: 70%;
+  width: 80%;
+  margin: auto;
+  min-width: 300px;
   max-width: 600px;
-  margin-left: 20%;
   padding-bottom: 2.5%;
 }
 
@@ -277,22 +278,27 @@ td.termimage {
 }
 
 .search {
-  width: 70%;
+  width: 80%;
+  margin: auto;
+  min-width: 300px;
   max-width: 600px;
-  margin-left: 20%;
   padding-bottom: 2.5%;
 }
 
 .about {
   font-family: Georgia;
-  width: 40%;
-  margin-left: 20%;
+  width: 80%;
+  margin: auto;
+  min-width: 300px;
+  max-width: 600px;
   padding-bottom: 5%;
 }
 
 .login {
-  width: 23.40%;
-  margin-left: 20%;
+  width: 80%;
+  margin: auto;
+  min-width: 300px;
+  max-width: 650px;
   padding-bottom: 2.5%;
 }
 

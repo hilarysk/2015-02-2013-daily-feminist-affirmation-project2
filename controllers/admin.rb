@@ -251,62 +251,62 @@ end
 
 
 
-get "/admin/person/new_person" do 
+before "/admin/person/new_person" do 
   redirect to ("/coming_soon")
   # erb :"admin/person/new_person"
 end
 
-get "/admin/person/new_success" do 
+before "/admin/person/new_success" do 
   redirect to ("/coming_soon")
   # erb :"public/keyword/person_formatting"
 end
 
-get "/admin/person/update_person" do 
+before "/admin/person/update_person" do 
   redirect to ("/coming_soon")
   # erb :"admin/person/update_person"
 end
 
-get "/admin/person/update_success" do 
+before "/admin/person/update_success" do 
   redirect to ("/coming_soon")
   # erb :"public/keyword/person_formatting"
 end
 
-get "/admin/quote/new_quote" do 
+before "/admin/quote/new_quote" do 
   redirect to ("/coming_soon")
   # erb :"admin/quote/new_quote"
 end
 
-get "/admin/quote/new_success" do 
+before "/admin/quote/new_success" do 
   redirect to ("/coming_soon")
   # erb :"public/keyword/quote_formatting"
 end
 
-get "/admin/quote/update_quote" do 
+before "/admin/quote/update_quote" do 
   redirect to ("/coming_soon")
   # erb :"admin/quote/update_quote"
 end
   
-get "/admin/quote/update_success" do 
+before "/admin/quote/update_success" do 
   redirect to ("/coming_soon")
   # erb :"public/keyword/quote_formatting"
 end
 
-get "/admin/term/new_term" do 
+before "/admin/term/new_term" do 
   redirect to ("/coming_soon")
   # erb :"admin/term/new_term"
 end
 
-get "/admin/term/new_success" do 
+before "/admin/term/new_success" do 
   redirect to ("/coming_soon")
   # erb :"public/keyword/term_formatting"
 end
 
-get "/admin/term/update_term" do 
+before "/admin/term/update_term" do 
   redirect to ("/coming_soon")
   # erb :"admin/term/update_term"
 end
 
-get "/admin/term/update_success" do 
+before "/admin/term/update_success" do 
   redirect to ("/coming_soon")
   # erb :"public/keyword/term_formatting"
 end
@@ -314,12 +314,12 @@ end
 
 
 
-get "/admin/tag/new_tag" do 
+before "/admin/tag/new_tag" do 
   redirect to ("/coming_soon")
   # erb :"admin/tag/new_tag"
 end
 
-get "/admin/tag/assign_tag" do 
+before "/admin/tag/assign_tag" do 
   redirect to ("/coming_soon")
   # erb :"admin/tag/assign_tag"
 end

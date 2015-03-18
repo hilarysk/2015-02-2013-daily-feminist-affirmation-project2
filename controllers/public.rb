@@ -76,7 +76,7 @@ get "/yay" do
     
   item = (Quote.all + Term.all + Excerpt.all + Person.all).sample
   
-  if item == nil
+  if item == nil || item.keywords == nil
     
     redirect to ("/whoops")
 
